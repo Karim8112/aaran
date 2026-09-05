@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import spotlight2 from "./assets/image-7.png";
+import InversionLens from "./InversionLens";
 
 // import Col from "./Col";
 
@@ -32,7 +33,7 @@ const HeroSection: React.FC = () => {
   const overlayRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLAnchorElement>(null); // Changed to HTMLAnchorElement to match your <a> tag
 
-  const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
+  const imagesRef = useRef<(HTMLDivElement | null)[]>([]);
   const wordsRef = useRef<(HTMLSpanElement | null)[]>([]);
 
   // 1. Text splitting logic restored
@@ -234,12 +235,11 @@ const HeroSection: React.FC = () => {
       <section className="hero">
         <div ref={heroInnerRef} className="hero-inner">
           <div ref={galleryRef} className="hero-spotlight-gallery">
-            <img
+            <InversionLens
               ref={(el) => {
                 imagesRef.current[0] = el;
               }}
-              src={spotlight2}
-              alt="Spotlight 1"
+              source={spotlight2}
             />
           </div>
 

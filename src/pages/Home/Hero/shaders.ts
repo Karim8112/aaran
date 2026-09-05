@@ -87,10 +87,12 @@ export const fragmentShader = `
 
     // Calculate psychedelic look: inverted grayscale
     float grayValue = dot(texColor.rgb, vec3(0.299, 0.587, 0.114));
+    vec3 brandColor = vec3(209.0 / 255.0, 183.0 / 255.0, 151.0 / 255.0);
+    vec3 customColor = vec3(1.0 - grayValue) * brandColor;
     vec3 trippyInverted = vec3(1.0 - grayValue);
 
     // Blend the original color with the trippy inverted color using our turbulent mask
-    vec3 finalColor = mix(texColor.rgb, trippyInverted, mask);
+    vec3 finalColor = mix(texColor.rgb, customColor, mask);
 
     gl_FragColor = vec4(finalColor, 1.0);
   }

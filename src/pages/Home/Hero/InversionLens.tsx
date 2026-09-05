@@ -27,7 +27,7 @@ interface InversionLensUniforms {
 }
 
 const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
-  ({ source, className = "", maskRadius = 0.15 }, ref) => {
+  ({ source, className = "", maskRadius = 0.09 }, ref) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
     const sceneRef = useRef<THREE.Scene | null>(null);
@@ -313,6 +313,7 @@ const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
           width: "100%",
           height: "100%",
           overflow: "hidden",
+          cursor: "none",
         }}
       >
         {/* Inline CSS fallback safety layer */}
@@ -323,6 +324,7 @@ const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
             left: 0 !important;
             width: 100% !important;
             height: 100% !important;
+             cursor: "none",
           }
         `}</style>
 

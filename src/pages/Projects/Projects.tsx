@@ -1,9 +1,9 @@
-import "./hero.css";
+import "../../pages/Home/home.css";
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import spotlight2 from "./assets/image-7.png";
+import spotlight2 from "../../assets/image-7.png";
 
 // import Col from "./Col";
 

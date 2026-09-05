@@ -17,6 +17,19 @@ img {
   object-fit: cover;
 }
 
+.hero,
+.hero * {
+  cursor: none !important;
+}
+
+.hero a,
+.hero button,
+.hero .cta-button,
+.logo,
+nav a {
+  cursor: pointer !important;
+}
+
 /* تنسيقات العناوين وحجم الخط المتغير تلقائياً */
 h1,
 h2,
@@ -62,26 +75,6 @@ section {
   width: 100%;
   height: 100vh;
   overflow: hidden;
-}
-
-/* الأقسام اللاحقة */
-.studio,
-.connect {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: #f0f0f0;
-}
-
-.studio {
-  background-color: #121212;
-  /* هام جداً: هذه الإزاحة تعطي المساحة الكافية للتمرير أثناء تثبيت الهيرو */
-  margin-top: 400vh;
-}
-
-.connect {
-  background-color: #181818;
 }
 
 /* حاوية محتوى الهيرو الداخلية */

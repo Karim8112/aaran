@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+:root {
+  --background-color: #0d0d0d;
+  --foreground-color: #ffffff;
+  --transition-grid-color: #1a1a1a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  font-family: "Instrument Sans", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Navbar */
+
+/* Transition Overlay Grid */
+.transition-grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.transition-block {
+  position: absolute;
+  background-color: var(--transition-grid-color);
+  will-change: transform;
+}

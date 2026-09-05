@@ -1,0 +1,219 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  background-color: #0b0b0b;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* تنسيقات العناوين وحجم الخط المتغير تلقائياً */
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: clamp(3rem, 10vw, 8rem);
+}
+h3 {
+  font-size: clamp(1.8rem, 5vw, 4rem);
+}
+h5 {
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+}
+
+/* زر الدعوة لاتخاذ إجراء (CTA) */
+.cta-button {
+  display: inline-block;
+  background-color: #ffffff;
+  color: #0b0b0b;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border-radius: 100px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  opacity: 0; /* يبدأ مخفياً ليتم تحريكه برمجياً */
+  transition: transform 0.3s ease;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+}
+
+/* الأقسام الأساسية للموقع */
+section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* الأقسام اللاحقة */
+.studio,
+.connect {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #f0f0f0;
+}
+
+.studio {
+  background-color: #121212;
+  /* هام جداً: هذه الإزاحة تعطي المساحة الكافية للتمرير أثناء تثبيت الهيرو */
+  margin-top: 400vh;
+}
+
+.connect {
+  background-color: #181818;
+}
+
+/* حاوية محتوى الهيرو الداخلية */
+.hero-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+/* طبقة التعتيم السوداء */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #d1b797;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* معرض الصور الفسيح */
+.hero-spotlight-gallery {
+  /* background-color: aqua; */
+  position: absolute;
+  top: 0%;
+  left: 0%;
+
+  width: 100vw; /* أكبر من الشاشة ليفيض خارجها */
+  height: 100vh;
+  display: flex;
+  gap: 3vw;
+  will-change: transform;
+}
+
+.hero-spotlight-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3vh;
+}
+
+.hero-spotlight-item {
+  flex: 1;
+  position: relative;
+  overflow: hidden; /* ضروري لعمل تأثير حركة البارالاكس الداخلي للصور */
+}
+
+.hero-spotlight-item img {
+  position: relative;
+  transform: scale(1.1); /* تبدأ الصور مكبرة لتتقلص تدريجياً داخل إطاراتها */
+}
+
+/* المحتوى النصي الرئيسي للهيرو */
+.hero-header {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  text-align: center;
+  z-index: 2;
+}
+
+/* الكلمات المفردة التي سيولدها الكود برمجياً لعرضها تدرجياً */
+.word {
+  display: inline-block;
+  opacity: 0;
+  white-space: pre-wrap;
+}
+
+/* ذيل صفحة الهيرو */
+.hero-footer {
+  position: absolute;
+  bottom: 3rem;
+  right: 4rem;
+  width: 250px;
+  z-index: 2;
+  will-change: transform, filter, opacity;
+}
+
+.logoOverlay {
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  opacity: 0.7; /* يمكنك تعديل الشفافية حسب الحاجة */
+  position: absolute;
+  top: 0;
+  filter: blur(20px);
+  z-index: -10;
+}
+/* الشعار الثابت في الزاوية */
+.logo {
+  position: fixed;
+  bottom: 3rem;
+  left: 4rem;
+  width: 60px;
+  height: 25px;
+  z-index: 10;
+  transform-origin: bottom left; /* يكبر ويرتفع انطلاقاً من الزاوية */
+  /* background-color: #000000; */
+}
+
+/* التنسيق المتجاوب لشاشات الموبايل */
+@media (max-width: 768px) {
+  .logo {
+    bottom: 2rem;
+    left: 2rem;
+    width: 45px;
+    height: 45px;
+  }
+
+  .hero-header {
+    width: 100%;
+    padding: 0 1.5rem;
+  }
+
+  .hero-footer {
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+  }
+}

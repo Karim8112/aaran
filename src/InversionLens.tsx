@@ -1,20 +1,43 @@
-import React, { useEffect, useRef, useCallback, forwardRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  forwardRef,
+} from "react";
 import * as THREE from "three";
 import { vertexShader, fragmentShader } from "./shaders";
 
 interface InversionLensProps {
   source: string;
   className?: string;
+  maskRadius?: number; // Configurable circle size (prop added in previous turn)
+}
+
+interface InversionLensUniforms {
+  uTexture: { value: THREE.Texture };
+  uMouse: { value: THREE.Vector2 };
+  uTime: { value: number };
+  uResolution: { value: THREE.Vector2 };
+  uRadius: { value: number };
+  uSpeed: { value: number };
+  uImageAspect: { value: number };
+  uTurbulenceIntensity: { value: number };
 }
 
 const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
-  ({ source, className = "" }, ref) => {
-    const containerRef = useRef<HTMLDivElement | null>(null);
+  ({ source, className = "", maskRadius = 0.15 }, ref) => {
+    const containerRef = useRef<HTMLDivElement>(null);
     const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
     const sceneRef = useRef<THREE.Scene | null>(null);
     const cameraRef = useRef<THREE.OrthographicCamera | null>(null);
-    const uniformsRef = useRef<THREE.ShaderMaterial["uniforms"] | null>(null);
-    const isSetupCompleteRef = useRef<boolean>(false);
+    const uniformsRef = useRef<InversionLensUniforms | null>(null);
+    const isSetupCompleteRef = useRef(false);
+
+    // 1. Loading and Delay States
+    const [shouldInit, setShouldInit] = useState(false);
+    const [isCanvasReady, setIsCanvasReady] = useState(false);
 
     // Sync forwarded ref with our local containerRef
     useEffect(() => {
@@ -27,35 +50,47 @@ const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
       }
     }, [ref]);
 
-    const config = {
-      maskRadius: 0.25, // Size of the hover lens
-      maskSpeed: 0.8, // Speed of the organic ripple turbulence
-      lerpFactor: 0.08, // Mouse trailing lag (smaller = smoother/slower follow)
-      radiusLerpSpeed: 0.06, // Fade-in/out speed when cursor enters/leaves
-      turbulenceIntensity: 0.12, // Jaggedness of the lens edge
-    };
+    const config = useMemo(
+      () => ({
+        maskRadius: maskRadius,
+        maskSpeed: 0.8,
+        lerpFactor: 0.08,
+        radiusLerpSpeed: 0.06,
+        turbulenceIntensity: 0.12,
+      }),
+      [maskRadius],
+    );
 
     const targetMouse = useRef({ x: 0.5, y: 0.5 });
     const lerpedMouse = useRef({ x: 0.5, y: 0.5 });
     const targetRadius = useRef(0.0);
     const lerpedRadius = useRef(0.0);
-    const isInView = useRef<boolean>(true);
-    const isMouseInsideContainer = useRef<boolean>(false);
+    const isInView = useRef(true);
+    const isMouseInsideContainer = useRef(false);
+    const lastMouseX = useRef(0);
+    const lastMouseY = useRef(0);
+    const animationFrameId = useRef(0);
 
-    const lastMouseX = useRef<number>(0);
-    const lastMouseY = useRef<number>(0);
-    const animationFrameId = useRef<number>(0);
+    // Setup 1-second delay after initial mount
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setShouldInit(true);
+      }, 1000); // 👈 Delays WebGL work by 1 second (adjust if needed)
+
+      return () => clearTimeout(timer);
+    }, []);
 
     const setupScene = useCallback(
       (texture: THREE.Texture) => {
         if (!containerRef.current) return;
 
-        const width = containerRef.current.clientWidth || 1;
-        const height = containerRef.current.clientHeight || 1;
+        const width = containerRef.current.clientWidth;
+        const height = containerRef.current.clientHeight;
+
         const image = texture.image as
           | { width: number; height: number }
           | undefined;
-        const aspect = image && image.height ? image.width / image.height : 1;
+        const aspect = image ? image.width / image.height : 1;
 
         const scene = new THREE.Scene();
         sceneRef.current = scene;
@@ -95,15 +130,24 @@ const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
           antialias: true,
           alpha: true,
         });
+
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(width, height);
         rendererRef.current = renderer;
 
-        // Clear any previous duplicate canvases to prevent multiple renderings
+        // Prevent React 18 strict double canvas issues by removing any existing WebGL nodes
         containerRef.current
           .querySelectorAll("canvas")
-          .forEach((c) => c.remove());
+          .forEach((canvas) => canvas.remove());
         containerRef.current.appendChild(renderer.domElement);
+
+        // Force Canvas styles
+        renderer.domElement.style.position = "absolute";
+        renderer.domElement.style.top = "0";
+        renderer.domElement.style.left = "0";
+        renderer.domElement.style.width = "100%";
+        renderer.domElement.style.height = "100%";
+        renderer.domElement.style.zIndex = "1";
 
         const handleResize = () => {
           if (
@@ -112,8 +156,9 @@ const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
             !uniformsRef.current
           )
             return;
-          const w = containerRef.current.clientWidth || 1;
-          const h = containerRef.current.clientHeight || 1;
+          const w = containerRef.current.clientWidth;
+          const h = containerRef.current.clientHeight;
+
           rendererRef.current.setSize(w, h);
           uniformsRef.current.uResolution.value.set(w, h);
         };
@@ -123,6 +168,65 @@ const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
       },
       [config.maskSpeed, config.turbulenceIntensity],
     );
+
+    const setupEventListeners = useCallback(() => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      const updateCursorState = (clientX: number, clientY: number) => {
+        lastMouseX.current = clientX;
+        lastMouseY.current = clientY;
+
+        const rect = container.getBoundingClientRect();
+        const xInContainer = clientX - rect.left;
+        const yInContainer = clientY - rect.top;
+
+        const isInside =
+          xInContainer >= 0 &&
+          xInContainer <= rect.width &&
+          yInContainer >= 0 &&
+          yInContainer <= rect.height;
+
+        isMouseInsideContainer.current = isInside;
+
+        if (isInside) {
+          targetMouse.current.x = xInContainer / rect.width;
+          targetMouse.current.y = 1.0 - yInContainer / rect.height;
+          targetRadius.current = config.maskRadius;
+        } else {
+          targetRadius.current = 0.0;
+        }
+      };
+
+      const handleMouseMove = (e: MouseEvent) => {
+        updateCursorState(e.clientX, e.clientY);
+      };
+
+      const handleScroll = () => {
+        updateCursorState(lastMouseX.current, lastMouseY.current);
+      };
+
+      document.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("scroll", handleScroll);
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          isInView.current = entry.isIntersecting;
+          if (!entry.isIntersecting) {
+            targetRadius.current = 0.0;
+          }
+        },
+        { threshold: 0.1 },
+      );
+
+      observer.observe(container);
+
+      return () => {
+        document.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("scroll", handleScroll);
+        observer.disconnect();
+      };
+    }, [config.maskRadius]);
 
     const animate = useCallback(
       (timestamp: number) => {
@@ -159,7 +263,12 @@ const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
     );
 
     useEffect(() => {
-      if (isSetupCompleteRef.current || !containerRef.current || !source)
+      if (
+        !shouldInit ||
+        isSetupCompleteRef.current ||
+        !containerRef.current ||
+        !source
+      )
         return;
 
       const container = containerRef.current;
@@ -168,66 +277,14 @@ const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
       let resizeCleanup: (() => void) | undefined;
       let eventCleanup: (() => void) | undefined;
 
-      const setupEventListeners = () => {
-        const updateCursorState = (clientX: number, clientY: number) => {
-          lastMouseX.current = clientX;
-          lastMouseY.current = clientY;
-
-          const rect = container.getBoundingClientRect();
-          const xInContainer = clientX - rect.left;
-          const yInContainer = clientY - rect.top;
-          const isInside =
-            xInContainer >= 0 &&
-            xInContainer <= rect.width &&
-            yInContainer >= 0 &&
-            yInContainer <= rect.height;
-
-          isMouseInsideContainer.current = isInside;
-
-          if (isInside) {
-            targetMouse.current.x = xInContainer / rect.width;
-            targetMouse.current.y = 1.0 - yInContainer / rect.height;
-            targetRadius.current = config.maskRadius;
-          } else {
-            targetRadius.current = 0.0;
-          }
-        };
-
-        const handleMouseMove = (e: MouseEvent) => {
-          updateCursorState(e.clientX, e.clientY);
-        };
-
-        const handleScroll = () => {
-          updateCursorState(lastMouseX.current, lastMouseY.current);
-        };
-
-        document.addEventListener("mousemove", handleMouseMove);
-        window.addEventListener("scroll", handleScroll);
-
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            isInView.current = entry.isIntersecting;
-            if (!entry.isIntersecting) {
-              targetRadius.current = 0.0;
-            }
-          },
-          { threshold: 0.1 },
-        );
-
-        observer.observe(container);
-
-        return () => {
-          document.removeEventListener("mousemove", handleMouseMove);
-          window.removeEventListener("scroll", handleScroll);
-          observer.disconnect();
-        };
-      };
-
       textureLoader.load(source, (loadedTexture) => {
         resizeCleanup = setupScene(loadedTexture);
         eventCleanup = setupEventListeners();
         animationFrameId.current = requestAnimationFrame(animate);
         isSetupCompleteRef.current = true;
+
+        // 2. WebGL is compiled and painted. Safely trigger the smooth crossfade!
+        setIsCanvasReady(true);
       });
 
       return () => {
@@ -237,15 +294,15 @@ const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
 
         if (rendererRef.current) {
           const domElement = rendererRef.current.domElement;
-          if (container && domElement && container.contains(domElement)) {
+          if (domElement && container.contains(domElement)) {
             container.removeChild(domElement);
           }
           rendererRef.current.dispose();
         }
-
         isSetupCompleteRef.current = false;
+        setIsCanvasReady(false);
       };
-    }, [animate, setupScene, source, config.maskRadius]);
+    }, [shouldInit, source, animate, setupEventListeners, setupScene]);
 
     return (
       <div
@@ -258,20 +315,33 @@ const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
           overflow: "hidden",
         }}
       >
-        {/* CSS Injector to guarantee canvas styles stretch correctly */}
+        {/* Inline CSS fallback safety layer */}
         <style>{`
           .inversion-lens-container canvas {
-            display: block;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
             width: 100% !important;
             height: 100% !important;
-            pointer-events: none;
           }
         `}</style>
 
+        {/* 3. Static High-Performance Placeholder Layer */}
         <img
           src={source}
-          alt="Shader Source Texture"
-          style={{ display: "none" }}
+          alt="Spotlight Image Placeholder"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 2, // Sits above canvas initially
+            transition: "opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1)",
+            opacity: isCanvasReady ? 0 : 1, // Smoothly fades out when canvas is compiled
+            pointerEvents: "none",
+          }}
         />
       </div>
     );

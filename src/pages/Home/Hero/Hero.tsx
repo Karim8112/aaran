@@ -89,7 +89,7 @@ const HeroSection: React.FC<{
       ScrollTrigger.create({
         trigger: ".hero",
         start: "top top",
-        end: "+=400%",
+        end: "+=200%",
         pin: true,
         pinSpacing: false,
         onUpdate: (self) => {

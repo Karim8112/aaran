@@ -141,7 +141,7 @@ const GSAPScrollSequence: React.FC = () => {
                 fill="currentColor"
                 className="font-black text-[110px] tracking-tight"
               >
-                What We Do
+                About Arran
               </text>
             </svg>
           </div>
@@ -179,7 +179,7 @@ const GSAPScrollSequence: React.FC = () => {
                 fill="currentColor"
                 className="font-black text-[110px] tracking-tight"
               >
-                What We Do
+                Our Projects
               </text>
             </svg>
           </div>

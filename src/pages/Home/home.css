@@ -17,7 +17,7 @@ section {
 .studio {
   background-color: #121212;
   /* هام جداً: هذه الإزاحة تعطي المساحة الكافية للتمرير أثناء تثبيت الهيرو */
-  margin-top: 400vh;
+  margin-top: 200vh;
 }
 
 .connect {

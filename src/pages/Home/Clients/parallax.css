@@ -1,0 +1,103 @@
+.parallax-section-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200vh; /* Expanded height to allow ample scrolling distance */
+  background-color: #0b0b0b;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Central Typography */
+.parallax-center-header {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+  pointer-events: none; /* Allows cursor to pass through to images behind it */
+}
+
+.parallax-center-header h2 {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 800;
+  font-size: clamp(3rem, 8vw, 6rem);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.parallax-center-header p {
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
+  color: #d1b797; /* Your custom gold/sand brand color */
+  opacity: 0.8;
+}
+
+/* Symmetric Column Grid */
+.parallax-images-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 4vw;
+}
+
+.parallax-side {
+  display: flex;
+  width: 42%; /* Occupies left and right sections, leaving a gap in the center */
+  justify-content: space-between;
+}
+
+.parallax-column {
+  display: flex;
+  flex-direction: column;
+  gap: 6vh;
+  width: 46%; /* Two columns inside each side block */
+  will-change: transform;
+}
+
+/* Rounded Thumbnail Cards */
+.img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 40vh; /* Fixed height for image frames */
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #1a1a1a;
+}
+
+.img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.img-wrapper:hover img {
+  transform: scale(1.08); /* Gentle hover zoom */
+}
+
+/* Responsive Mobile Layout */
+@media (max-width: 768px) {
+  .parallax-section-wrapper {
+    height: 150vh;
+  }
+
+  .parallax-side {
+    width: 45%;
+  }
+
+  .img-wrapper {
+    height: 25vh;
+  }
+
+  .parallax-column {
+    gap: 3vh;
+  }
+}

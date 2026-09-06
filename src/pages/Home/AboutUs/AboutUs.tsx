@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -6,7 +6,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// 10 Premium, high-quality, luxury contracting and architectural images
+// 10 صور معمارية فاخرة ومثالية لتصميم الموقع البصري
 const MARQUEE_IMAGES = [
   "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
   "https://images.unsplash.com/photo-1604871000636-074fa5117945?auto=format&fit=crop&w=400&q=80",
@@ -35,27 +35,27 @@ export default function ScrollWordTransition() {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // 1. Safe, non-conflicting scroll velocity tracker
+    // 1. مراقب سرعة التمرير (Scroll Velocity Tracker) لتفادي أي تعارض مع Lenis العالمي
     let lastScrollY = window.scrollY;
     let targetVelocity = 0;
 
     const trackScrollVelocity = () => {
       const currentScrollY = window.scrollY;
       const delta = Math.abs(currentScrollY - lastScrollY);
-      targetVelocity = delta * 0.08; // Adjusted sensitivity
+      targetVelocity = delta * 0.08;
       lastScrollY = currentScrollY;
     };
     window.addEventListener("scroll", trackScrollVelocity);
 
-    // 2. Ultra-smooth, slow marquee motion loop
+    // 2. حركة دوران الشريط اللانهائية فائقة النعومة والهدوء
     let marqueePos = 0;
     let smoothVelocity = 0;
 
     const marqueeTicker = () => {
       if (!trackRef.current) return;
       smoothVelocity += (targetVelocity - smoothVelocity) * 0.04;
-      const baseSpeed = 0.8; // Lowered from 1.5 for cinematic slow-gliding look
-      const currentSpeed = baseSpeed + smoothVelocity * 2.0; // Reduced multiplier
+      const baseSpeed = 0.8; // سرعة هادئة وسلسة للغاية
+      const currentSpeed = baseSpeed + smoothVelocity * 2.0;
 
       marqueePos -= currentSpeed;
       const halfWidth = trackRef.current.scrollWidth / 2;
@@ -63,56 +63,61 @@ export default function ScrollWordTransition() {
         marqueePos = 0;
       }
       gsap.set(trackRef.current, { x: marqueePos });
-      targetVelocity *= 0.93; // Smooth decay
+      targetVelocity *= 0.93;
     };
     gsap.ticker.add(marqueeTicker);
 
-    // 3. Select split elements declaratively generated below
-    const b1 = gsap.utils.toArray(".block-0") as HTMLElement[];
-    const b2 = gsap.utils.toArray(".block-1") as HTMLElement[];
-    const b3 = gsap.utils.toArray(".block-2") as HTMLElement[];
+    // 3. إعداد الحركات وسياق GSAP الآمن (GSAP Context)
+    const ctx = gsap.context((self) => {
+      // اختيار العناصر بشكل آمن داخل حاوية المكون الحالية فقط
+      const b1 = self.selector?.(".block-0") as HTMLElement[];
+      const b2 = self.selector?.(".block-1") as HTMLElement[];
+      const b3 = self.selector?.(".block-2") as HTMLElement[];
+      const paras = self.selector?.(".para-container") as HTMLElement[];
 
-    // Hide upcoming paragraph blocks initially
-    gsap.set(b2, { yPercent: 105 });
-    gsap.set(b3, { yPercent: 105 });
+      if (!b1 || !b2 || !b3 || !paras) return;
 
-    const OVERLAP_COUNT = 3.5;
+      // إعداد افتراضي مخفي للكلمات والفقرات اللاحقة لمنع تضارب الظهور
+      gsap.set(b2, { yPercent: 105 });
+      gsap.set(b3, { yPercent: 105 });
+      gsap.set(paras[1], { opacity: 0, visibility: "hidden" });
+      gsap.set(paras[2], { opacity: 0, visibility: "hidden" });
 
-    const getWordProgress = (
-      phaseProgress: number,
-      wordIndex: number,
-      totalWords: number,
-    ) => {
-      const totalLength = 1 + OVERLAP_COUNT / totalWords;
-      const scale = 1 / totalLength;
+      const OVERLAP_COUNT = 3.5;
 
-      const startTime = (wordIndex / totalWords) * scale;
-      const endTime = startTime + (OVERLAP_COUNT / totalWords) * scale;
-      const duration = endTime - startTime;
+      const getWordProgress = (
+        phaseProgress: number,
+        wordIndex: number,
+        totalWords: number,
+      ) => {
+        const totalLength = 1 + OVERLAP_COUNT / totalWords;
+        const scale = 1 / totalLength;
 
-      if (phaseProgress < startTime) return 0;
-      if (phaseProgress > endTime) return 1;
-      return (phaseProgress - startTime) / duration;
-    };
+        const startTime = (wordIndex / totalWords) * scale;
+        const endTime = startTime + (OVERLAP_COUNT / totalWords) * scale;
+        const duration = endTime - startTime;
 
-    const animateBlock = (
-      outgoing: HTMLElement[],
-      incoming: HTMLElement[],
-      progress: number,
-    ) => {
-      outgoing.forEach((word, idx) => {
-        const prog = getWordProgress(progress, idx, outgoing.length);
-        gsap.set(word, { yPercent: -prog * 105 });
-      });
+        if (phaseProgress < startTime) return 0;
+        if (phaseProgress > endTime) return 1;
+        return (phaseProgress - startTime) / duration;
+      };
 
-      incoming.forEach((word, idx) => {
-        const prog = getWordProgress(progress, idx, incoming.length);
-        gsap.set(word, { yPercent: (1 - prog) * 105 });
-      });
-    };
+      const animateBlock = (
+        outgoing: HTMLElement[],
+        incoming: HTMLElement[],
+        progress: number,
+      ) => {
+        outgoing.forEach((word, idx) => {
+          const prog = getWordProgress(progress, idx, outgoing.length);
+          gsap.set(word, { yPercent: -prog * 105 });
+        });
 
-    // 4. GSAP Context setup
-    const ctx = gsap.context(() => {
+        incoming.forEach((word, idx) => {
+          const prog = getWordProgress(progress, idx, incoming.length);
+          gsap.set(word, { yPercent: (1 - prog) * 105 });
+        });
+      };
+
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: "top top",
@@ -121,15 +126,15 @@ export default function ScrollWordTransition() {
         onUpdate: (self) => {
           const progress = self.progress;
 
-          // A) Sync top golden indicator bar
+          // أ) مزامنة شريط التقدم الذهبي العلوي
           if (progressFillRef.current) {
             gsap.set(progressFillRef.current, { scaleX: progress });
           }
 
-          // B) OUTRO FADE: Seamlessly fade out marquee from 80% to 100% progress
-          if (progressWrapperFadeRef.current) {
-            if (progress >= 0.8) {
-              const fadeProgress = (progress - 0.8) / 0.2; // 0 to 1
+          // ب) تلاشي شريط الصور اللانهائي بنعومة تامة عند الاقتراب من نهاية القسم
+          if (marqueeWrapperRef.current) {
+            if (progress >= 0.85) {
+              const fadeProgress = (progress - 0.85) / 0.15;
               gsap.set(marqueeWrapperRef.current, {
                 opacity: 1 - fadeProgress,
               });
@@ -138,21 +143,35 @@ export default function ScrollWordTransition() {
             }
           }
 
-          // C) Step-by-Step word animations
+          // ج) إدارة تلاشي الفقرات والظهور لمنع أي تداخل بصري
           if (progress <= 0.5) {
             const p1 = progress / 0.5;
             animateBlock(b1, b2, p1);
             gsap.set(b3, { yPercent: 105 });
+
+            // تبديل الشفافية والظهور لحاوية النصوص
+            gsap.set(paras[0], {
+              opacity: 1 - p1,
+              visibility: p1 >= 0.98 ? "hidden" : "visible",
+            });
+            gsap.set(paras[1], { opacity: p1, visibility: "visible" });
+            gsap.set(paras[2], { opacity: 0, visibility: "hidden" });
           } else {
             const p2 = (progress - 0.5) / 0.5;
             gsap.set(b1, { yPercent: -105 });
             animateBlock(b2, b3, p2);
+
+            gsap.set(paras[0], { opacity: 0, visibility: "hidden" });
+            gsap.set(paras[1], {
+              opacity: 1 - p2,
+              visibility: p2 >= 0.98 ? "hidden" : "visible",
+            });
+            gsap.set(paras[2], { opacity: p2, visibility: "visible" });
           }
         },
       });
     }, containerRef);
 
-    // 5. Cleanup
     return () => {
       window.removeEventListener("scroll", trackScrollVelocity);
       gsap.ticker.remove(marqueeTicker);
@@ -160,12 +179,12 @@ export default function ScrollWordTransition() {
     };
   }, []);
 
-  // Helper function to render fully-responsive declarative split word spans
+  // دالة حقن النصوص المقسمة مع تفعيل قناع القص الفردي (Overflow Hidden)
   const renderSplitParagraph = (text: string, blockIndex: number) => {
     return text.split(" ").map((word, wordIndex) => (
       <span
         key={wordIndex}
-        className="inline-block overflow-hidden vertical-bottom pb-[0.05em]"
+        className="inline-flex overflow-hidden h-[1.25em] align-bottom pb-[0.05em]"
       >
         <span
           className={`inline-block will-change-transform block-${blockIndex}`}
@@ -176,11 +195,9 @@ export default function ScrollWordTransition() {
     ));
   };
 
-  const progressWrapperFadeRef = useRef(true);
-
   return (
     <>
-      {/* Top scroll progress indicator bar */}
+      {/* شريط مؤشر التمرير العلوي الفاخر */}
       <div className="fixed top-0 left-0 w-full h-[3px] bg-white/10 z-50">
         <div
           ref={progressFillRef}
@@ -189,34 +206,33 @@ export default function ScrollWordTransition() {
         />
       </div>
 
-      {/* Slashed scroll height to 250vh for compact, snappy experience */}
       <div
         ref={containerRef}
         className="w-full h-[250vh] relative bg-[#0b0b0b]"
       >
         <section className="fixed top-0 left-0 w-full h-screen overflow-hidden flex flex-col justify-center items-center">
-          {/* Centralized text layer */}
+          {/* الطبقة المركزية الحامية للنصوص */}
           <div className="relative w-[85%] max-w-[1200px] h-[40vh] flex justify-center items-center">
-            <div className="absolute w-full text-center">
+            <div className="absolute w-full text-center para-container">
               <p className="text-white text-3xl md:text-5xl font-medium leading-relaxed tracking-tight">
                 {renderSplitParagraph(PARAGRAPHS[0], 0)}
               </p>
             </div>
 
-            <div className="absolute w-full text-center">
+            <div className="absolute w-full text-center para-container">
               <p className="text-white text-3xl md:text-5xl font-medium leading-relaxed tracking-tight">
                 {renderSplitParagraph(PARAGRAPHS[1], 1)}
               </p>
             </div>
 
-            <div className="absolute w-full text-center">
+            <div className="absolute w-full text-center para-container">
               <p className="text-white text-3xl md:text-5xl font-medium leading-relaxed tracking-tight">
                 {renderSplitParagraph(PARAGRAPHS[2], 2)}
               </p>
             </div>
           </div>
 
-          {/* Infinite Marquee Image Track */}
+          {/* شريط عرض الصور اللانهائي والديناميكي */}
           <div
             ref={marqueeWrapperRef}
             className="absolute bottom-[8vh] left-0 w-full overflow-hidden whitespace-nowrap will-change-transform"
@@ -225,7 +241,7 @@ export default function ScrollWordTransition() {
               ref={trackRef}
               className="inline-flex gap-[2vw] will-change-transform"
             >
-              {/* First loop of 10 images */}
+              {/* التكرار الأول لـ 10 صور */}
               {MARQUEE_IMAGES.map((src, i) => (
                 <div
                   key={`orig-${i}`}
@@ -234,12 +250,12 @@ export default function ScrollWordTransition() {
                   <img
                     src={src}
                     className="w-full h-full object-cover"
-                    alt={`Marquee ${i}`}
+                    alt={`Architectural Preview ${i}`}
                   />
                 </div>
               ))}
 
-              {/* Seamless clone loop of 10 images */}
+              {/* التكرار الثاني المتطابق لتأمين الدوران اللانهائي النظيف */}
               {MARQUEE_IMAGES.map((src, i) => (
                 <div
                   key={`clone-${i}`}
@@ -248,7 +264,7 @@ export default function ScrollWordTransition() {
                   <img
                     src={src}
                     className="w-full h-full object-cover"
-                    alt={`Marquee-Clone ${i}`}
+                    alt={`Architectural Preview Clone ${i}`}
                   />
                 </div>
               ))}

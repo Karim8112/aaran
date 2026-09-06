@@ -1,61 +1,61 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// قائمة بيانات الصور لخدمة شريط الصور الدوار (الماركي)
+// 10 Premium, high-quality, luxury contracting and architectural images
 const MARQUEE_IMAGES = [
   "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
   "https://images.unsplash.com/photo-1604871000636-074fa5117945?auto=format&fit=crop&w=400&q=80",
   "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=400&q=80",
-  "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1448630091924-883f6f93824a?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1504297366397-d3c95a71c2d6?auto=format&fit=crop&w=400&q=80",
 ];
 
-export default function AboutUs() {
+const PARAGRAPHS = [
+  "We design spaces that breathe, move, and tell your unique architectural story.",
+  "Every blueprint is a commitment to engineering precision and sustainable innovation.",
+  "From conception to final brick, we craft luxury contracting solutions for tomorrow.",
+];
+
+export default function ScrollWordTransition() {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const progressFillRef = useRef<HTMLDivElement>(null);
-
-  // مراجع لتخزين الكلمات والفقرات المقسمة برمجياً
-  const paragraph1Ref = useRef<HTMLParagraphElement>(null);
-  const paragraph2Ref = useRef<HTMLParagraphElement>(null);
-  const paragraph3Ref = useRef<HTMLParagraphElement>(null);
-
-  const wordBlocksRef = useRef<HTMLElement[][]>([]);
+  const marqueeWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // 1. تهيئة محرك التمرير الناعم
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    });
-
+    // 1. Safe, non-conflicting scroll velocity tracker
+    let lastScrollY = window.scrollY;
     let targetVelocity = 0;
-    lenis.on("scroll", (e) => {
-      targetVelocity = Math.abs(e.velocity) * 0.15;
-      ScrollTrigger.update();
-    });
 
-    const raf = (time: number) => {
-      lenis.raf(time * 1000);
+    const trackScrollVelocity = () => {
+      const currentScrollY = window.scrollY;
+      const delta = Math.abs(currentScrollY - lastScrollY);
+      targetVelocity = delta * 0.08; // Adjusted sensitivity
+      lastScrollY = currentScrollY;
     };
-    gsap.ticker.add(raf);
+    window.addEventListener("scroll", trackScrollVelocity);
 
-    // 2. محرك الماركي الذكي القابل لتسريع الدوران
+    // 2. Ultra-smooth, slow marquee motion loop
     let marqueePos = 0;
     let smoothVelocity = 0;
 
     const marqueeTicker = () => {
       if (!trackRef.current) return;
-      smoothVelocity += (targetVelocity - smoothVelocity) * 0.05;
-      const baseSpeed = 1.5;
-      const currentSpeed = baseSpeed + smoothVelocity * 10;
+      smoothVelocity += (targetVelocity - smoothVelocity) * 0.04;
+      const baseSpeed = 0.8; // Lowered from 1.5 for cinematic slow-gliding look
+      const currentSpeed = baseSpeed + smoothVelocity * 2.0; // Reduced multiplier
 
       marqueePos -= currentSpeed;
       const halfWidth = trackRef.current.scrollWidth / 2;
@@ -63,45 +63,18 @@ export default function AboutUs() {
         marqueePos = 0;
       }
       gsap.set(trackRef.current, { x: marqueePos });
-      targetVelocity *= 0.95;
+      targetVelocity *= 0.93; // Smooth decay
     };
-
     gsap.ticker.add(marqueeTicker);
 
-    // 3. تقسيم الكلمات يدوياً (ماتش ميكر) بديل SplitText
-    const splitParagraph = (pEl: HTMLParagraphElement | null) => {
-      if (!pEl) return [];
-      const text = pEl.textContent?.trim() || "";
-      const words = text.split(" ");
-      pEl.innerHTML = "";
+    // 3. Select split elements declaratively generated below
+    const b1 = gsap.utils.toArray(".block-0") as HTMLElement[];
+    const b2 = gsap.utils.toArray(".block-1") as HTMLElement[];
+    const b3 = gsap.utils.toArray(".block-2") as HTMLElement[];
 
-      return words.map((word) => {
-        const mask = document.createElement("span");
-        mask.style.display = "inline-block";
-        mask.style.overflow = "hidden";
-        mask.style.verticalAlign = "bottom";
-        mask.style.paddingBottom = "0.05em";
-
-        const inner = document.createElement("span");
-        inner.style.display = "inline-block";
-        inner.style.willChange = "transform";
-        inner.textContent = word + "\u00A0"; // الحفاظ على المسافة الفارغة
-
-        mask.appendChild(inner);
-        pEl.appendChild(mask);
-        return inner;
-      });
-    };
-
-    const block1 = splitParagraph(paragraph1Ref.current);
-    const block2 = splitParagraph(paragraph2Ref.current);
-    const block3 = splitParagraph(paragraph3Ref.current);
-
-    wordBlocksRef.current = [block1, block2, block3];
-
-    // إخفاء الأسطر اللاحقة بشكل افتراضي
-    gsap.set(block2, { yPercent: 105 });
-    gsap.set(block3, { yPercent: 105 });
+    // Hide upcoming paragraph blocks initially
+    gsap.set(b2, { yPercent: 105 });
+    gsap.set(b3, { yPercent: 105 });
 
     const OVERLAP_COUNT = 3.5;
 
@@ -138,7 +111,7 @@ export default function AboutUs() {
       });
     };
 
-    // 4. ربط التمرير بـ GSAP Context لضمان تجميع الذاكرة النظيفة
+    // 4. GSAP Context setup
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: containerRef.current,
@@ -148,15 +121,24 @@ export default function AboutUs() {
         onUpdate: (self) => {
           const progress = self.progress;
 
-          // تحديث المقياس البصري للشريط العلوي
+          // A) Sync top golden indicator bar
           if (progressFillRef.current) {
             gsap.set(progressFillRef.current, { scaleX: progress });
           }
 
-          const b1 = wordBlocksRef.current[0];
-          const b2 = wordBlocksRef.current[1];
-          const b3 = wordBlocksRef.current[2];
+          // B) OUTRO FADE: Seamlessly fade out marquee from 80% to 100% progress
+          if (progressWrapperFadeRef.current) {
+            if (progress >= 0.8) {
+              const fadeProgress = (progress - 0.8) / 0.2; // 0 to 1
+              gsap.set(marqueeWrapperRef.current, {
+                opacity: 1 - fadeProgress,
+              });
+            } else {
+              gsap.set(marqueeWrapperRef.current, { opacity: 1 });
+            }
+          }
 
+          // C) Step-by-Step word animations
           if (progress <= 0.5) {
             const p1 = progress / 0.5;
             animateBlock(b1, b2, p1);
@@ -170,18 +152,35 @@ export default function AboutUs() {
       });
     }, containerRef);
 
-    // تنظيف المؤقتات والـ Listeners ومحركات التمرير عند إلغاء التحميل
+    // 5. Cleanup
     return () => {
-      lenis.destroy();
-      gsap.ticker.remove(raf);
+      window.removeEventListener("scroll", trackScrollVelocity);
       gsap.ticker.remove(marqueeTicker);
       ctx.revert();
     };
   }, []);
 
+  // Helper function to render fully-responsive declarative split word spans
+  const renderSplitParagraph = (text: string, blockIndex: number) => {
+    return text.split(" ").map((word, wordIndex) => (
+      <span
+        key={wordIndex}
+        className="inline-block overflow-hidden vertical-bottom pb-[0.05em]"
+      >
+        <span
+          className={`inline-block will-change-transform block-${blockIndex}`}
+        >
+          {word}&nbsp;
+        </span>
+      </span>
+    ));
+  };
+
+  const progressWrapperFadeRef = useRef(true);
+
   return (
     <>
-      {/* مؤشر التقدم العلوي */}
+      {/* Top scroll progress indicator bar */}
       <div className="fixed top-0 left-0 w-full h-[3px] bg-white/10 z-50">
         <div
           ref={progressFillRef}
@@ -190,52 +189,43 @@ export default function AboutUs() {
         />
       </div>
 
+      {/* Slashed scroll height to 250vh for compact, snappy experience */}
       <div
         ref={containerRef}
-        className="w-full h-[600vh] relative bg-[#0b0b0b]"
+        className="w-full h-[250vh] relative bg-[#0b0b0b]"
       >
-        {/* شاشة العرض الأساسية المثبتة في الفيو بورت */}
         <section className="fixed top-0 left-0 w-full h-screen overflow-hidden flex flex-col justify-center items-center">
-          {/* حاوية النصوص المتراكبة فوق بعضها */}
+          {/* Centralized text layer */}
           <div className="relative w-[85%] max-w-[1200px] h-[40vh] flex justify-center items-center">
             <div className="absolute w-full text-center">
-              <p
-                ref={paragraph1Ref}
-                className="text-white text-3xl md:text-5xl font-medium leading-relaxed tracking-tight"
-              >
-                We design spaces that breathe, move, and tell your unique
-                architectural story.
+              <p className="text-white text-3xl md:text-5xl font-medium leading-relaxed tracking-tight">
+                {renderSplitParagraph(PARAGRAPHS[0], 0)}
               </p>
             </div>
 
             <div className="absolute w-full text-center">
-              <p
-                ref={paragraph2Ref}
-                className="text-white text-3xl md:text-5xl font-medium leading-relaxed tracking-tight"
-              >
-                Every blueprint is a commitment to engineering precision and
-                sustainable innovation.
+              <p className="text-white text-3xl md:text-5xl font-medium leading-relaxed tracking-tight">
+                {renderSplitParagraph(PARAGRAPHS[1], 1)}
               </p>
             </div>
 
             <div className="absolute w-full text-center">
-              <p
-                ref={paragraph3Ref}
-                className="text-white text-3xl md:text-5xl font-medium leading-relaxed tracking-tight"
-              >
-                From conception to final brick, we craft luxury contracting
-                solutions for tomorrow.
+              <p className="text-white text-3xl md:text-5xl font-medium leading-relaxed tracking-tight">
+                {renderSplitParagraph(PARAGRAPHS[2], 2)}
               </p>
             </div>
           </div>
 
-          {/* شريط الصور الدوار تفاعلي السرعة */}
-          <div className="absolute bottom-[8vh] left-0 w-full overflow-hidden whitespace-nowrap">
+          {/* Infinite Marquee Image Track */}
+          <div
+            ref={marqueeWrapperRef}
+            className="absolute bottom-[8vh] left-0 w-full overflow-hidden whitespace-nowrap will-change-transform"
+          >
             <div
               ref={trackRef}
               className="inline-flex gap-[2vw] will-change-transform"
             >
-              {/* المجموعة الأولى من الصور */}
+              {/* First loop of 10 images */}
               {MARQUEE_IMAGES.map((src, i) => (
                 <div
                   key={`orig-${i}`}
@@ -249,7 +239,7 @@ export default function AboutUs() {
                 </div>
               ))}
 
-              {/* المجموعة المكررة للتمرير المتصل اللانهائي */}
+              {/* Seamless clone loop of 10 images */}
               {MARQUEE_IMAGES.map((src, i) => (
                 <div
                   key={`clone-${i}`}

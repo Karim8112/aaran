@@ -1,193 +1,296 @@
 import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useVelocity,
+  useSpring,
+  useMotionValue,
+  type MotionValue,
+} from "framer-motion";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
-const PARAGRAPHS = [
-  "We design spaces that breathe, move, and tell your unique architectural story.",
-  "Every blueprint is a commitment to engineering precision and sustainable innovation.",
-  "From conception to final brick, we craft luxury contracting solutions for tomorrow.",
+// 10 Premium, high-quality, luxury contracting and architectural images
+const MARQUEE_IMAGES = [
+  "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1604871000636-074fa5117945?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1448630091924-883f6f93824a?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1504297366397-d3c95a71c2d6?auto=format&fit=crop&w=400&q=80",
 ];
 
-export default function AboutUs() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const pinnedInnerRef = useRef<HTMLDivElement>(null);
-  const progressFillRef = useRef<HTMLDivElement>(null);
+const PARAGRAPHS = [
+  "Core Expertise & Heritage Led by Eng. Basel Al-Zahir, Aaran Contracting & Trading combines 20+ years of civil and MEP expertise with specialized heritage restoration. Blending traditional craftsmanship with modern technology, the firm revitalizes iconic landmarks, most notably the Citadel of Aleppo.",
+  "Global Execution & Vision, A trusted partner for UN agencies, Aaran executes complex international projects in sensitive environments under strict HSE protocols. The firm maintains transparency and efficiency while humanizing urban spaces—from schools to citadels—for future generations..",
+  "At the core of our operations is a steadfast commitment to our Safety Protocols & ISO Standards. Under our cadre safety initiatives, we treat the prevention of work-related injuries and accidents as a major responsibility. Guided by the rigorous frameworks of ISO 603, our organizational philosophy dictates that safety is unequivocally prioritized over operational productivity. To sustain this uncompromising culture of vigilance in even the most complex environments, the company ensures the continuous delivery of comprehensive awareness courses and specialized risk avoidance training for all personnel..",
+];
+
+// Constants for word transition mathematics
+const OVERLAP_COUNT = 3.5;
+
+interface WordProps {
+  word: string;
+  progress: MotionValue<number>;
+  inputRange: number[];
+  outputRange: number[];
+}
+
+// Declarative Word Animator
+const SplitWord: React.FC<WordProps> = ({
+  word,
+  progress,
+  inputRange,
+  outputRange,
+}) => {
+  // Map scroll progress to vertical position percentage
+  const y = useTransform(
+    progress,
+    inputRange,
+    outputRange.map((val) => `${val}%`),
+  );
+
+  return (
+    <span className="inline-block overflow-hidden pb-[0.05em] vertical-bottom">
+      <motion.span style={{ y }} className="inline-block will-change-transform">
+        {word}&nbsp;
+      </motion.span>
+    </span>
+  );
+};
+
+// Velocity-Responsive Infinite Marquee
+const ResponsiveMarquee: React.FC<{
+  images: string[];
+  progress: MotionValue<number>;
+}> = ({ images, progress }) => {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+
+  // Grab scrolling speed/velocity and run it through a stabilizer spring
+  const { scrollY } = useScroll();
+  const scrollVelocity = useVelocity(scrollY);
+  const smoothVelocity = useSpring(scrollVelocity, {
+    damping: 60,
+    stiffness: 300,
+  });
+
+  // Speed goes from 1.0 (base) up to 12.0 depending on scroll intensity
+  const velocityFactor = useTransform(smoothVelocity, [0, 1200], [0, 11], {
+    clamp: true,
+  });
+
+  // Outro fade: starts fading out when scroll gets close to the end (from 80% to 100%)
+  const opacity = useTransform(progress, [0, 0.8, 1.0], [1, 1, 0]);
 
   useEffect(() => {
-    if (!containerRef.current || !pinnedInnerRef.current) return;
+    let active = true;
+    let currentX = 0;
 
-    const ctx = gsap.context(() => {
-      // 1. Grab our split word elements securely within the context
-      const b1 = gsap.utils.toArray(".block-0") as HTMLElement[];
-      const b2 = gsap.utils.toArray(".block-1") as HTMLElement[];
-      const b3 = gsap.utils.toArray(".block-2") as HTMLElement[];
+    const tick = () => {
+      if (!active || !trackRef.current) return;
 
-      // Initial state: push incoming paragraphs out of view vertically
-      gsap.set(b2, { yPercent: 105 });
-      gsap.set(b3, { yPercent: 105 });
+      const baseSpeed = 1.0; // Clean, slow resting speed
+      const boost = Math.abs(velocityFactor.get());
+      currentX -= baseSpeed + boost;
 
-      const OVERLAP_COUNT = 3.5;
+      // Reset coordinates perfectly once half the track has scrolled past
+      const halfWidth = trackRef.current.scrollWidth / 2;
+      if (halfWidth > 0 && currentX <= -halfWidth) {
+        currentX = 0;
+      }
 
-      // Staggered word animation calculations (cloned from Codegrid's math)
-      const getWordProgress = (
-        phaseProgress: number,
-        wordIndex: number,
-        totalWords: number,
-      ) => {
-        const totalLength = 1 + OVERLAP_COUNT / totalWords;
-        const scale = 1 / totalLength;
+      x.set(currentX);
+      requestAnimationFrame(tick);
+    };
 
-        const startTime = (wordIndex / totalWords) * scale;
-        const endTime = startTime + (OVERLAP_COUNT / totalWords) * scale;
-        const duration = endTime - startTime;
+    requestAnimationFrame(tick);
+    return () => {
+      active = false;
+    };
+  }, [x, velocityFactor]);
 
-        if (phaseProgress < startTime) return 0;
-        if (phaseProgress > endTime) return 1;
-        return (phaseProgress - startTime) / duration;
-      };
+  return (
+    <motion.div
+      style={{ opacity }}
+      className="absolute bottom-[8vh] left-0 w-full overflow-hidden whitespace-nowrap z-20 pointer-events-none"
+    >
+      <motion.div ref={trackRef} style={{ x }} className="inline-flex gap-8">
+        {/* Original Set of 10 Images */}
+        {images.map((src, idx) => (
+          <div
+            key={`orig-${idx}`}
+            className="w-[180px] h-[120px] rounded-xl overflow-hidden shrink-0"
+          >
+            <img
+              src={src}
+              className="w-full h-full object-cover select-none"
+              alt=""
+            />
+          </div>
+        ))}
+        {/* Seamless Duplicated Set of 10 Images */}
+        {images.map((src, idx) => (
+          <div
+            key={`clone-${idx}`}
+            className="w-[180px] h-[120px] rounded-xl overflow-hidden shrink-0"
+          >
+            <img
+              src={src}
+              className="w-full h-full object-cover select-none"
+              alt=""
+            />
+          </div>
+        ))}
+      </motion.div>
+    </motion.div>
+  );
+};
 
-      const animateBlock = (
-        outgoing: HTMLElement[],
-        incoming: HTMLElement[],
-        progress: number,
-      ) => {
-        outgoing.forEach((word, idx) => {
-          const prog = getWordProgress(progress, idx, outgoing.length);
-          gsap.set(word, { yPercent: -prog * 105 });
-        });
+export default function FramerScrollSequence() {
+  const containerRef = useRef<HTMLDivElement>(null);
 
-        incoming.forEach((word, idx) => {
-          const prog = getWordProgress(progress, idx, incoming.length);
-          gsap.set(word, { yPercent: (1 - prog) * 105 });
-        });
-      };
+  // Monitor scroll progress of the tall container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
 
-      // 2. The Native GSAP Pinning Sequence
-      ScrollTrigger.create({
-        trigger: containerRef.current, // The tall scrollable container (300vh)
-        pin: pinnedInnerRef.current, // 👈 PIN this inner container inside the viewport!
-        start: "top top",
-        end: "bottom bottom",
-        pinSpacing: true, // 👈 Automatically reserves page height for next sections
-        scrub: true,
-        onUpdate: (self) => {
-          const progress = self.progress;
+  // Top progress bar expansion (maps 0-1 progress to horizontal scale)
+  const progressScaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+  });
 
-          // Update the top progress bar
-          if (progressFillRef.current) {
-            gsap.set(progressFillRef.current, { scaleX: progress });
-          }
+  // Outro opacity helper for the text containers
+  const p1Opacity = useTransform(
+    scrollYProgress,
+    [0, 0.48, 0.52, 1],
+    [1, 1, 0, 0],
+  );
+  const p2Opacity = useTransform(
+    scrollYProgress,
+    [0, 0.48, 0.52, 0.98, 1],
+    [0, 0, 1, 1, 0],
+  );
+  const p3Opacity = useTransform(
+    scrollYProgress,
+    [0, 0.48, 0.52, 1],
+    [0, 0, 0, 1],
+  );
 
-          // Gather paragraph containers to cleanly toggle visibility and avoid overlapping
-          const c1 = document.querySelector(".p-container-0") as HTMLElement;
-          const c2 = document.querySelector(".p-container-1") as HTMLElement;
-          const c3 = document.querySelector(".p-container-2") as HTMLElement;
+  // Math translation helpers for stagger calculations
+  const calculateStaggerRanges = (
+    paragraphIndex: number,
+    totalWords: number,
+  ) => {
+    const totalLength = 1 + OVERLAP_COUNT / totalWords;
+    const scale = 1 / totalLength;
 
-          if (progress <= 0.5) {
-            // First Half: Transition Paragraph 1 -> Paragraph 2
-            if (c1) {
-              c1.style.visibility = "visible";
-              c1.style.opacity = "1";
-            }
-            if (c2) {
-              c2.style.visibility = "visible";
-              c2.style.opacity = "1";
-            }
-            if (c3) {
-              c3.style.visibility = "hidden";
-              c3.style.opacity = "0";
-            }
+    return Array.from({ length: totalWords }).map((_, i) => {
+      const start = (i / totalWords) * scale;
+      const end = start + (OVERLAP_COUNT / totalWords) * scale;
 
-            const phase1Progress = progress / 0.5;
-            animateBlock(b1, b2, phase1Progress);
-          } else {
-            // Second Half: Transition Paragraph 2 -> Paragraph 3
-            if (c1) {
-              c1.style.visibility = "hidden";
-              c1.style.opacity = "0";
-            }
-            if (c2) {
-              c2.style.visibility = "visible";
-              c2.style.opacity = "1";
-            }
-            if (c3) {
-              c3.style.visibility = "visible";
-              c3.style.opacity = "1";
-            }
+      if (paragraphIndex === 0) {
+        // Phase 1 (0 to 0.5): goes from 0% to -105%
+        return {
+          input: [0, start * 0.5, end * 0.5, 1.0],
+          output: [0, 0, -105, -105],
+        };
+      } else if (paragraphIndex === 1) {
+        // Phase 1 (0 to 0.5): comes from 105% to 0%
+        // Phase 2 (0.5 to 1.0): goes from 0% to -105%
+        const phase2Start = 0.5 + start * 0.5;
+        const phase2End = 0.5 + end * 0.5;
 
-            const phase2Progress = (progress - 0.5) / 0.5;
-            animateBlock(b2, b3, phase2Progress);
-          }
-        },
-      });
-    }, containerRef);
+        return {
+          input: [0, start * 0.5, end * 0.5, phase2Start, phase2End, 1.0],
+          output: [105, 105, 0, 0, -105, -105],
+        };
+      } else {
+        // Phase 2 (0.5 to 1.0): comes from 105% to 0%
+        const phase2Start = 0.5 + start * 0.5;
+        const phase2End = 0.5 + end * 0.5;
+        return {
+          input: [0, phase2Start, phase2End, 1.0],
+          output: [105, 105, 0, 0],
+        };
+      }
+    });
+  };
 
-    return () => ctx.revert(); // Safe memory cleanup
-  }, []);
+  const renderFramerParagraph = (text: string, paragraphIndex: number) => {
+    const words = text.split(" ");
+    const ranges = calculateStaggerRanges(paragraphIndex, words.length);
 
-  // Split sentence helper
-  const renderSplitParagraph = (text: string, blockIndex: number) => {
-    return text.split(" ").map((word, wordIndex) => (
-      <span
+    return words.map((word, wordIndex) => (
+      <SplitWord
         key={wordIndex}
-        className="inline-block overflow-hidden pb-[0.05em]"
-      >
-        <span
-          className={`inline-block will-change-transform block-${blockIndex}`}
-        >
-          {word}&nbsp;
-        </span>
-      </span>
+        word={word}
+        progress={scrollYProgress}
+        inputRange={ranges[wordIndex].input}
+        outputRange={ranges[wordIndex].output}
+      />
     ));
   };
 
   return (
     <>
-      {/* Scroll indicator bar at the top */}
+      {/* Dynamic top scroll indicator bar */}
       <div className="fixed top-0 left-0 w-full h-[3px] bg-white/10 z-50 pointer-events-none">
-        <div
-          ref={progressFillRef}
+        <motion.div
+          style={{ scaleX: progressScaleX }}
           className="w-full h-full bg-[#d1b797] origin-left"
-          style={{ transform: "scaleX(0)" }}
         />
       </div>
 
-      {/* Tall outer wrapper determines scroll duration */}
+      {/* Tall container holds scroll depth */}
       <div
         ref={containerRef}
         className="w-full h-[300vh] relative bg-[#0b0b0b]"
       >
-        {/* Pinned element inside stays locked in view */}
-        <div
-          ref={pinnedInnerRef}
-          className="w-full h-screen flex flex-col justify-center items-center overflow-hidden"
-        >
+        {/* Sticky viewport frames the entire experience natively */}
+        <div className="sticky top-0 left-0 w-full h-screen overflow-hidden flex flex-col justify-center items-center">
           <div className="relative w-[85%] max-w-[1200px] h-[40vh] flex justify-center items-center">
-            {/* Paragraph 1 */}
-            <div className="absolute w-full text-center p-container-0">
+            {/* Paragraph 1 Container */}
+            <motion.div
+              style={{ opacity: p1Opacity }}
+              className="absolute w-full text-center"
+            >
               <p className="text-white text-3xl md:text-5xl font-medium leading-relaxed tracking-tight">
-                {renderSplitParagraph(PARAGRAPHS[0], 0)}
+                {renderFramerParagraph(PARAGRAPHS[0], 0)}
               </p>
-            </div>
+            </motion.div>
 
-            {/* Paragraph 2 */}
-            <div className="absolute w-full text-center p-container-1">
+            {/* Paragraph 2 Container */}
+            <motion.div
+              style={{ opacity: p2Opacity }}
+              className="absolute w-full text-center"
+            >
               <p className="text-white text-3xl md:text-5xl font-medium leading-relaxed tracking-tight">
-                {renderSplitParagraph(PARAGRAPHS[1], 1)}
+                {renderFramerParagraph(PARAGRAPHS[1], 1)}
               </p>
-            </div>
+            </motion.div>
 
-            {/* Paragraph 3 */}
-            <div className="absolute w-full text-center p-container-2">
+            {/* Paragraph 3 Container */}
+            <motion.div
+              style={{ opacity: p3Opacity }}
+              className="absolute w-full text-center"
+            >
               <p className="text-white text-3xl md:text-5xl font-medium leading-relaxed tracking-tight">
-                {renderSplitParagraph(PARAGRAPHS[2], 2)}
+                {renderFramerParagraph(PARAGRAPHS[2], 2)}
               </p>
-            </div>
+            </motion.div>
           </div>
+
+          {/* Infinite Velocity-Responsive Marquee */}
+          <ResponsiveMarquee
+            images={MARQUEE_IMAGES}
+            progress={scrollYProgress}
+          />
         </div>
       </div>
     </>

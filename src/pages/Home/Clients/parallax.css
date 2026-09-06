@@ -1,28 +1,28 @@
 .parallax-section-wrapper {
   position: relative;
   width: 100%;
-  height: 200vh; /* Expanded height to allow ample scrolling distance */
-  background-color: #0b0b0b;
+  height: 100vh; /* Expansive scroll runway for beautiful vertical translation */
+  background-color: #121212;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 200vh;
+  overflow: hidden;
 }
 
-/* Central Typography */
+/* Central Typography: absolute-positioned so it stays bound to this section only */
 .parallax-center-header {
-  position: fixed;
-  top: 50%;
+  position: absolute; /* 👈 FIXED: changed from fixed to absolute to lock inside this section only */
+  top: 20%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
   z-index: 10;
-  pointer-events: none; /* Allows cursor to pass through to images behind it */
+  pointer-events: none; /* Mouse moves directly pass through to background items */
 }
 
-.parallax-center-header h2 {
-  font-family: "Plus Jakarta Sans", sans-serif;
-  font-weight: 800;
+.parallax-center-header h1 {
   font-size: clamp(3rem, 8vw, 6rem);
   text-transform: uppercase;
   letter-spacing: -0.02em;
@@ -32,42 +32,43 @@
 
 .parallax-center-header p {
   font-size: clamp(0.8rem, 2vw, 1.2rem);
-  color: #d1b797; /* Your custom gold/sand brand color */
+  color: #d1b797; /* Warm Brand Gold */
   opacity: 0.8;
 }
 
-/* Symmetric Column Grid */
+/* 8-Column Staggered Grid Container */
 .parallax-images-grid {
   position: absolute;
-  top: 0;
+  top: 40%;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 25%;
   display: flex;
   justify-content: space-between;
-  padding: 0 4vw;
+  padding: 0 2.5vw;
 }
 
 .parallax-side {
   display: flex;
-  width: 42%; /* Occupies left and right sections, leaving a gap in the center */
+  width: 43%; /* Allocates symmetric space for 4 columns on left and right, leaving central text clear */
   justify-content: space-between;
 }
 
 .parallax-column {
   display: flex;
   flex-direction: column;
-  gap: 6vh;
-  width: 46%; /* Two columns inside each side block */
+  width: 21%; /* Perfect fractional width for 4 columns (leaves 16% total gap for margin layout) */
   will-change: transform;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Rounded Thumbnail Cards */
+/* Elegant, Rounded Thumbnail Cards */
 .img-wrapper {
   position: relative;
   width: 100%;
-  height: 40vh; /* Fixed height for image frames */
-  border-radius: 12px;
+  height: 100%; /* FIXED: Reduced from 40vh for a tighter, high-end look */
+  border-radius: 8px;
   overflow: hidden;
   background-color: #1a1a1a;
 }
@@ -76,28 +77,29 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  filter: grayscale(100%); /* 👈 FIXED: Active black & white filter */
+  transition:
+    filter 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+/* Beautiful color-fade and scale-in reveal on Hover */
 .img-wrapper:hover img {
-  transform: scale(1.08); /* Gentle hover zoom */
+  filter: grayscale(0%); /* Smoothly brings back full color */
+  transform: scale(1.08); /* Sophisticated subtle zoom */
 }
 
-/* Responsive Mobile Layout */
+/* Responsive Layout */
 @media (max-width: 768px) {
   .parallax-section-wrapper {
-    height: 150vh;
+    height: 140vh;
   }
 
   .parallax-side {
-    width: 45%;
+    width: 44%;
   }
 
   .img-wrapper {
-    height: 25vh;
-  }
-
-  .parallax-column {
-    gap: 3vh;
+    height: 16vh; /* Scale down card sizes beautifully on smaller viewports */
   }
 }

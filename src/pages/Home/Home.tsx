@@ -12,13 +12,14 @@ export default function Home() {
       <div ref={containerRef} className="home">
         <HeroSection containerRef={containerRef} />
 
+        <Clients />
         <section className="studio">
           <h1>STUDIO</h1>
         </section>
       </div>
       <GSAPScrollSequence />
       <WhatWeDo />
-      <Clients />
+
       <div className="outro w-screen h-screen bg-gray-800">test</div>
     </>
   );

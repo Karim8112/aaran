@@ -5,6 +5,7 @@ import GSAPScrollSequence from "./New/New";
 import WhatWeDo from "./WhatWeDo/WhatWeDo";
 import Clients from "./Clients/Clients";
 import AboutUs from "./AboutUs/AboutUs";
+import Chief from "./Chief/Chief";
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -18,8 +19,7 @@ export default function Home() {
       <GSAPScrollSequence />
       <WhatWeDo />
       <AboutUs />
-
-      <div className="outro w-screen h-screen bg-gray-800">test</div>
+      <Chief />
     </>
   );
 }

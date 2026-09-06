@@ -153,7 +153,7 @@ const HeroSection: React.FC<{
       });
 
       ScrollTrigger.create({
-        trigger: ".studio",
+        trigger: ".parallax-section-wrapper",
         start: "top bottom",
         end: "top top",
         scrub: true,

@@ -4,6 +4,7 @@ import "./home.css";
 import GSAPScrollSequence from "./New/New";
 import WhatWeDo from "./WhatWeDo/WhatWeDo";
 import Clients from "./Clients/Clients";
+import AboutUs from "./AboutUs/AboutUs";
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -13,12 +14,10 @@ export default function Home() {
         <HeroSection containerRef={containerRef} />
 
         <Clients />
-        <section className="studio">
-          <h1>STUDIO</h1>
-        </section>
       </div>
       <GSAPScrollSequence />
       <WhatWeDo />
+      <AboutUs />
 
       <div className="outro w-screen h-screen bg-gray-800">test</div>
     </>

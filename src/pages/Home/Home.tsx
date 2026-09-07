@@ -7,6 +7,7 @@ import Clients from "./Clients/Clients";
 import AboutUs from "./AboutUs/AboutUs";
 import Chief from "./Chief/Chief";
 import Steps from "./Steps/Steps";
+import Contact from "./Contact/Contact";
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -14,7 +15,6 @@ export default function Home() {
     <>
       <div ref={containerRef} className="home">
         <HeroSection containerRef={containerRef} />
-
         <Clients />
       </div>
       <GSAPScrollSequence />
@@ -22,7 +22,8 @@ export default function Home() {
       <AboutUs />
       <Chief />
       <Steps />
-      <section className="w-full h-full bg-black"></section>
+      <Contact />
+      {/* <section className="w-full h-full bg-black"></section> */}
     </>
   );
 }

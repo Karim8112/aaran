@@ -5,12 +5,13 @@ import Lenis from "lenis"; // Or '@studio-freight/lenis' depending on your packa
 import "./steps.css";
 // 1. Register GSAP ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
+import { IconSparkle2 } from "@tabler/icons-react";
 
 // 2. Define the TypeScript Interface for your data
 interface ServiceData {
   id: number;
   title: string;
-  description: string;
+  description: string[];
   imageSrc: string;
 }
 
@@ -18,43 +19,41 @@ interface ServiceData {
 const servicesData: ServiceData[] = [
   {
     id: 1,
-    title: "Web Development",
-    description:
-      "Creating high-performance websites with modern animation technologies and responsive designs.",
+    title: "SITE PREPARATION",
+    description: [
+      "Site equipping & locating offices.",
+      "Storage, water supply & electricity.",
+      "Access, exit & emergency provisions.",
+    ],
     imageSrc:
-      "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1503708928676-1cb796a0891e?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: 2,
-    title: "Brand Strategy",
-    description:
-      "Defining unique brand identities and strategic market positioning for modern businesses.",
+    title: "Time plan organization",
+    description: [
+      "Logical scheduling compatible with task chronology.",
+      "Schedule matching specified quantities.",
+    ],
     imageSrc:
-      "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: 3,
-    title: "UI/UX Design",
-    description:
-      "Crafting intuitive and aesthetically pleasing user interfaces that elevate the overall product experience.",
+    title: "Necessary experience",
+    description: [
+      "Securing highly skilled specialized technical expertise.",
+      "Previous experience in similar heritage projects.",
+    ],
     imageSrc:
-      "https://images.unsplash.com/photo-1581291518655-9523c932dedf?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1694521787193-9293daeddbaa?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: 4,
-    title: "Motion Graphics",
-    description:
-      "Bringing designs to life with fluid motion, dynamic transitions, and cinematic storytelling elements.",
+    title: "Tools & equipment",
+    description: ["Determination of number, use, timing & maintenance."],
     imageSrc:
-      "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    id: 5,
-    title: "Digital Marketing",
-    description:
-      "Amplifying brand presence across multiple channels with data-driven creative campaigns.",
-    imageSrc:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1512207736890-6ffed8a84e8d?q=80&w=1179&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
 ];
 
@@ -109,7 +108,7 @@ const Services: React.FC = () => {
             // Animate Image Container Width
             if (imageContainer) {
               gsap.to(imageContainer, {
-                width: "70%",
+                width: "55%",
                 ease: "none",
                 scrollTrigger: {
                   trigger: serviceElement,
@@ -121,16 +120,18 @@ const Services: React.FC = () => {
             }
 
             // Animate Service Element Height
-            gsap.to(serviceElement, {
-              height: "500px",
-              ease: "none",
-              scrollTrigger: {
-                trigger: serviceElement,
-                start: "top 80%",
-                end: "bottom 20%",
-                scrub: true,
-              },
-            });
+            if (window.innerWidth >= 768) {
+              gsap.to(serviceElement, {
+                height: "500px",
+                ease: "none",
+                scrollTrigger: {
+                  trigger: serviceElement,
+                  start: "top 80%",
+                  end: "bottom 20%",
+                  scrub: true,
+                },
+              });
+            }
 
             // Stop observing once triggered
             observer.unobserve(serviceElement);
@@ -157,35 +158,46 @@ const Services: React.FC = () => {
     };
   }, []); // Empty dependency array ensures this runs only once
   return (
-    <div className="StepsContainer" ref={ContainerRef}>
-      <section className="services">
-        {/* Services Header */}
-        <div className="services-header">
-          <div className="header-col"></div>
-          <div className="header-col">
-            <h1>all services</h1>
-          </div>
-        </div>
+    <section className="StepsContainer" ref={ContainerRef}>
+      {/* Services Header */}
 
-        {/* Services List mapped dynamically */}
-        <div className="services-list">
-          {servicesData.map((service) => (
-            <div className="service" key={service.id}>
-              <div className="info-container">
-                <h1>{service.title}</h1>
-                <p>{service.description}</p>
-              </div>
+      <div className="header-col  mx-12.5! py-8!  border-b-2 border-[white]/10">
+        <span className="text-xl! font-sans font-semibold tracking-widest! uppercase text-white">
+          capability statement
+        </span>
+      </div>
 
-              <div className="image-container">
-                <div className="image">
-                  <img src={service.imageSrc} alt={service.title} />
-                </div>
+      {/* Services List mapped dynamically */}
+      <div className="services-list flex flex-col px-25!">
+        {servicesData.map((service) => (
+          <div className="service" key={service.id}>
+            {/* the title */}
+            <div className=" flex flex-col w-full md:w-[40%] gap-5 h-full justify-center">
+              <h1 className="text-[#d1b797] uppercase tracking-wide! text-4xl!">
+                {service.title}
+              </h1>
+              {service.description.map((desc) => {
+                return (
+                  <div className="ps-3! flex gap-4">
+                    <IconSparkle2 stroke={2} color="#d1b79760" />
+                    <p className="text-white text-[15px] sm:text-[16px] md:text-[18px] lg:text-[19px] font-light tracking-wide">
+                      {desc}
+                    </p>
+                    {""}
+                  </div>
+                );
+              })}
+            </div>
+            {/* the image */}
+            <div className="image-container md:block! hidden rounded-sm">
+              <div className="image">
+                <img src={service.imageSrc} alt={service.title} />
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-    </div>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 };
 

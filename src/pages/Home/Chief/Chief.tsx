@@ -78,7 +78,7 @@ export default function StickyImageScroll() {
 
           <img
             src={Basel}
-            className={` w-[25%]! h-[50vh] md:h-[65vh] md:sticky md:top-[17.5vh] absolute inset-0 object-cover transition-all duration-700 ease-in-out `}
+            className={`rounded-sm w-[25%]! h-[50vh] md:h-[65vh] md:sticky md:top-[17.5vh] absolute inset-0 object-cover transition-all duration-700 ease-in-out `}
           />
         </div>
       </main>

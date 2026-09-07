@@ -6,6 +6,7 @@ import WhatWeDo from "./WhatWeDo/WhatWeDo";
 import Clients from "./Clients/Clients";
 import AboutUs from "./AboutUs/AboutUs";
 import Chief from "./Chief/Chief";
+import Steps from "./Steps/Steps";
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -20,6 +21,8 @@ export default function Home() {
       <WhatWeDo />
       <AboutUs />
       <Chief />
+      <Steps />
+      <section className="w-full h-full bg-black"></section>
     </>
   );
 }

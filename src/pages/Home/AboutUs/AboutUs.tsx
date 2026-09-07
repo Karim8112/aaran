@@ -12,16 +12,16 @@ import type { MotionValue } from "framer-motion";
 
 // مصفوفة من 10 صور معمارية فاخرة وفائقة الجودة لتزيين شريط الماركي اللانهائي
 const MARQUEE_IMAGES = [
-  "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
-  "https://images.unsplash.com/photo-1604871000636-074fa5117945?auto=format&fit=crop&w=400&q=80",
-  "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=400&q=80",
-  "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80",
-  "https://images.unsplash.com/photo-1604871000636-074fa5117945?auto=format&fit=crop&w=400&q=80",
-  "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=400&q=80",
-  "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=400&q=80",
-  "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80",
-  "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
-  "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1649366765229-8bc9d1010377?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1737275851502-a30ff4804eba?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1752396787222-30f814c02eeb?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1697199950830-e3857d752678?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1616855202318-07ea40522c6c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1649366765229-8bc9d1010377?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 ];
 
 const PARAGRAPHS = [
@@ -179,7 +179,7 @@ export default function AboutUs() {
   });
 
   return (
-    <div ref={containerRef} className="w-full h-[600vh] relative bg-[#121212]">
+    <div ref={containerRef} className="w-full h-[600vh] relative bg-[#121212] ">
       {/* حاوية الـ Sticky التي تضمن تثبيت الشاشة أثناء إتمام الحركة بالكامل */}
       <div className="sticky top-0 left-0 w-full h-screen flex flex-col justify-center items-center overflow-hidden">
         {/* شبكة توزيع الأعمدة الثلاثية المتباعدة أفقياً (Left, Middle, Right) */}
@@ -222,13 +222,13 @@ export default function AboutUs() {
         >
           <motion.div
             style={{ x: wrapX }}
-            className="inline-flex gap-[2vw] will-change-transform"
+            className="inline-flex gap-[1.5vw] will-change-transform"
           >
             {/* الدورة الأولى للـ 10 صور */}
             {MARQUEE_IMAGES.map((src, i) => (
               <div
                 key={`orig-${i}`}
-                className="w-[170px] h-[110px] rounded-lg overflow-hidden shrink-0 border border-white/5 bg-neutral-900"
+                className="w-[170px] h-[110px] rounded-sm overflow-hidden shrink-0 border border-white/5 bg-neutral-900"
               >
                 <img src={src} className="w-full h-full " alt={`Slider ${i}`} />
               </div>
@@ -238,7 +238,7 @@ export default function AboutUs() {
             {MARQUEE_IMAGES.map((src, i) => (
               <div
                 key={`clone-${i}`}
-                className="w-[170px] h-[110px] rounded-lg overflow-hidden shrink-0 border border-white/5 bg-neutral-900"
+                className="w-[170px] h-[110px] rounded-sm overflow-hidden shrink-0 border border-white/5 bg-neutral-900"
               >
                 <img
                   src={src}

@@ -19,7 +19,7 @@ interface ServiceData {
 const servicesData: ServiceData[] = [
   {
     id: 1,
-    title: "SITE PREPARATION",
+    title: "Site Preparation",
     description: [
       "Site equipping & locating offices.",
       "Storage, water supply & electricity.",
@@ -173,13 +173,13 @@ const Services: React.FC = () => {
           <div className="service" key={service.id}>
             {/* the title */}
             <div className=" flex flex-col w-full md:w-[40%] gap-5 h-full justify-center">
-              <h1 className="text-[#d1b797] uppercase tracking-wide! text-4xl!">
+              <h1 className="text-[#d1b797]  tracking-wider! font-bold! text-4xl!">
                 {service.title}
               </h1>
               {service.description.map((desc) => {
                 return (
-                  <div className="ps-3! flex gap-4">
-                    <IconSparkle2 stroke={2} color="#d1b79760" />
+                  <div className=" flex gap-4">
+                    <IconSparkle2 stroke={2} color="#FFFFFF60" />
                     <p className="text-white text-[15px] sm:text-[16px] md:text-[18px] lg:text-[19px] font-light tracking-wide">
                       {desc}
                     </p>

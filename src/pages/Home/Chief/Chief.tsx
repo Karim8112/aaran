@@ -2,23 +2,71 @@ import { useEffect, useRef } from "react";
 import Basel from "../../../assets/Basel.png";
 import { IconPhone } from "@tabler/icons-react";
 import { IconMail } from "@tabler/icons-react";
+import { motion, type Variants } from "framer-motion";
 // Premium high-quality architectural/design images for the sticky preview
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1],
+      staggerChildren: 0.15,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 5 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.1 },
+  },
+};
+
+const svgVariants: Variants = {
+  hidden: { opacity: 0, y: 25 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+  },
+};
 
 const GridSection = ({
   setSectionRef,
 }: {
   setSectionRef: (index: number, element: HTMLDivElement | null) => void;
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 h-[150vh]">
+    <div
+      ref={containerRef}
+      className="grid grid-cols-1 md:grid-cols-2 h-[150vh] overflow-hidden relative"
+    >
       {/* Cell 1 */}
-      <div
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.1 }}
+        style={{
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+        }}
         ref={(el) => {
           setSectionRef(0, el);
         }}
         className=" p-8 md:border-r  border-white/10 flex flex-col items-start justify-center gap-20"
       >
-        <div className="flex flex-col items-start justify-start gap-4">
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col items-start justify-start gap-4"
+        >
           <p className="text-white text-[15px] sm:text-[16px] md:text-[18px] lg:text-[19px] font-light leading-relaxed tracking-wide">
             Our Structural Engineer & Chief Engineer
           </p>
@@ -28,9 +76,19 @@ const GridSection = ({
           <p className="font-mono text-[18px] text-white tracking-widest">
             20 years of experience
           </p>
-        </div>
+        </motion.div>
 
-        <div className="flex justify-start items-start w-full">
+        <motion.div
+          variants={svgVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.4 }}
+          style={{
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
+          }}
+          className="flex justify-start items-start w-full"
+        >
           <svg
             width="189"
             height="298"
@@ -84,8 +142,8 @@ const GridSection = ({
               </linearGradient>
             </defs>
           </svg>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Cell 2 */}
       <div className=" p-8">{/* Empty cell */}</div>
@@ -94,13 +152,24 @@ const GridSection = ({
       <div className=" p-8 md:border-b-0 md:border-r border-white/10 "> </div>
 
       {/* Cell 4 */}
-      <div
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.1 }}
+        style={{
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+        }}
         className="px-10! flex flex-col items-start justify-start    "
         ref={(el) => {
           setSectionRef(0, el);
         }}
       >
-        <div className="mt-20! flex flex-col gap-4 tracking-wider!">
+        <motion.div
+          variants={itemVariants}
+          className="mt-20! flex flex-col gap-4 tracking-wider!"
+        >
           <div className="flex gap-4">
             <IconPhone stroke={1.5} color="#d1b797" />
             <p className="text-lg text-white ">+963 123987 12312</p>
@@ -116,8 +185,8 @@ const GridSection = ({
           <a className=" bg-white w-full! text-[#0b0b0b] no-underline px-8! py-4! rounded-full font-medium text-[0.95rem] text-center transition-transform duration-300 hover:scale-105">
             Check All Team
           </a>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

@@ -17,7 +17,7 @@ export default function Navbar() {
       <Link to="/projects" className={getClass("/projects")}>
         Projects
       </Link>
-      <Link to="/Team" className={getClass("/team")}>
+      <Link to="/team" className={getClass("/team")}>
         Team
       </Link>
       {/* <Link to="/staff">Staff</Link>

@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import TransitionProvider from "./providers/TransitionProvider.tsx";
 import Home from "./pages/Home/Home.tsx";
 import Projects from "./pages/Projects/Projects.tsx";
+import Team from "./pages/Team/Team.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/team" element={<Team />} />
         </Routes>
       </TransitionProvider>
     </BrowserRouter>

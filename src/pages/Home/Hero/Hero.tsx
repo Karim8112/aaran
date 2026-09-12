@@ -285,7 +285,10 @@ const HeroSection: React.FC<{
             </a>
           </div>
 
-          <div ref={footerRef} className="hero-footer">
+          <div
+            ref={footerRef}
+            className="hero-footer absolute bottom-12 md:right-12 right-1/2 -translate-x-0.5 w-62.5 z-10 "
+          >
             <h5 style={{ lineHeight: "1.5" }}>
               SCROLL DOWN TO CHECK HOME SCREEN
             </h5>

@@ -154,16 +154,6 @@ section {
   white-space: pre-wrap;
 }
 
-/* ذيل صفحة الهيرو */
-.hero-footer {
-  position: absolute;
-  bottom: 3rem;
-  right: 4rem;
-  width: 250px;
-  z-index: 2;
-  will-change: transform, filter, opacity;
-}
-
 .logoOverlay {
   width: 100%;
   height: 100%;
@@ -173,6 +163,10 @@ section {
   top: 0;
   filter: blur(20px);
   z-index: -10;
+}
+
+.hero-footer {
+  will-change: transform, filter, opacity;
 }
 /* الشعار الثابت في الزاوية */
 .logo {

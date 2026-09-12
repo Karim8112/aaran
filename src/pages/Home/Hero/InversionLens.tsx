@@ -38,7 +38,18 @@ const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
     // 1. Loading and Delay States
     const [shouldInit, setShouldInit] = useState(false);
     const [isCanvasReady, setIsCanvasReady] = useState(false);
+    const [isDesktop, setIsDesktop] = useState<boolean>(() =>
+      typeof window !== "undefined" ? window.innerWidth >= 1024 : true,
+    );
 
+    useEffect(() => {
+      const handleResize = () => {
+        setIsDesktop(window.innerWidth >= 1024);
+      };
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      return () => removeEventListener("resize", handleResize);
+    }, []);
     // Sync forwarded ref with our local containerRef
     useEffect(() => {
       if (!ref) return;
@@ -264,6 +275,7 @@ const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
 
     useEffect(() => {
       if (
+        !isDesktop ||
         !shouldInit ||
         isSetupCompleteRef.current ||
         !containerRef.current ||
@@ -302,7 +314,14 @@ const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
         isSetupCompleteRef.current = false;
         setIsCanvasReady(false);
       };
-    }, [shouldInit, source, animate, setupEventListeners, setupScene]);
+    }, [
+      shouldInit,
+      source,
+      animate,
+      setupEventListeners,
+      setupScene,
+      isDesktop,
+    ]);
 
     return (
       <div
@@ -341,7 +360,7 @@ const InversionLens = forwardRef<HTMLDivElement, InversionLensProps>(
             left: 0,
             zIndex: 2, // Sits above canvas initially
             transition: "opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1)",
-            opacity: isCanvasReady ? 0 : 1, // Smoothly fades out when canvas is compiled
+            opacity: isDesktop && isCanvasReady ? 0 : 1, // Smoothly fades out when canvas is compiled
             pointerEvents: "none",
           }}
         />

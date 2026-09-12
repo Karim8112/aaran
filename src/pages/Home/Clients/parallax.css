@@ -50,6 +50,7 @@
 
 .parallax-side {
   display: flex;
+
   width: 43%; /* Allocates symmetric space for 4 columns on left and right, leaving central text clear */
   justify-content: space-between;
 }
@@ -91,15 +92,31 @@
 
 /* Responsive Layout */
 @media (max-width: 768px) {
+  .parallax-images-grid {
+    gap: 16px;
+  }
   .parallax-section-wrapper {
-    height: 140vh;
+    height: 160vh;
   }
 
   .parallax-side {
-    width: 44%;
+    width: 50%;
+    gap: 16px;
+  }
+
+  .parallax-column {
+    width: 100%;
   }
 
   .img-wrapper {
     height: 16vh; /* Scale down card sizes beautifully on smaller viewports */
+  }
+
+  .parallax-side {
+    flex-direction: column;
+  }
+
+  .parallax-images-grid {
+    padding: 0 16px;
   }
 }

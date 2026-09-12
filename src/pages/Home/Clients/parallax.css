@@ -77,7 +77,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(100%); /* 👈 FIXED: Active black & white filter */
+  filter: brightness(80%); /* 👈 FIXED: Active black & white filter */
   transition:
     filter 0.6s cubic-bezier(0.25, 1, 0.5, 1),
     transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
@@ -85,7 +85,7 @@
 
 /* Beautiful color-fade and scale-in reveal on Hover */
 .img-wrapper:hover img {
-  filter: grayscale(0%); /* Smoothly brings back full color */
+  filter: brightness(100%); /* Smoothly brings back full color */
   transform: scale(1.08); /* Sophisticated subtle zoom */
 }
 

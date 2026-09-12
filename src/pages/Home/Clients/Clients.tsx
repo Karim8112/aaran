@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -8,20 +8,28 @@ import "./parallax.css";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
+import iamge1 from "../../../assets/gopa.png";
+import iamge2 from "../../../assets/icrc.png";
+import iamge3 from "../../../assets/unicef.png";
+import iamge4 from "../../../assets/khan.png";
+import iamge5 from "../../../assets/nrc.png";
+import iamge6 from "../../../assets/pui.png";
+import iamge7 from "../../../assets/sif.png";
+import iamge8 from "../../../assets/undp.png";
 
 // Define the 8 images (one for each of the 8 staggered columns)
 const IMAGES = [
   // Left Side Columns (1 to 4)
-  "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1604871000636-074fa5117945?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=600&q=80",
+  iamge1,
+  iamge2,
+  iamge3,
+  iamge4,
 
   // Right Side Columns (5 to 8)
-  "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80",
+  iamge5,
+  iamge6,
+  iamge7,
+  iamge8,
 ];
 
 export default function Clients() {

@@ -3,6 +3,7 @@ import Basel from "../../../assets/Basel.png";
 import { IconPhone } from "@tabler/icons-react";
 import { IconMail } from "@tabler/icons-react";
 import { motion, type Variants } from "framer-motion";
+import { Link } from "react-router-dom";
 // Premium high-quality architectural/design images for the sticky preview
 
 const containerVariants: Variants = {
@@ -172,19 +173,22 @@ const GridSection = ({
         >
           <div className="flex gap-4">
             <IconPhone stroke={1.5} color="#d1b797" />
-            <p className="text-lg text-white ">+963 123987 12312</p>
+            <p className="text-lg text-white ">+963 933454030</p>
           </div>
           <div className="flex gap-4">
             <IconPhone stroke={1.5} color="#d1b797" />
-            <p className="text-lg text-white ">+963 123987 12312</p>
+            <p className="text-lg text-white ">002 0120 0020582</p>
           </div>{" "}
           <div className="flex gap-4">
             <IconMail stroke={1.5} color="#d1b797" />
             <p className="text-lg text-white ">+963 123987 12312</p>
           </div>
-          <a className=" bg-white w-full! text-[#0b0b0b] no-underline px-8! py-4! rounded-full font-medium text-[0.95rem] text-center transition-transform duration-300 hover:scale-105">
+          <Link
+            to="/team"
+            className=" bg-white w-full! text-[#0b0b0b] no-underline px-8! py-4! rounded-full font-medium text-[0.95rem] text-center transition-transform duration-300 hover:scale-105"
+          >
             Check All Team
-          </a>
+          </Link>
         </motion.div>
       </motion.div>
     </div>

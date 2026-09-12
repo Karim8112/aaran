@@ -34,6 +34,8 @@ const SignatureSection: React.FC = () => {
 
   return (
     <section
+      id="ContactUsSection"
+      className="ContactUsSection"
       ref={sectionRef}
       style={{
         width: "100vw",
@@ -181,7 +183,7 @@ const SignatureSection: React.FC = () => {
                 textShadow: "0px 2.85px 13.39px rgba(0, 0, 0, 0.30)",
               }}
             >
-              Eng. Basel Al-Zaher
+              Eng. Bassel Al-Zaher
             </motion.div>
 
             <motion.div
@@ -195,7 +197,7 @@ const SignatureSection: React.FC = () => {
                 textShadow: "0px 2.85px 13.39px rgba(0, 0, 0, 0.60)",
               }}
             >
-              Civil Engineer, +963 9562 156 88
+              Civil Engineer, +963 933454030
             </motion.div>
 
             <motion.div
@@ -220,7 +222,7 @@ const SignatureSection: React.FC = () => {
               >
                 Address 1 :
               </span>{" "}
-              Syria, Aleppo, Al-Mogambo nighborhood, +963956215688
+              Syria, Aleppo, Al-Mogambo nighborhood, +963 933454030
             </motion.div>
 
             <motion.div

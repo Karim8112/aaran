@@ -181,7 +181,7 @@ const SignatureSection: React.FC = () => {
                 textShadow: "0px 2.85px 13.39px rgba(0, 0, 0, 0.30)",
               }}
             >
-              Eng. Basel Al-Zaher
+              Eng. Bassel Al-Zaher
             </motion.div>
 
             <motion.div
@@ -220,7 +220,7 @@ const SignatureSection: React.FC = () => {
               >
                 Address 1 :
               </span>{" "}
-              Syria, Aleppo, Al-Mogambo nighborhood, +963956215688
+              Syria, Aleppo, Al-Mogambo nighborhood, +963 933454030
             </motion.div>
 
             <motion.div
@@ -247,7 +247,6 @@ const SignatureSection: React.FC = () => {
               </span>{" "}
               Egypt, Cairo, Al-Obbur city, 00201200020582
             </motion.div>
-
             <motion.div
               variants={itemVariants}
               style={{

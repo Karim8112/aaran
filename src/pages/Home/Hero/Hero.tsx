@@ -280,8 +280,8 @@ const HeroSection: React.FC<{
                 </span>
               ))}
             </h3>
-            <a ref={buttonRef} href="#" className="cta-button">
-              Enter Studio
+            <a ref={buttonRef} href="#ContactUsSection" className="cta-button">
+              Contact Us
             </a>
           </div>
 

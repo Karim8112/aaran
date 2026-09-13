@@ -88,7 +88,7 @@ const GridSection = ({
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)",
           }}
-          className="flex justify-start items-start w-full"
+          className="aaran-logo flex justify-start items-start w-full"
         >
           <svg
             width="189"
@@ -235,7 +235,7 @@ export default function StickyImageScroll() {
   return (
     <div className=" w-full min-h-[160vh]  text-white selection:bg-[#d1b797] selection:text-black py-[20vh]! px-[10vw]!">
       {/* Main Sticky Section Container */}
-      <main className="w-full max-w-7xl mx-auto px-6 md:px-12 py-20">
+      <main className="w-full max-w-7xl mx-auto px-6 md:px-12 py-20 hidden md:block">
         {/* flex row and flex col when mobile  */}
         <div className="flex flex-col-reverse md:flex-row gap-12 md:gap-12 items-stretch justify-between relative">
           {/* Left SIDE: Scrolling Text Column (Occupies 7 columns on desktop) */}

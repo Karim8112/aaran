@@ -233,7 +233,7 @@ export default function StickyImageScroll() {
   }, []);
 
   return (
-    <div className=" w-full min-h-[160vh]  text-white selection:bg-[#d1b797] selection:text-black py-[20vh]! px-[10vw]!">
+    <div className=" w-full md:min-h-[160vh] min-h-[100vh]  text-white selection:bg-[#d1b797] selection:text-black py-[20vh]! px-[10vw]!">
       {/* Main Sticky Section Container */}
       <main className="w-full max-w-7xl mx-auto px-6 md:px-12 py-20 hidden md:block">
         {/* flex row and flex col when mobile  */}
@@ -258,7 +258,7 @@ export default function StickyImageScroll() {
 
       <main className="flex flex-col md:hidden w-full px-6 py-16 gap-10 border-b border-white/10">
         {/* A. Image ("Basel") comes first */}
-        <div className="w-full h-[360px] sm:h-[420px] rounded-xl overflow-hidden border border-white/10 bg-white/5">
+        <div className="w-full h-[400x]  rounded-xl overflow-hidden border border-white/10 bg-white/5">
           <img
             src={Basel}
             alt="Eng. Bassel Al-Zaher"
@@ -267,45 +267,59 @@ export default function StickyImageScroll() {
         </div>
 
         {/* B. Cell 1 content (Omitting the AARAN logo SVG) */}
-        <div className="flex flex-col items-start gap-4">
-          <p className="text-white/80 text-[15px] sm:text-[16px] font-light leading-relaxed tracking-wide">
+        <motion.div
+          variants={itemVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.4 }}
+          className="flex flex-col items-start gap-4"
+        >
+          <p className="text-white/80 text-[16px] font-medium leading-relaxed tracking-widest">
             Our Structural Engineer & Chief Engineer
           </p>
-          <h1 className="text-[#d1b797] tracking-wider! font-bold! text-3xl sm:text-4xl">
+          <h1 className="text-[#d1b797] tracking-wider! font-bold! text-[26px]! ">
             Eng. Bassel Al-Zaher
           </h1>
-          <p className="font-mono text-[16px] sm:text-[18px] text-white tracking-widest">
+          <p className="text-[18px] text-white tracking-widest">
             20 years of experience
           </p>
-        </div>
+        </motion.div>
 
         {/* C. Cell 4 content (Contact Details & Button) */}
-        <div className="flex flex-col justify-start items-start gap-8 pt-6 border-t border-white/10">
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-3 text-white/90">
-              <IconPhone size={18} color="#d1b797" className="shrink-0" />
-              <span className="font-mono text-sm sm:text-base tracking-wider">
-                +963 123987 12312
-              </span>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.1 }}
+          className="flex flex-col justify-start items-start gap-8 pt-6 border-t border-white/10"
+        >
+          <motion.div
+            variants={itemVariants}
+            initial="hidden"
+            whileInView="visible"
+            className="flex flex-col gap-4"
+          >
+            <div className="flex items-center gap-3 text-white">
+              <IconPhone color="#d1b797" className="shrink-0" />
+              <span className="text-lg">+963 123987 12312</span>
             </div>
-            <div className="flex items-center gap-3 text-white/90">
-              <IconPhone size={18} color="#d1b797" className="shrink-0" />
-              <span className="font-mono text-sm sm:text-base tracking-wider">
-                +963 123987 12312
-              </span>
+            <div className="flex items-center gap-3 text-white">
+              <IconPhone color="#d1b797" className="shrink-0" />
+              <span className="text-lg">+963 123987 12312</span>
             </div>
-            <div className="flex items-center gap-3 text-white/90">
-              <IconMail size={18} color="#d1b797" className="shrink-0" />
-              <span className="font-mono text-sm sm:text-base tracking-wider">
-                b.alzaher@aaran-co.com
-              </span>
+            <div className="flex items-center gap-3 text-white">
+              <IconMail color="#d1b797" className="shrink-0" />
+              <span className="text-lg">b.alzaher@aaran-co.com</span>
             </div>
-          </div>
+          </motion.div>
 
-          <button className="w-full sm:w-auto px-6 py-3 border border-[#d1b797] text-[#d1b797] hover:bg-[#d1b797] hover:text-black transition-colors text-sm uppercase tracking-wider font-semibold">
+          <Link
+            to="/team"
+            className=" bg-white w-full! text-[#0b0b0b] no-underline px-8! py-4! rounded-full font-medium text-[0.95rem] text-center transition-transform duration-300 hover:scale-105"
+          >
             Check All Team
-          </button>
-        </div>
+          </Link>
+        </motion.div>
       </main>
     </div>
   );

@@ -51,7 +51,7 @@ const SignatureSection: React.FC = () => {
     >
       <div className="flex flex-col gap-4 items-start">
         <div className="flex gap-4 w-full items-center justify-start">
-          <span className="font-sans font-semibold w-48 text-[16px] uppercase tracking-[0.25em] text-white/9003">
+          <span className="font-sans ps-[24px]! font-semibold md:w-48 w-72 text-[16px] uppercase tracking-[0.25em] text-white/9003 ">
             Contact US
           </span>
           <hr className="h-[0.5] w-full bg-transparent! border-white/35 " />
@@ -59,29 +59,29 @@ const SignatureSection: React.FC = () => {
 
         <motion.div
           variants={containerVariants}
+          className="flex flex-col gap-[12px]! md:flex-row px-[20px]! py-[30px]! md:px-[60px]! md:py-[50px]! bg-transparent! md:bg-white/[0.07] md:border md:border-white/[0.1]!"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.4 }}
           style={{
             width: "100%",
             maxWidth: "950px",
-            padding: "50px 60px",
-            display: "flex",
-            flexDirection: "row",
+
             alignItems: "center",
             fontFamily: "'Inter', Arial, sans-serif",
-            background: "rgba(255, 255, 255, 0.03)",
+
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)",
-            border: "1px solid rgba(255, 255, 255, 0.08)",
+
             borderRadius: "24px",
             boxShadow: "0 10px 40px rgba(0, 0, 0, 0.5)",
           }}
         >
           <motion.div
             variants={itemVariants}
+            className="md:pe-10!"
             style={{
-              padding: "0px 40px 0px 0",
+              height: "100px",
               width: "250px",
               flexShrink: 0,
               display: "flex",
@@ -141,11 +141,12 @@ const SignatureSection: React.FC = () => {
           </motion.div>
 
           <motion.div
+            className="hidden! md:flex!"
             variants={itemVariants}
             style={{
               width: "1px",
               padding: "30px 0px",
-              display: "flex",
+
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
@@ -169,9 +170,10 @@ const SignatureSection: React.FC = () => {
           >
             <motion.div
               variants={itemVariants}
+              className="md:text-[46px] text-[32px]"
               style={{
                 fontFamily: "'Inter', Arial, Helvetica, sans-serif",
-                fontSize: "46px",
+
                 color: "#D4B273",
                 background:
                   "linear-gradient(to left, #fff2e1 0%, #d8a976 100%)",

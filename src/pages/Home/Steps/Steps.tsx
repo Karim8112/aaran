@@ -161,19 +161,19 @@ const Services: React.FC = () => {
     <section className="StepsContainer" ref={ContainerRef}>
       {/* Services Header */}
 
-      <div className="header-col  mx-12.5! py-8!  border-b-2 border-[white]/10">
-        <span className="text-xl! font-sans font-semibold tracking-widest! uppercase text-white">
+      <div className="header-col mx-6.5! md:mx-12.5! py-8!  border-b-2 border-[white]/10">
+        <span className="md:text-xl! font-sans font-semibold text-lg! tracking-widest! uppercase text-white">
           capability statement
         </span>
       </div>
 
       {/* Services List mapped dynamically */}
-      <div className="services-list flex flex-col px-25!">
+      <div className="services-list flex flex-col md:px-25! px-12!">
         {servicesData.map((service) => (
-          <div className="service" key={service.id}>
+          <div className="service  md:py-10!" key={service.id}>
             {/* the title */}
-            <div className=" flex flex-col w-full md:w-[40%] gap-5 h-full justify-center">
-              <h1 className="text-[#d1b797]  tracking-wider! font-bold! text-4xl!">
+            <div className=" flex flex-col w-full md:w-[40%] gap-5 md:h-full justify-center">
+              <h1 className="text-[#d1b797]  tracking-wider! font-bold! text-2xl! md:text-4xl!">
                 {service.title}
               </h1>
               {service.description.map((desc) => {

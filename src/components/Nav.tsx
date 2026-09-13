@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -12,21 +12,18 @@ export default function Navbar() {
     location.pathname === path ? activeClass : " hover:text-white";
 
   // Automatically close mobile menu on route change
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location.pathname]);
 
   // Lock background scroll when mobile menu is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.body.style.overflow = "hidden";
-    };
-  }, [isOpen]);
+  // useEffect(() => {
+  //   if (isOpen) {
+  //     document.body.style.overflow = "hidden";
+  //   } else {
+  //     document.body.style.overflow = "hidden";
+  //   }
+  //   return () => {
+  //     document.body.style.overflow = "hidden";
+  //   };
+  // }, [isOpen]);
 
   const navLinks = [
     { path: "/home", label: "Home" },

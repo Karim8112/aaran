@@ -181,7 +181,7 @@ export default function AboutUs() {
   return (
     <div ref={containerRef} className="w-full h-[600vh] relative bg-[#121212] ">
       {/* حاوية الـ Sticky التي تضمن تثبيت الشاشة أثناء إتمام الحركة بالكامل */}
-      <div className="sticky top-0 left-0 w-full h-screen flex flex-col justify-center items-center overflow-hidden">
+      <div className="sticky top-0 left-0 w-full h-[130vh] md:h-screen flex flex-col justify-center items-center overflow-hidden">
         {/* شبكة توزيع الأعمدة الثلاثية المتباعدة أفقياً (Left, Middle, Right) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-14 lg:gap-20 w-[90%] max-w-[1350px] px-6 md:px-10 items-start -translate-y-[8vh]">
           {/* العمود الأول (أقصى اليسار) */}

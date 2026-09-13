@@ -255,6 +255,58 @@ export default function StickyImageScroll() {
           />
         </div>
       </main>
+
+      <main className="flex flex-col md:hidden w-full px-6 py-16 gap-10 border-b border-white/10">
+        {/* A. Image ("Basel") comes first */}
+        <div className="w-full h-[360px] sm:h-[420px] rounded-xl overflow-hidden border border-white/10 bg-white/5">
+          <img
+            src={Basel}
+            alt="Eng. Bassel Al-Zaher"
+            className="w-full h-full object-cover object-top"
+          />
+        </div>
+
+        {/* B. Cell 1 content (Omitting the AARAN logo SVG) */}
+        <div className="flex flex-col items-start gap-4">
+          <p className="text-white/80 text-[15px] sm:text-[16px] font-light leading-relaxed tracking-wide">
+            Our Structural Engineer & Chief Engineer
+          </p>
+          <h1 className="text-[#d1b797] tracking-wider! font-bold! text-3xl sm:text-4xl">
+            Eng. Bassel Al-Zaher
+          </h1>
+          <p className="font-mono text-[16px] sm:text-[18px] text-white tracking-widest">
+            20 years of experience
+          </p>
+        </div>
+
+        {/* C. Cell 4 content (Contact Details & Button) */}
+        <div className="flex flex-col justify-start items-start gap-8 pt-6 border-t border-white/10">
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-3 text-white/90">
+              <IconPhone size={18} color="#d1b797" className="shrink-0" />
+              <span className="font-mono text-sm sm:text-base tracking-wider">
+                +963 123987 12312
+              </span>
+            </div>
+            <div className="flex items-center gap-3 text-white/90">
+              <IconPhone size={18} color="#d1b797" className="shrink-0" />
+              <span className="font-mono text-sm sm:text-base tracking-wider">
+                +963 123987 12312
+              </span>
+            </div>
+            <div className="flex items-center gap-3 text-white/90">
+              <IconMail size={18} color="#d1b797" className="shrink-0" />
+              <span className="font-mono text-sm sm:text-base tracking-wider">
+                b.alzaher@aaran-co.com
+              </span>
+            </div>
+          </div>
+
+          <button className="w-full sm:w-auto px-6 py-3 border border-[#d1b797] text-[#d1b797] hover:bg-[#d1b797] hover:text-black transition-colors text-sm uppercase tracking-wider font-semibold">
+            Check All Team
+          </button>
+        </div>
+      </main>
     </div>
   );
 }

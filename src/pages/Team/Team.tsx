@@ -1,8 +1,8 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 // ==========================================
-// 1. TYPES & DATA CONFIGURATION
+// 1. TYPES & CONFIGURATION
 // ==========================================
 interface SlideData {
   title: string;
@@ -12,160 +12,163 @@ interface SlideData {
   image: string;
 }
 
-interface SlideElements {
+interface SlideObject {
   slideEl: HTMLDivElement;
   imgEl: HTMLImageElement;
   copyBlock: HTMLDivElement;
 }
 
+interface ColumnData {
+  element: HTMLDivElement | null;
+  visibleSlides: Map<number, SlideObject>;
+}
+
 const SETTINGS = {
-  scrollSensitivity: 1500, // Scroll distance required per slide
-  smoothness: 0.08, // Weighted easing factor
-  buffer: 2, // Number of off-screen slides maintained
-  imageShift: 120, // Parallax image drift distance
+  scrollSensitivity: 1000, // Balanced sensitivity for trackpad/mouse
+  smoothness: 0.08, // Smooth interpolation factor
+  buffer: 2, // Slide buffer window
+  imageShift: 120, // Parallax shift distance
   copyShift: 80, // Text drift distance
-  titleHold: 0.15, // Duration title holds still in center
-  imageZoom: 1.18, // Image overscale factor for parallax
-  revealOverlap: 0.5, // Prevents seam gaps during clip-path wipes
+  titleHold: 0.15, // Stationary duration in center
+  imageZoom: 1.18, // Image overscale factor
+  revealOverlap: 0.5, // Seamless clip-path overlap
 };
 
-const SLIDES: SlideData[] = [
+const TEAM_SLIDES: SlideData[] = [
   {
-    title: "Glitch & Grit",
-    tags: "Web Design / Interactive",
-    color: "#ff3366",
-    link: "#",
-    image:
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    title: "Monolithic Void",
-    tags: "Architecture / Brutalism",
+    title: "Eng. Bassel Al-Zaher",
+    tags: "Chief Engineer / Structural Specialist",
     color: "#d1b797",
     link: "#",
     image:
-      "https://images.unsplash.com/photo-1604871000636-074fa5117945?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80",
   },
   {
-    title: "Chromatic Drift",
-    tags: "3D Motion / Concept",
-    color: "#00f0ff",
+    title: "Arch. Layla Masri",
+    tags: "Senior Interior Designer & Art Director",
+    color: "#ffffff",
     link: "#",
     image:
-      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80",
   },
   {
-    title: "Lumina Studio",
-    tags: "Brand Identity / Strategy",
-    color: "#e2ff00",
+    title: "Eng. Tareq Bilal",
+    tags: "Project Management Director",
+    color: "#d1b797",
     link: "#",
     image:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    title: "Arch. Roaa Baba",
+    tags: "Architectural Lead & Site Supervisor",
+    color: "#ffffff",
+    link: "#",
+    image:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=1200&q=80",
   },
 ];
 
 // ==========================================
-// 2. MATH & SHAPE HELPER FUNCTIONS
+// 2. HELPER CALCULATIONS
 // ==========================================
 
-// Positive Modulo Wrapping for Infinite Looping
-// function getWrappedIndex(index: number, length: number): number {
-//   return ((index % length) + length) % length;
-// }
-
-// Clip Path Polygon Generator for Split Reveals
+// Correct 4-point rectangle polygon clip-paths (Fixes diagonal triangular cut bug)
 function getRevealShape(revealAmount: number, isLeftColumn: boolean): string {
   const clamped = Math.max(0, Math.min(1, revealAmount));
   const percentage = clamped * (100 + SETTINGS.revealOverlap);
 
   if (isLeftColumn) {
-    // Opens from bottom edge upward
+    // Reveal from bottom upward
     return `polygon(0% ${100 - percentage}%, 100% ${100 - percentage}%, 100% 100%, 0% 100%)`;
   } else {
-    // Opens from top edge downward
+    // Reveal from top downward (Full rectangle bounds)
     return `polygon(0% 0%, 100% 0%, 100% ${percentage}%, 0% ${percentage}%)`;
   }
 }
 
-// Center Snap and Smoothstep Curve for Title Motion
+// Center snap & smoothstep curve
 function getTitlePosition(progress: number): number {
   const distFromCenter = Math.abs(progress - 1);
+
   if (distFromCenter < SETTINGS.titleHold) {
-    return 0; // Holds stationary in center
+    return 0;
   }
+
   const excess =
     (distFromCenter - SETTINGS.titleHold) / (1 - SETTINGS.titleHold);
   const clamped = Math.max(0, Math.min(1, excess));
   const smooth = clamped * clamped * (3 - 2 * clamped);
+
   return progress < 1 ? -smooth : smooth;
 }
 
 // ==========================================
-// 3. MAIN REACT COMPONENT
+// 3. MAIN COMPONENT
 // ==========================================
-export default function SplitSlider() {
+export default function Team() {
   const leftColRef = useRef<HTMLDivElement | null>(null);
   const rightColRef = useRef<HTMLDivElement | null>(null);
 
+  // useRef persists animation targets across React re-renders
+  const scrollPosition = useRef<number>(1);
+  const scrollTarget = useRef<number>(1);
+  const lastTouchY = useRef<number>(0);
+  const animationFrameId = useRef<number>(0);
+
+  const columns = useRef<{ left: ColumnData; right: ColumnData }>({
+    left: { element: null, visibleSlides: new Map() },
+    right: { element: null, visibleSlides: new Map() },
+  });
+
   useEffect(() => {
-    let scrollPosition = 1;
-    let scrollTarget = 1;
-    let lastTouchY = 0;
-    let animationFrameId: number;
+    columns.current.left.element = leftColRef.current;
+    columns.current.right.element = rightColRef.current;
 
-    const visibleSlidesLeft = new Map<number, SlideElements>();
-    const visibleSlidesRight = new Map<number, SlideElements>();
+    const createSlideNode = (index: number, columnKey: "left" | "right") => {
+      // Bounded direct array lookup (1-based index)
+      const data = TEAM_SLIDES[index - 1];
+      if (!data) return;
 
-    const createSlide = (index: number, columnKey: "left" | "right") => {
-      const parentEl =
-        columnKey === "left" ? leftColRef.current : rightColRef.current;
-      if (!parentEl) return;
+      const columnData = columns.current[columnKey];
+      if (!columnData.element) return;
 
-      const slideMap =
-        columnKey === "left" ? visibleSlidesLeft : visibleSlidesRight;
-      const data = SLIDES[index - 1];
-      const isLeft = columnKey === "left";
-
-      // Outer Slide Container
       const slideEl = document.createElement("div");
       slideEl.className =
-        "absolute top-0 left-0 w-full h-full overflow-hidden [will-change:clip-path]";
+        "absolute inset-0 w-full h-full overflow-hidden [will-change:clip-path]";
       slideEl.style.zIndex = index.toString();
 
-      // Background Image
       const imgEl = document.createElement("img");
       imgEl.className =
-        "absolute top-0 left-0 w-full h-full object-cover [will-change:transform]";
+        "absolute inset-0 w-full h-full object-cover [will-change:transform]";
       imgEl.src = data.image;
       imgEl.alt = data.title;
 
-      // Dark Overlay
       const overlayEl = document.createElement("div");
       overlayEl.className =
-        "absolute top-0 left-0 w-full h-full bg-black/35 pointer-events-none";
+        "absolute inset-0 w-full h-full bg-black/40 pointer-events-none";
 
-      // Full Viewport Text Copy Block
       const copyBlock = document.createElement("div");
-      copyBlock.className = `absolute top-1/2 -translate-y-1/2 w-[100vw] flex flex-col items-center justify-center text-white pointer-events-none [will-change:transform] ${
-        isLeft ? "left-0" : "right-0"
+      copyBlock.className = `absolute top-1/2 -translate-y-1/2 w-screen flex flex-col items-center justify-center text-white pointer-events-none [will-change:transform] ${
+        columnKey === "left" ? "left-0" : "right-0"
       }`;
 
       const tagsEl = document.createElement("div");
       tagsEl.className =
-        "text-xs sm:text-sm font-semibold uppercase tracking-[0.15em] mb-3 opacity-80";
+        "text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-[#d1b797] mb-3";
       tagsEl.textContent = data.tags;
 
       const titleEl = document.createElement("h1");
       titleEl.className =
-        "text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight text-center leading-none";
+        "text-3xl sm:text-5xl md:text-6xl font-extrabold uppercase tracking-tight text-center leading-tight";
       titleEl.style.color = data.color;
       titleEl.textContent = data.title;
 
       const linkEl = document.createElement("a");
       linkEl.className =
-        "text-xs sm:text-sm font-semibold mt-4 text-white underline underline-offset-4 pointer-events-auto hover:opacity-70 transition-opacity";
+        "text-xs sm:text-sm font-semibold mt-4 text-white border-b border-white/60 hover:border-white pointer-events-auto transition-opacity duration-300 hover:opacity-80";
       linkEl.href = data.link;
-      linkEl.textContent = "Explore Project";
+      linkEl.textContent = "View Profile";
 
       copyBlock.appendChild(tagsEl);
       copyBlock.appendChild(titleEl);
@@ -175,116 +178,137 @@ export default function SplitSlider() {
       slideEl.appendChild(overlayEl);
       slideEl.appendChild(copyBlock);
 
-      parentEl.appendChild(slideEl);
-      slideMap.set(index, { slideEl, imgEl, copyBlock });
+      columnData.element.appendChild(slideEl);
+      columnData.visibleSlides.set(index, { slideEl, imgEl, copyBlock });
     };
 
     const updateSlider = () => {
+      // Bounded first and last indices (Bounded between 1 and TEAM_SLIDES.length)
       const firstIndex = Math.max(
         1,
-        Math.floor(scrollPosition) - SETTINGS.buffer,
+        Math.floor(scrollPosition.current) - SETTINGS.buffer,
       );
       const lastIndex = Math.min(
-        SLIDES.length,
-        Math.ceil(scrollPosition) + SETTINGS.buffer,
+        TEAM_SLIDES.length,
+        Math.ceil(scrollPosition.current) + SETTINGS.buffer,
       );
 
-      (["left", "right"] as const).forEach((columnKey) => {
-        const isLeft = columnKey === "left";
-        const slideMap = isLeft ? visibleSlidesLeft : visibleSlidesRight;
+      (Object.keys(columns.current) as Array<"left" | "right">).forEach(
+        (columnKey) => {
+          const isLeft = columnKey === "left";
+          const columnData = columns.current[columnKey];
 
-        // Pass 1: Create slides in range
-        for (let i = firstIndex; i <= lastIndex; i++) {
-          if (!slideMap.has(i)) {
-            createSlide(i, columnKey);
+          // 1. Instantiate missing bounded slides
+          for (let i = firstIndex; i <= lastIndex; i++) {
+            if (!columnData.visibleSlides.has(i)) {
+              createSlideNode(i, columnKey);
+            }
           }
-        }
 
-        // Pass 2: Animate or remove out-of-range slides
-        slideMap.forEach((slideObj, index) => {
-          if (index < firstIndex || index > lastIndex) {
-            slideObj.slideEl.remove();
-            slideMap.delete(index);
-          } else {
-            const revealAmount = scrollPosition - (index - 1);
-            const progress = Math.max(0, Math.min(2, revealAmount));
+          // 2. Animate and prune slides
+          columnData.visibleSlides.forEach((slideObj, index) => {
+            if (index < firstIndex || index > lastIndex) {
+              slideObj.slideEl.remove();
+              columnData.visibleSlides.delete(index);
+            } else {
+              const revealAmount = scrollPosition.current - (index - 1);
+              const progress = Math.max(0, Math.min(2, revealAmount));
 
-            slideObj.slideEl.style.clipPath = getRevealShape(
-              revealAmount,
-              isLeft,
-            );
+              // Correct non-triangular clip-path wipe
+              slideObj.slideEl.style.clipPath = getRevealShape(
+                revealAmount,
+                isLeft,
+              );
 
-            const driftDir = isLeft ? 1 : -1;
-            const imgY = (1 - progress) * SETTINGS.imageShift * driftDir;
-            gsap.set(slideObj.imgEl, {
-              y: imgY,
-              scale: SETTINGS.imageZoom,
-            });
+              // Parallax image drift
+              const driftDir = isLeft ? 1 : -1;
+              const imgY = (1 - progress) * SETTINGS.imageShift * driftDir;
+              gsap.set(slideObj.imgEl, {
+                y: imgY,
+                scale: SETTINGS.imageZoom,
+              });
 
-            const copyY = getTitlePosition(progress) * SETTINGS.copyShift;
-            gsap.set(slideObj.copyBlock, {
-              y: copyY,
-            });
-          }
-        });
-      });
+              // Title position snapping
+              const copyY = getTitlePosition(progress) * SETTINGS.copyShift;
+              gsap.set(slideObj.copyBlock, {
+                y: copyY,
+              });
+            }
+          });
+        },
+      );
     };
 
-    const animateSlider = () => {
-      scrollPosition += (scrollTarget - scrollPosition) * SETTINGS.smoothness;
+    const renderLoop = () => {
+      // Linear interpolation toward scrollTarget
+      scrollPosition.current +=
+        (scrollTarget.current - scrollPosition.current) * SETTINGS.smoothness;
+
       updateSlider();
-      animationFrameId = requestAnimationFrame(animateSlider);
+      animationFrameId.current = requestAnimationFrame(renderLoop);
     };
 
+    // Clamped Wheel Event Handler (Prevents trackpad momentum jumping)
     const handleWheel = (e: WheelEvent) => {
-      // scrollTarget = e.deltaY / SETTINGS.scrollSensitivity;
-      scrollTarget = Math.max(
+      const clampedDelta = Math.max(-80, Math.min(80, e.deltaY));
+      const step = clampedDelta / SETTINGS.scrollSensitivity;
+
+      scrollTarget.current = Math.max(
         1,
-        Math.min(SLIDES.length, scrollTarget + e.deltaY),
+        Math.min(TEAM_SLIDES.length, scrollTarget.current + step),
       );
     };
 
+    // Clamped Touch Event Handler
     const handleTouchStart = (e: TouchEvent) => {
-      lastTouchY = e.touches[0].clientY;
+      lastTouchY.current = e.touches[0].clientY;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       const currentY = e.touches[0].clientY;
-      const deltaY = lastTouchY - currentY;
-      lastTouchY = currentY;
-      scrollTarget += (deltaY * 2.5) / SETTINGS.scrollSensitivity;
+      const deltaY = lastTouchY.current - currentY;
+      lastTouchY.current = currentY;
+
+      const clampedDelta = Math.max(-60, Math.min(60, deltaY));
+      const step = (clampedDelta * 1.5) / SETTINGS.scrollSensitivity;
+
+      scrollTarget.current = Math.max(
+        1,
+        Math.min(TEAM_SLIDES.length, scrollTarget.current + step),
+      );
     };
 
     window.addEventListener("wheel", handleWheel, { passive: true });
     window.addEventListener("touchstart", handleTouchStart, { passive: true });
     window.addEventListener("touchmove", handleTouchMove, { passive: true });
 
-    animateSlider();
+    renderLoop();
 
     return () => {
+      cancelAnimationFrame(animationFrameId.current);
       window.removeEventListener("wheel", handleWheel);
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
-      cancelAnimationFrame(animationFrameId);
 
-      visibleSlidesLeft.forEach((obj) => obj.slideEl.remove());
-      visibleSlidesRight.forEach((obj) => obj.slideEl.remove());
-      visibleSlidesLeft.clear();
-      visibleSlidesRight.clear();
+      Object.values(columns.current).forEach((col) => {
+        col.visibleSlides.forEach((obj) => obj.slideEl.remove());
+        col.visibleSlides.clear();
+      });
     };
   }, []);
 
   return (
-    <section className="fixed inset-0 w-screen h-screen flex flex-row overflow-hidden bg-black text-white select-none">
-      {/* Left Column (50% Width) */}
+    <section className="fixed inset-0 w-screen h-screen flex flex-row overflow-hidden bg-[#0d0d0d] select-none">
+      {/* Left Column Half */}
       <div
         ref={leftColRef}
-        className="flex-1 h-full relative overflow-hidden"
+        className="relative flex-1 h-full overflow-hidden"
       />
-      {/* Right Column (50% Width) */}
+
+      {/* Right Column Half */}
       <div
         ref={rightColRef}
-        className="flex-1 h-full relative overflow-hidden"
+        className="relative flex-1 h-full overflow-hidden"
       />
     </section>
   );

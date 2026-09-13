@@ -1,4 +1,4 @@
-import  { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 // ==========================================
@@ -69,9 +69,9 @@ const SLIDES: SlideData[] = [
 // ==========================================
 
 // Positive Modulo Wrapping for Infinite Looping
-function getWrappedIndex(index: number, length: number): number {
-  return ((index % length) + length) % length;
-}
+// function getWrappedIndex(index: number, length: number): number {
+//   return ((index % length) + length) % length;
+// }
 
 // Clip Path Polygon Generator for Split Reveals
 function getRevealShape(revealAmount: number, isLeftColumn: boolean): string {
@@ -83,7 +83,7 @@ function getRevealShape(revealAmount: number, isLeftColumn: boolean): string {
     return `polygon(0% ${100 - percentage}%, 100% ${100 - percentage}%, 100% 100%, 0% 100%)`;
   } else {
     // Opens from top edge downward
-    return `polygon(0% 0%, 100% 0%, 100% ${percentage}%, 0% 0%)`;
+    return `polygon(0% 0%, 100% 0%, 100% ${percentage}%, 0% ${percentage}%)`;
   }
 }
 
@@ -123,8 +123,7 @@ export default function SplitSlider() {
 
       const slideMap =
         columnKey === "left" ? visibleSlidesLeft : visibleSlidesRight;
-      const dataIndex = getWrappedIndex(index, SLIDES.length);
-      const data = SLIDES[dataIndex];
+      const data = SLIDES[index - 1];
       const isLeft = columnKey === "left";
 
       // Outer Slide Container
@@ -181,8 +180,14 @@ export default function SplitSlider() {
     };
 
     const updateSlider = () => {
-      const firstIndex = Math.floor(scrollPosition) - SETTINGS.buffer;
-      const lastIndex = Math.ceil(scrollPosition) + SETTINGS.buffer;
+      const firstIndex = Math.max(
+        1,
+        Math.floor(scrollPosition) - SETTINGS.buffer,
+      );
+      const lastIndex = Math.min(
+        SLIDES.length,
+        Math.ceil(scrollPosition) + SETTINGS.buffer,
+      );
 
       (["left", "right"] as const).forEach((columnKey) => {
         const isLeft = columnKey === "left";
@@ -232,7 +237,11 @@ export default function SplitSlider() {
     };
 
     const handleWheel = (e: WheelEvent) => {
-      scrollTarget += e.deltaY / SETTINGS.scrollSensitivity;
+      // scrollTarget = e.deltaY / SETTINGS.scrollSensitivity;
+      scrollTarget = Math.max(
+        1,
+        Math.min(SLIDES.length, scrollTarget + e.deltaY),
+      );
     };
 
     const handleTouchStart = (e: TouchEvent) => {

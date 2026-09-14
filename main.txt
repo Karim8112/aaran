@@ -4,13 +4,15 @@ import "./index.css";
 // import App from "./App.tsx";
 
 import { BrowserRouter } from "react-router-dom";
-
+import TransitionProvider from "./providers/TransitionProvider.tsx";
 import RoutesNav from "./RoutesNav.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <RoutesNav />
+      <TransitionProvider>
+        <RoutesNav />
+      </TransitionProvider>
     </BrowserRouter>
   </StrictMode>,
 );

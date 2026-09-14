@@ -6,10 +6,8 @@ import Projects from "./pages/Projects/Projects.tsx";
 import Team from "./pages/Team/Team.tsx";
 import MemberDetailPage from "./pages/Team/Profile.tsx";
 import TransitionProvider from "./providers/TransitionProvider.tsx";
-import { useParams } from "react-router-dom";
 
 function RoutesNav() {
-  const { memberId } = useParams<{ memberId: string }>();
   return (
     <>
       <TransitionProvider>
@@ -21,7 +19,7 @@ function RoutesNav() {
           <Route path="/home" element={<Home />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/team" element={<Team />} />
-          <Route path={`/team/:${memberId}`} element={<MemberDetailPage />} />
+          <Route path={`/team/:memberId`} element={<MemberDetailPage />} />
         </Routes>
       </TransitionProvider>
     </>

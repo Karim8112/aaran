@@ -128,16 +128,16 @@ export default function Team() {
       }`;
 
       const tagsEl = document.createElement("div");
-      tagsEl.className = `text-xs sm:text-sm font-medium uppercase tracking-[0.2em] ${index % 2 == 0 ? "text-[#d1b797]" : "text-white"}  mb-3`;
+      tagsEl.className = `text-xs mb-4! sm:text-sm font-medium uppercase tracking-[0.2em] ${index % 2 == 0 ? "text-[#d1b797]" : "text-white"}  mb-3`;
       tagsEl.textContent = data.tags;
 
       const titleEl = document.createElement("h1");
-      titleEl.className = `text-xl! sm:text-2xl! md:text-6xl! ${index % 2 == 0 ? "text-white" : "text-[#d1b797]"} font-extrabold uppercase tracking-tight text-center leading-tight`;
+      titleEl.className = `text-xl! mb-2! sm:text-2xl! md:text-6xl! ${index % 2 == 0 ? "text-white" : "text-[#d1b797]"} font-extrabold uppercase tracking-tight text-center leading-tight`;
       titleEl.textContent = data.title;
 
       const linkEl = document.createElement("a");
       linkEl.className =
-        "text-xs sm:text-sm font-semibold mt-4 text-white border-b border-white/60 hover:border-white pointer-events-auto transition-opacity duration-300 hover:opacity-80";
+        "text-xs sm:text-sm tracking-widest! font-semibold mt-4 text-white border-b border-white/60 hover:border-white pointer-events-auto transition-opacity duration-300 hover:opacity-80";
       linkEl.href = `${baseURL.concat("team/").concat(String(data.id))}`;
       linkEl.textContent = "View Profile";
 

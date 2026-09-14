@@ -4,7 +4,7 @@ import baseURL from "../../../public/baseURL";
 // ==========================================
 // 1. TYPES & CONFIGURATION
 // ==========================================
-interface SlideData {
+export interface MemberData {
   id: number;
   title: string;
   tags: string;
@@ -87,15 +87,13 @@ export default function Team() {
     right: { element: null, visibleSlides: new Map() },
   });
 
-  const [members, setMembers] = useState<SlideData[]>([]);
+  const [members, setMembers] = useState<MemberData[]>([]);
   useEffect(() => {
     // Note the leading slash: /teams.json points to the public folder root
     fetch("../../../public/team.json")
       .then((res) => res.json())
       .then((data) => setMembers(data));
   }, []);
-
-  console.log(members);
 
   useEffect(() => {
     columns.current.left.element = leftColRef.current;

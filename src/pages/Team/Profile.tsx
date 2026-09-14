@@ -1,9 +1,18 @@
 import { motion, type Variants } from "framer-motion";
+import { useEffect, useState } from "react";
+import { type MemberData } from "./Team";
+import { useParams } from "react-router-dom";
 
 // ==========================================
 // FRAMER MOTION ANIMATION VARIANTS
 // ==========================================
 
+function getMemberById(
+  members: MemberData[],
+  id: number,
+): MemberData | undefined {
+  return members.find((member) => member.id === id);
+}
 const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -69,6 +78,25 @@ export default function CVPage() {
     "TEAM MANAGEMENT",
     "CROSS-FUNCTIONAL COLLABORATION",
   ];
+
+  const { memberId } = useParams<{ memberId: string }>();
+  let member: MemberData | undefined = {} as MemberData;
+  const [members, setMembers] = useState<MemberData[]>([]);
+  useEffect(() => {
+    // Note the leading slash: /teams.json points to the public folder root
+    fetch("../../../public/team.json")
+      .then((res) => res.json())
+      .then((data) => setMembers(data))
+      .finally(() => {
+        member = getMemberById(members, Number(memberId));
+      });
+  }, [memberId]);
+
+  console.log(members);
+
+  // ////////////////////////////////////////
+  // memeber requested
+  // //////////////////////////////////////
 
   return (
     <div className="min-h-screen bg-[#f7f7f7] text-[#111111] font-sans selection:bg-[#111] selection:text-white px-6 md:px-16 lg:px-24 py-10 max-w-360 mx-auto antialiased">

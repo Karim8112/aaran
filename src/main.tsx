@@ -8,6 +8,7 @@ import TransitionProvider from "./providers/TransitionProvider.tsx";
 import Home from "./pages/Home/Home.tsx";
 import Projects from "./pages/Projects/Projects.tsx";
 import Team from "./pages/Team/Team.tsx";
+import MemberDetailPage from "./pages/Team/Profile.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -21,6 +22,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/home" element={<Home />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/team" element={<Team />} />
+          <Route path="/teams/:memberId" element={<MemberDetailPage />} />
         </Routes>
       </TransitionProvider>
     </BrowserRouter>

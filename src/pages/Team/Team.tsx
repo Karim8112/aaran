@@ -1,15 +1,16 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-
+import baseURL from "../../../public/baseURL";
 // ==========================================
 // 1. TYPES & CONFIGURATION
 // ==========================================
 interface SlideData {
+  id: number;
   title: string;
   tags: string;
-  color: string;
   link: string;
-  image: string;
+  imageLeft?: string;
+  imageRight?: string;
 }
 
 interface SlideObject {
@@ -24,8 +25,8 @@ interface ColumnData {
 }
 
 const SETTINGS = {
-  scrollSensitivity: 1000, // Balanced sensitivity for trackpad/mouse
-  smoothness: 0.08, // Smooth interpolation factor
+  scrollSensitivity: 400, // Balanced sensitivity for trackpad/mouse
+  smoothness: 0.1, // Smooth interpolation factor
   buffer: 2, // Slide buffer window
   imageShift: 120, // Parallax shift distance
   copyShift: 80, // Text drift distance
@@ -33,41 +34,6 @@ const SETTINGS = {
   imageZoom: 1.18, // Image overscale factor
   revealOverlap: 0.5, // Seamless clip-path overlap
 };
-
-const TEAM_SLIDES: SlideData[] = [
-  {
-    title: "Eng. Bassel Al-Zaher",
-    tags: "Chief Engineer / Structural Specialist",
-    color: "#d1b797",
-    link: "#",
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    title: "Arch. Layla Masri",
-    tags: "Senior Interior Designer & Art Director",
-    color: "#ffffff",
-    link: "#",
-    image:
-      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    title: "Eng. Tareq Bilal",
-    tags: "Project Management Director",
-    color: "#d1b797",
-    link: "#",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    title: "Arch. Roaa Baba",
-    tags: "Architectural Lead & Site Supervisor",
-    color: "#ffffff",
-    link: "#",
-    image:
-      "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=1200&q=80",
-  },
-];
 
 // ==========================================
 // 2. HELPER CALCULATIONS
@@ -121,27 +87,37 @@ export default function Team() {
     right: { element: null, visibleSlides: new Map() },
   });
 
+  const [members, setMembers] = useState<SlideData[]>([]);
+  useEffect(() => {
+    // Note the leading slash: /teams.json points to the public folder root
+    fetch("../../../public/team.json")
+      .then((res) => res.json())
+      .then((data) => setMembers(data));
+  }, []);
+
+  console.log(members);
+
   useEffect(() => {
     columns.current.left.element = leftColRef.current;
     columns.current.right.element = rightColRef.current;
 
     const createSlideNode = (index: number, columnKey: "left" | "right") => {
       // Bounded direct array lookup (1-based index)
-      const data = TEAM_SLIDES[index - 1];
+      const data = members[index - 1];
       if (!data) return;
-
+      const isLeft = columnKey === "left";
       const columnData = columns.current[columnKey];
       if (!columnData.element) return;
 
       const slideEl = document.createElement("div");
       slideEl.className =
-        "absolute inset-0 w-full h-full overflow-hidden [will-change:clip-path]";
+        "absolute bg-[#999] inset-0 w-full h-full overflow-hidden [will-change:clip-path]";
       slideEl.style.zIndex = index.toString();
 
       const imgEl = document.createElement("img");
       imgEl.className =
         "absolute inset-0 w-full h-full object-cover [will-change:transform]";
-      imgEl.src = data.image;
+      imgEl.src = isLeft ? data.imageLeft || "" : data.imageRight || "";
       imgEl.alt = data.title;
 
       const overlayEl = document.createElement("div");
@@ -154,20 +130,17 @@ export default function Team() {
       }`;
 
       const tagsEl = document.createElement("div");
-      tagsEl.className =
-        "text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-[#d1b797] mb-3";
+      tagsEl.className = `text-xs sm:text-sm font-medium uppercase tracking-[0.2em] ${index % 2 == 0 ? "text-[#d1b797]" : "text-white"}  mb-3`;
       tagsEl.textContent = data.tags;
 
       const titleEl = document.createElement("h1");
-      titleEl.className =
-        "text-3xl sm:text-5xl md:text-6xl font-extrabold uppercase tracking-tight text-center leading-tight";
-      titleEl.style.color = data.color;
+      titleEl.className = `text-xl! sm:text-2xl! md:text-6xl! ${index % 2 == 0 ? "text-white" : "text-[#d1b797]"} font-extrabold uppercase tracking-tight text-center leading-tight`;
       titleEl.textContent = data.title;
 
       const linkEl = document.createElement("a");
       linkEl.className =
         "text-xs sm:text-sm font-semibold mt-4 text-white border-b border-white/60 hover:border-white pointer-events-auto transition-opacity duration-300 hover:opacity-80";
-      linkEl.href = data.link;
+      linkEl.href = `${baseURL.concat("team/").concat(String(data.id))}`;
       linkEl.textContent = "View Profile";
 
       copyBlock.appendChild(tagsEl);
@@ -189,7 +162,7 @@ export default function Team() {
         Math.floor(scrollPosition.current) - SETTINGS.buffer,
       );
       const lastIndex = Math.min(
-        TEAM_SLIDES.length,
+        members.length,
         Math.ceil(scrollPosition.current) + SETTINGS.buffer,
       );
 
@@ -255,7 +228,7 @@ export default function Team() {
 
       scrollTarget.current = Math.max(
         1,
-        Math.min(TEAM_SLIDES.length, scrollTarget.current + step),
+        Math.min(members.length, scrollTarget.current + step),
       );
     };
 
@@ -274,7 +247,7 @@ export default function Team() {
 
       scrollTarget.current = Math.max(
         1,
-        Math.min(TEAM_SLIDES.length, scrollTarget.current + step),
+        Math.min(members.length, scrollTarget.current + step),
       );
     };
 
@@ -295,7 +268,7 @@ export default function Team() {
         col.visibleSlides.clear();
       });
     };
-  }, []);
+  }, [members]);
 
   return (
     <section className="fixed inset-0 w-screen h-screen flex flex-row overflow-hidden bg-[#0d0d0d] select-none">

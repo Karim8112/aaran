@@ -2,33 +2,495 @@
   {
     "id": 1,
     "title": "Eng. Bassel Al-Zaher",
-    "tags": "Chief Engineer / Structural Specialist",
-    "link": "#",
-    "imageLeft": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80",
-    "imageRight": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80"
+    "address": "Beirut, Lebanon / Damascus, Syria / Aleppo, Syria",
+    "email": "ARRAN.EST@gmail.com",
+    "phoneNumberS": ["+963 933 454030", "00201200020582"],
+    "summary": "Chief Engineer and General Manager with over 20 years of experience specializing in structural engineering, architectural restoration of historical buildings, facade preservation, and complex project execution with international organizations.",
+    "imageLeft": "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80",
+    "imageRight": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80",
+    "tags": "Structural Engineer, Chief Engineer, General Manager, Executive Management",
+    "skills": [
+      "Structural Engineering",
+      "Architectural Restoration",
+      "Historical Building Rehabilitation",
+      "Facade & Stone Restoration",
+      "Underpinning & Structural Support",
+      "Executive Staff Management",
+      "Quantity Surveying"
+    ],
+    "experience": [
+      {
+        "role": "General Manager",
+        "company": "ALZAHER, ARAAN COMPANIES",
+        "period": "2015 – 2024",
+        "description": "General management of company operations in Beirut and Damascus. Led study, construction, and rehabilitation for roads, sewage, historical buildings, schools, and hospitals with several INGOs."
+      },
+      {
+        "role": "Civil and Architectural Contractor",
+        "company": "TEC GROUP s.a.r.l",
+        "period": "Oct 2010 – Oct 2015",
+        "description": "Restoration of several old historical villas in the old city of Jounyeh, including facade restoration and steel underpinning."
+      },
+      {
+        "role": "Main Contractor",
+        "company": "M1 GROUP",
+        "period": "Jan 2007 – Oct 2012",
+        "description": "Restoration of property no.469 in Mina, Tripoli, Lebanon."
+      },
+      {
+        "role": "Main Contractor",
+        "company": "Tempolo company",
+        "period": "Aug 2010 – Jun 2012",
+        "description": "Restoration of four historical houses in the old city of Aleppo, managing staff, tender execution, and monthly progress reporting."
+      },
+      {
+        "role": "Civil and Architectural Contractor",
+        "company": "Levant hotels company",
+        "period": "Sep 2009 – Sep 2010",
+        "description": "Restoration and rehabilitation of Beit Salaheyeh Hotel in the Old City of Aleppo."
+      },
+      {
+        "role": "Civil and Architectural Contractor",
+        "company": "Achkar & Charriere Office",
+        "period": "Apr 2004 – Oct 2009",
+        "description": "Restoration of property no.806 in the Old City of Aleppo."
+      },
+      {
+        "role": "Main Contractor",
+        "company": "CCC Office",
+        "period": "Jan 2004 – Sep 2011",
+        "description": "Restoration of historical houses, two small hotels, Jdaydeh hotel, Khan Borgol hotel, and Khan in the old city of Aleppo."
+      },
+      {
+        "role": "Civil and Architectural Contractor",
+        "company": "CCC Office",
+        "period": "Jan 2002 – Sep 2004",
+        "description": "Study and construction of new 4m long solid stone arches on ground floor facades."
+      }
+    ],
+    "education": [
+      "B.D in Structural Engineering, Faculty of Civil Engineering, Aleppo University (1995 - 2000)"
+    ],
+    "languages": ["Arabic", "English"]
   },
   {
-    "id": 20,
-    "title": "Arch. Layla Masri",
-    "tags": "Senior Interior Designer & Art Director",
-    "link": "#",
-    "imageLeft": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80",
-    "imageRight": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80"
+    "id": 2,
+    "title": "Eng. Bassel Shuhema",
+    "address": "Aleppo, Syria",
+    "email": "bshuhema@hotmail.com",
+    "phoneNumberS": ["+963 988676688"],
+    "summary": "Architect, Site Engineer, and Specialist in IT & Site Survey with 8 years of experience in managing construction and rehabilitation projects including schools, shelters, sewage networks, and historical Souq restoration.",
+    "imageLeft": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+    "imageRight": "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=800&q=80",
+    "tags": "Architect, Site Engineer, IT Specialist, Site Survey",
+    "skills": [
+      "Architectural Engineering",
+      "Site Management",
+      "Site Survey",
+      "3D Infrastructure Modeling",
+      "Quantity Surveying",
+      "AutoCAD",
+      "3D Max",
+      "PMP",
+      "MCSE"
+    ],
+    "experience": [
+      {
+        "role": "Site Manager",
+        "company": "PLYC / ALZAHER COMPANY",
+        "period": "2015 – 2024",
+        "description": "Executed structural, architectural, plumbing, and mechanical works for shelters, sewage projects, ancient Souq rehabilitation, schools, and historical properties."
+      },
+      {
+        "role": "Site Engineer & Site Manager",
+        "company": "Aaran Contracting & Trading (UN-HABITAT / UNDP / NRC / SIEF Projects)",
+        "period": "2010 – 2024",
+        "description": "Managed key infrastructure and educational rehabilitation projects including East-West Aleppo main axis road, Maysalon vocational complex, Fadwa Touqan school, NRC school projects, and ICRC Ashrafieh Shelter."
+      },
+      {
+        "role": "Site Engineer",
+        "company": "Sama City Infrastructure Project (Hayyan, Aleppo)",
+        "period": "Aug 2010 – Aug 2013",
+        "description": "Supervised sewage main lines and house connections, prepared progress schedules, performed quantity surveying, and built 3D models of site infrastructure."
+      }
+    ],
+    "education": [
+      "B.D in Architecture, Faculty of Architecture, Private University of Science and Arts (2003 - 2010)",
+      "MCSE Certification, ACCAD Institute (Communication)",
+      "PMP Certification, PUSA Institute (Project Management)",
+      "AutoCAD Course, ACCAD Institute",
+      "3D Max Course, ACCAD Institute"
+    ],
+    "languages": ["Arabic"]
   },
   {
-    "id": 20,
-    "title": "Eng. Tareq Bilal",
-    "tags": "Project Management Director",
-    "link": "#",
-    "imageLeft": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1200&q=80",
-    "imageRight": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80"
+    "id": 3,
+    "title": "Rouaa Al Baba",
+    "address": "Aleppo, Syria",
+    "email": "rouaa.00.baba@gmail.com",
+    "phoneNumberS": ["0956753994"],
+    "summary": "Versatile Architectural Engineer and Digital Creative Media Specialist with over 8 years of experience blending architectural technical knowledge with graphic design, branding, site supervision, and historical restoration documentation.",
+    "imageLeft": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80",
+    "imageRight": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=800&q=80",
+    "tags": "Architect, Digital Media Specialist, Site Engineer, Media Manager",
+    "skills": [
+      "Adobe Photoshop",
+      "Adobe Illustrator",
+      "Adobe Premiere Pro",
+      "Adobe After Effects",
+      "AutoCAD",
+      "Revit",
+      "Rhino",
+      "Lumion",
+      "3ds Max",
+      "Construction Site Management",
+      "Quantity Surveying",
+      "As-built Drawings",
+      "Digital Branding",
+      "Social Media Campaign Management"
+    ],
+    "experience": [
+      {
+        "role": "Site Engineer & Media Manager",
+        "company": "Aaran Contracting & Trading",
+        "period": "2026 – Present",
+        "description": "Overseeing school renovation projects (Marwan Bin Al-Hakam, Asmaa Bint Abi Bakr, Hussein Al-Ghouri), handling technical reporting, quantity surveying, site photo-documentation, and mosque restoration documentation."
+      },
+      {
+        "role": "Social Media Manager & Architectural Trainer",
+        "company": "Ginuse",
+        "period": "2024 – 2026",
+        "description": "Managed commercial social media profiles and digital marketing campaigns; conducted architectural and design training programs."
+      },
+      {
+        "role": "Graphic Designer",
+        "company": "Barakat Advertising & Media",
+        "period": "2020 – 2024",
+        "description": "Specialized in corporate branding, visual identity, and social media content creation."
+      },
+      {
+        "role": "Freelance Graphic Designer & Academic Mentor",
+        "company": "Freelance / Al-Noon Vocational School",
+        "period": "2017 – Present",
+        "description": "Technical design mentoring for architecture and fine arts students and vocational instruction."
+      }
+    ],
+    "education": ["Bachelor of Architecture, University of Aleppo (2026)"],
+    "languages": ["Arabic (Native)", "English (Very Good)", "French (Good)"]
   },
   {
-    "id": 20,
-    "title": "Arch. Roaa Baba",
-    "tags": "Architectural Lead & Site Supervisor",
-    "link": "#",
-    "imageLeft": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=1200&q=80",
-    "imageRight": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80"
+    "id": 4,
+    "title": "Mustafa Zayegh",
+    "address": "Aleppo, Syria",
+    "email": "MUSTAFA ZAYEGH@gmail.com",
+    "phoneNumberS": ["+963 991 686 553"],
+    "summary": "Dedicated Civil Engineer experienced in site supervision, construction management, and historical restoration. Skilled in managing daily operations, structural compliance, and complex heritage site rehabilitations.",
+    "imageLeft": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
+    "imageRight": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+    "tags": "Civil Engineer, Site Engineer, Project Manager, Heritage Restoration",
+    "skills": [
+      "AutoCAD",
+      "Revit",
+      "MS Project",
+      "Microsoft Excel",
+      "PowerPoint",
+      "MS Office Suite",
+      "Site Management",
+      "Quantity Surveying (QS)",
+      "Restoration & Masonry Execution",
+      "Workflow Coordination",
+      "Infrastructure Planning"
+    ],
+    "experience": [
+      {
+        "role": "Lead Site Engineer & Project Manager",
+        "company": "Aaran Various Engineering Projects",
+        "period": "2023 – Present",
+        "description": "Lead Site Engineer for Marwan Bin Al-Hakam & Asmaa Bint Abi Bakr Schools. Planning specialist for Thermal Power Plant, Hussein Ibrahim, Ramzi Al-Lulu, and Umm Al-Amad Schools."
+      },
+      {
+        "role": "Heritage & Restoration Site Engineer",
+        "company": "Aaran / Dar Ghazaleh / Aleppo Citadel",
+        "period": "2023 – Present",
+        "description": "Site Engineer for Al-Sultaniyah Mosque stone cataloging and masonry restoration; Aleppo Citadel Facade Chamber restoration; Project Manager at Dar Ghazaleh."
+      },
+      {
+        "role": "Infrastructure & Civil Works Site Engineer",
+        "company": "Aleppo Municipal Palace & Al-Zirbah Road Lighting Poles Project",
+        "period": "2023 – Present",
+        "description": "Managed daily site operations, structural setup, wiring, and technical compliance."
+      }
+    ],
+    "education": [
+      "Bachelor of Civil Engineering, Al-Hawash Private University"
+    ],
+    "languages": ["Arabic (Native)", "English (Intermediate)"]
+  },
+  {
+    "id": 5,
+    "title": "Abd Alrhman Hejazi",
+    "address": "Aleppo, Syria",
+    "email": "rubabd2004@gmail.com",
+    "phoneNumberS": ["+963 997 445 833"],
+    "summary": "Detail-oriented Civil Engineer with expertise in structural design, site supervision, and structural analysis. Proficient in progress monitoring, safety compliance, and integrating 3D architectural visualization.",
+    "imageLeft": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=800&q=80",
+    "imageRight": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80",
+    "tags": "Civil Engineer, Structural Design, 3D Visualization, Quality Control",
+    "skills": [
+      "Etabs",
+      "Safe",
+      "JWDBeam",
+      "AutoCAD",
+      "Autodesk 3ds Max",
+      "Corona Renderer",
+      "ICDL",
+      "Site Inspection",
+      "Quality Control",
+      "Structural Rehabilitation",
+      "Project Coordination",
+      "Safety Compliance",
+      "Structural Analysis"
+    ],
+    "experience": [
+      {
+        "role": "Site Engineer",
+        "company": "Aaran Rehabilitation Engineering Projects",
+        "period": "2024 – Present",
+        "description": "Conducted routine site inspections, monitored school and bakery rehabilitation execution, coordinated daily construction activities, and verified safety and structural standards."
+      },
+      {
+        "role": "3D Visualization Engineer",
+        "company": "Freelance / Private Projects",
+        "period": "2024 – Present",
+        "description": "Executed detailed 3D modeling and photorealistic rendering using Autodesk 3ds Max and Corona Renderer for architectural projects."
+      }
+    ],
+    "education": [
+      "Bachelor of Civil Engineering, University of Aleppo (2024, Average: 81.53% - Very Good)"
+    ],
+    "languages": ["Arabic (Native)", "English (Intermediate)"]
+  },
+  {
+    "id": 6,
+    "title": "Haya Nayef",
+    "address": "Aleppo, Syria",
+    "email": "Nayefhaya1@gmail.com",
+    "phoneNumberS": ["+963 991 385 274"],
+    "summary": "Detail-oriented Architect and Site Engineer specializing in architectural heritage, quantity surveying, technical drafting, and interior/exterior design execution.",
+    "imageLeft": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80",
+    "imageRight": "https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?auto=format&fit=crop&w=800&q=80",
+    "tags": "Architect, Site Engineer, Quantity Surveyor, Interior & Exterior Design",
+    "skills": [
+      "AutoCAD",
+      "3ds Max",
+      "Lumion",
+      "Adobe Photoshop",
+      "Site Supervision",
+      "Quantity Surveying (QS)",
+      "Architectural Planning",
+      "Interior & Exterior Design",
+      "Heritage Restoration",
+      "Technical Drafting"
+    ],
+    "experience": [
+      {
+        "role": "Site Engineer & Architectural Planner",
+        "company": "Aaran / Freelance & Consulting",
+        "period": "2024 – Present",
+        "description": "Site Engineer for Aleppo Municipality Palace, Marwan Bin Al-Hakam School, Ghazala House, Hussein Al-Ghouri School; Architectural Planner for Al-Sultaniyah Mosque restoration."
+      },
+      {
+        "role": "Architect & Designer",
+        "company": "Basel Al-Zaher Company / Asl Company / ID Company",
+        "period": "2024 – 2026",
+        "description": "Architectural mentoring, site coordination, architectural design, and graphic design."
+      }
+    ],
+    "education": [
+      "Bachelor of Architecture, University of Aleppo (2024, Average: 75%)"
+    ],
+    "languages": ["Arabic (Native)", "English (Intermediate)"]
+  },
+  {
+    "id": 7,
+    "title": "Latifa Kourabi",
+    "address": "Aleppo, Syria",
+    "email": "la.tiva2882000@gmail.com",
+    "phoneNumberS": ["+963 969 559 652"],
+    "summary": "Architect with hands-on experience in site supervision, Bill of Quantities (BOQ) preparation, and quantity surveying for projects executed with international organizations.",
+    "imageLeft": "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=800&q=80",
+    "imageRight": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
+    "tags": "Architect, Site Engineer, BOQ Specialist, Quantity Surveyor",
+    "skills": [
+      "AutoCAD",
+      "Rhinoceros",
+      "V-Ray",
+      "Site Supervision",
+      "BOQ Preparation",
+      "Quantity Surveying",
+      "Technical Review",
+      "Architectural Design"
+    ],
+    "experience": [
+      {
+        "role": "Site Engineer",
+        "company": "Aaran / Basel Al-Zaher Company",
+        "period": "December 2025 – Present",
+        "description": "Supervised on-site construction activities, conducted regular quantity surveying, prepared comprehensive BOQs for new projects, and audited completed works for quality assurance."
+      },
+      {
+        "role": "Academic Architectural Designer",
+        "company": "Faculty of Architecture, University of Aleppo",
+        "period": "September 2020 – 2025",
+        "description": "Developed award-winning graduation project (Entertainment and E-Sports Center) selected for university exhibition."
+      }
+    ],
+    "education": [
+      "Faculty of Architecture, University of Aleppo (2020 – 2025)"
+    ],
+    "languages": ["Arabic", "English"]
+  },
+  {
+    "id": 8,
+    "title": "Mohammad Khair Alomar",
+    "address": "Aleppo, Syria",
+    "email": "mohammad314khair@gmail.com",
+    "phoneNumberS": ["0968340809"],
+    "summary": "Architect and Site Engineer skilled in architectural design, 3D Rhinoceros modeling, V-Ray rendering, quantity surveying, and construction supervision.",
+    "imageLeft": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=800&q=80",
+    "imageRight": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80",
+    "tags": "Architect, Site Engineer, 3D Modeler, BOQ Preparation",
+    "skills": [
+      "Architectural Design & Planning",
+      "Quantity Surveying & BOQ Preparation",
+      "Site Supervision & Construction Management",
+      "Microsoft Office (Excel, Word, PowerPoint)",
+      "Rhinoceros 3D Modeling",
+      "V-Ray Rendering & Visualization",
+      "AutoCAD Drafting"
+    ],
+    "experience": [
+      {
+        "role": "Architect & Site Engineer",
+        "company": "Aaran Contracting & Trading",
+        "period": "2025 – Present",
+        "description": "Handling architectural drafting, site supervision, quantity surveying, and rendering for architectural projects."
+      }
+    ],
+    "education": [
+      "Faculty of Architecture, University of Aleppo (Graduation: September 2025)"
+    ],
+    "languages": ["Arabic", "English"]
+  },
+  {
+    "id": 9,
+    "title": "Dima Khalifa",
+    "address": "Al-sulaymanyeh post office, Aleppo, Syria",
+    "email": "dimakhalife38@gmail.com",
+    "phoneNumberS": ["+963 996 453 304"],
+    "summary": "Civil Engineer specializing in structural modeling and drawings using Revit, AutoCAD drafting, and site supervision for execution compliance.",
+    "imageLeft": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80",
+    "imageRight": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80",
+    "tags": "Civil Engineer, Structural Revit Specialist, Site Supervision",
+    "skills": [
+      "Revit (Structural Modeling & Drawings)",
+      "AutoCAD (2D/3D Drafting)",
+      "Microsoft Office",
+      "ETABS/SAP (Basic knowledge)",
+      "Site Supervision",
+      "Technical Compliance"
+    ],
+    "experience": [
+      {
+        "role": "Civil & Structural Site Engineer",
+        "company": "Aaran Contracting & Trading",
+        "period": "2024 – Present",
+        "description": "Supervising daily site execution works to ensure compliance with drawings and specifications; preparing and modifying structural drawings using Revit."
+      }
+    ],
+    "education": [
+      "Bachelor of Civil Engineering, Aleppo University",
+      "Structural Revit Training (Instructor: Samer Estanbouli)",
+      "ETABS Online Training",
+      "AutoCAD Online Training"
+    ],
+    "languages": ["Arabic", "English", "French"]
+  },
+  {
+    "id": 10,
+    "title": "Muhammad Diaa Al Eissa",
+    "address": "Aleppo, Syria",
+    "summary": "Safety Manager and Chief Technician at Aaran Contracting & Trading, managing site safety protocols, risk avoidance, and ISO safety standards.",
+    "imageLeft": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80",
+    "imageRight": "https://images.unsplash.com/photo-1590496793929-36417d3117de?auto=format&fit=crop&w=800&q=80",
+    "tags": "Safety Manager, Chief Technician, HSE Officer",
+    "skills": [
+      "Safety Management",
+      "Occupational Health & Safety (HSE)",
+      "ISO Safety Standards",
+      "Chief Site Technician",
+      "Risk Avoidance & Training"
+    ],
+    "experience": [
+      {
+        "role": "Safety Manager & Chief Technician",
+        "company": "Aaran Contracting & Trading",
+        "period": "2023 – Present",
+        "description": "Leading site safety protocols, ensuring compliance with ISO safety guidelines, and managing chief technician tasks across project sites."
+      }
+    ],
+    "education": ["Technical Engineering & Safety Management Studies"],
+    "languages": ["Arabic"]
+  },
+  {
+    "id": 11,
+    "title": "Alaa Zayegh",
+    "address": "Aleppo, Syria",
+    "summary": "Civil Engineer in the Civil & Structural Department at Aaran Contracting & Trading, focusing on structural site execution and monitoring.",
+    "imageLeft": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80",
+    "imageRight": "https://images.unsplash.com/photo-1508873696983-2df515122519?auto=format&fit=crop&w=800&q=80",
+    "tags": "Civil Engineer, Structural Department, Site Operations",
+    "skills": [
+      "Civil Engineering",
+      "Structural Supervision",
+      "Site Operations",
+      "Technical Compliance",
+      "AutoCAD"
+    ],
+    "experience": [
+      {
+        "role": "Civil Engineer",
+        "company": "Aaran Contracting & Trading",
+        "period": "2023 – Present",
+        "description": "Civil site engineer overseeing structural works, technical site inspection, and progress compliance."
+      }
+    ],
+    "education": ["Bachelor of Civil Engineering"],
+    "languages": ["Arabic", "English"]
+  },
+  {
+    "id": 12,
+    "title": "Mofida",
+    "address": "Aleppo, Syria",
+    "summary": "Civil Engineer in the Civil & Structural Department at Aaran Contracting & Trading, participating in site management and structural execution.",
+    "imageLeft": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=800&q=80",
+    "imageRight": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80",
+    "tags": "Civil Engineer, Structural Department, Site Inspection",
+    "skills": [
+      "Civil Engineering",
+      "Structural Engineering",
+      "Site Supervision",
+      "Quality Assurance"
+    ],
+    "experience": [
+      {
+        "role": "Civil Engineer",
+        "company": "Aaran Contracting & Trading",
+        "period": "2023 – Present",
+        "description": "Participating in civil site execution, structural inspection, and workflow coordination."
+      }
+    ],
+    "education": ["Bachelor of Civil Engineering"],
+    "languages": ["Arabic", "English"]
   }
 ]

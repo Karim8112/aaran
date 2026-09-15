@@ -36,16 +36,18 @@ export default function Navbar() {
       {/* ========================================== */}
       {/* 1. DESKTOP NAVIGATION (>= 768px)          */}
       {/* ========================================== */}
-      <nav className="hidden md:flex nav-links justify-center w-full  items-center pt-4! gap-16 font-light text-white fixed top-0 left-0 z-50 ">
-        <Link to="/home" className={`${getClass("/home")} ${getClass("/")}`}>
-          Home
-        </Link>
-        <Link to="/projects" className={getClass("/projects")}>
-          Projects
-        </Link>
-        <Link to="/team" className={getClass("/team")}>
-          Team
-        </Link>
+      <nav className="hidden md:flex nav-links justify-center w-full items-center pt-4! gap-16 font-light text-white fixed top-0 left-0 z-50 ">
+        <div className="glass-container-of-dev flex bg-gray-500/50  rounded-full justify-center items-center gap-16 text-white font-light px-6! py-2!">
+          <Link to="/home" className={`${getClass("/home")} ${getClass("/")}`}>
+            Home
+          </Link>
+          <Link to="/projects" className={getClass("/projects")}>
+            Projects
+          </Link>
+          <Link to="/team" className={getClass("/team")}>
+            Team
+          </Link>
+        </div>
       </nav>
 
       {/* ========================================== */}

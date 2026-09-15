@@ -1,40 +1,34 @@
-import { motion, type Variants } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { motion, type Variants } from "framer-motion";
 import { type MemberData } from "./Team";
-import { useParams } from "react-router-dom";
-
 // ==========================================
-// FRAMER MOTION ANIMATION VARIANTS
+// 1. TYPES & INTERFACES
 // ==========================================
 
-function getMemberById(
-  members: MemberData[],
-  id: number,
-): MemberData | undefined {
-  const member = members.find((member) => member.id === id);
-
-  return member;
-}
+// ==========================================
+// 2. FRAMER MOTION ANIMATION VARIANTS
+// ==========================================
 const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.05,
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
     },
   },
 };
 
 const fadeInUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 25 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
       type: "spring",
-      stiffness: 70,
-      damping: 18,
+      stiffness: 80,
+      damping: 15,
     },
   },
 };
@@ -46,8 +40,8 @@ const fadeInLeft: Variants = {
     x: 0,
     transition: {
       type: "spring",
-      stiffness: 70,
-      damping: 18,
+      stiffness: 80,
+      damping: 15,
     },
   },
 };
@@ -58,44 +52,50 @@ const scaleIn: Variants = {
     opacity: 1,
     scale: 1,
     transition: {
-      duration: 0.6,
+      duration: 0.5,
       ease: [0.16, 1, 0.3, 1],
     },
   },
 };
 
-// ==========================================
-// MAIN CV PAGE COMPONENT
-// ==========================================
+// Default fallback skills if none provided in team.json
 
-export default function CVPage() {
-  const keySkills = [
-    "DESIGN EXPERTISE",
-    "USER-CENTRIC APPROACH",
-    "LEADERSHIP",
-    "CREATIVE THINKING",
-    "STRATEGIC THINKING",
-    "PRODUCT MANAGEMENT",
-    "STAKEHOLDER MANAGEMENT",
-    "TEAM MANAGEMENT",
-    "CROSS-FUNCTIONAL COLLABORATION",
-  ];
-
+// ==========================================
+// 3. MAIN PROFILE COMPONENT
+// ==========================================
+export default function Profile() {
   const { memberId } = useParams<{ memberId: string }>();
 
-  const [member, setMember] = useState<MemberData | undefined>(undefined);
+  const [member, setMember] = useState<MemberData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
-    // Note the leading slash: /teams.json points to the public folder root
+    if (!memberId) {
+      setIsError(true);
+      setIsLoading(false);
+      return;
+    }
 
-    fetch("../../../public/team.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setMember(getMemberById(data, Number(memberId)));
+    setIsLoading(true);
+    setIsError(false);
+
+    // Fetch team dataset from public directory
+    fetch("/team.json")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load team data");
+        return res.json();
       })
-      .catch(() => {
+      .then((data: MemberData[]) => {
+        const foundMember = data.find((m) => String(m.id) === String(memberId));
+        if (foundMember) {
+          setMember(foundMember);
+        } else {
+          setIsError(true);
+        }
+      })
+      .catch((err) => {
+        console.error("Error loading profile:", err);
         setIsError(true);
       })
       .finally(() => {
@@ -103,316 +103,200 @@ export default function CVPage() {
       });
   }, [memberId]);
 
-  // ////////////////////////////////////////
-  // memeber requested
-  // //////////////////////////////////////
-
-  if (!isLoading)
+  // Loading Skeleton State
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#d31e1e]  font-sans text-white!  px-6 md:px-16 lg:px-24 py-10 w-screen ">
-        {/* Google Fonts Import for Display Serif & Cursive Signature */}
-        <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&family=Reenie+Beanie&family=Space+Grotesk:wght@400;500;700&display=swap');
-        
-        .font-serif-italic {
-          font-family: 'Playfair Display', serif;
-          font-style: italic;
-        }
-        .font-signature {
-          font-family: 'Reenie Beanie', cursive;
-        }
-      `}</style>
-
-        {!isLoading ? (
-          isError ? (
-            <>Error Page</>
-          ) : !member ? (
-            <></>
-          ) : (
-            <>
-              {/* ========================================== */}
-              {/* 2. HERO TITLE SECTION                     */}
-              {/* ========================================== */}
-              <motion.section
-                initial="hidden"
-                animate="visible"
-                variants={staggerContainer}
-                className="mb-16 md:mb-24"
-              >
-                {/* Row 1: LEAD */}
-                <motion.h1
-                  variants={fadeInUp}
-                  className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tighter uppercase leading-none"
-                >
-                  {`${member.title}`}
-                </motion.h1>
-
-                {/* Row 2: DIGITAL PRODUCT */}
-                <motion.div
-                  variants={fadeInUp}
-                  className="flex flex-wrap items-baseline gap-3 md:gap-6 mt-1 md:-mt-2"
-                >
-                  <span className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tighter uppercase leading-none">
-                    DIGITAL
-                  </span>
-                  <span className="text-6xl sm:text-8xl md:text-9xl font-serif-italic font-normal tracking-tight">
-                    PRODUCT
-                  </span>
-                </motion.div>
-
-                {/* Row 3: Name Subtitle & DESIGNER */}
-                <div className="grid grid-cols-1 md:grid-cols-12 items-baseline mt-1 md:-mt-2 gap-4">
-                  <motion.div
-                    variants={fadeInUp}
-                    className="md:col-span-4 flex flex-col"
-                  >
-                    <span className="text-sm font-bold tracking-widest uppercase">
-                      HALYNA
-                    </span>
-                    <span className="text-sm font-bold tracking-widest uppercase text-black/70">
-                      KUCHERYAVA
-                    </span>
-                  </motion.div>
-
-                  <motion.h1
-                    variants={fadeInUp}
-                    className="md:col-span-8 text-6xl sm:text-8xl md:text-9xl font-black tracking-tighter uppercase leading-none md:text-right"
-                  >
-                    DESIGNER
-                  </motion.h1>
-                </div>
-              </motion.section>
-              {/* ========================================== */}
-              {/* 3. MIDDLE SECTION: SKILLS, QUOTE & IMAGE  */}
-              {/* ========================================== */}
-              <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 mb-24 items-start">
-                {/* Left Column: Key Skills & Quote */}
-                <div className="lg:col-span-7 flex flex-col gap-14">
-                  {/* Key Skills */}
-                  <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-100px" }}
-                    variants={staggerContainer}
-                    className="flex flex-col gap-2"
-                  >
-                    <motion.h3
-                      variants={fadeInUp}
-                      className="text-[11px] font-bold tracking-widest uppercase text-black/50 mb-2"
-                    >
-                      KEY SKILLS
-                    </motion.h3>
-                    <div className="flex flex-col gap-1">
-                      {keySkills.map((skill, idx) => (
-                        <motion.span
-                          key={idx}
-                          variants={fadeInLeft}
-                          className="text-xs sm:text-sm font-bold tracking-wider text-black/80 uppercase"
-                        >
-                          {skill}
-                        </motion.span>
-                      ))}
-                    </div>
-                  </motion.div>
-
-                  {/* Quote Block */}
-                  <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-100px" }}
-                    variants={fadeInUp}
-                    className="flex items-start gap-4 pt-4 border-t border-black/10"
-                  >
-                    {/* Giant Quotation Mark */}
-                    <span className="text-5xl font-serif leading-none select-none text-black">
-                      “
-                    </span>
-                    <div className="flex flex-col gap-4">
-                      <p className="text-sm sm:text-base text-black/80 font-normal leading-relaxed max-w-lg">
-                        As a designer and manager, I strive to create solutions
-                        that harmonize user needs, business goals, and technical
-                        possibilities—fostering meaningful innovation while
-                        guiding and empowering my team.
-                      </p>
-                      {/* Handwritten Signature */}
-                      <span className="font-signature text-3xl sm:text-4xl text-black/90">
-                        Halyna
-                      </span>
-                    </div>
-                  </motion.div>
-                </div>
-
-                {/* Right Column: Profile Image Placeholder / Graphic */}
-                <motion.div
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  variants={scaleIn}
-                  className="lg:col-span-5 flex justify-center lg:justify-end"
-                >
-                  <div className="relative w-full max-w-[420px] aspect-square bg-[#222222] rounded-md overflow-hidden flex flex-col justify-center items-center p-8 group shadow-xl transition-all duration-500 hover:shadow-2xl">
-                    {/* User Avatar SVG Placeholder matching the design mockup */}
-                    <div className="w-24 h-24 rounded-full border-4 border-white/80 flex justify-center items-center mb-4 transition-transform duration-500 group-hover:scale-110">
-                      <div className="w-10 h-10 rounded-full bg-white/80" />
-                    </div>
-                    <div className="flex items-center gap-2 text-white/90">
-                      <svg
-                        className="w-6 h-6 stroke-current"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="2.5"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M4.5 12.75l6 6 9-13.5"
-                        />
-                      </svg>
-                    </div>
-                    <span className="absolute bottom-4 right-4 text-[10px] font-mono text-white/40 uppercase tracking-widest">
-                      PROFILE PORTRAIT
-                    </span>
-                  </div>
-                </motion.div>
-              </section>
-              {/* ========================================== */}
-              {/* 4. WORK EXPERIENCE SECTION                */}
-              {/* ========================================== */}
-              <section className="pt-12 border-t border-black/15">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-                  {/* Section Title Left */}
-                  <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                    variants={fadeInLeft}
-                    className="lg:col-span-4 flex flex-col gap-1"
-                  >
-                    <div className="flex items-baseline gap-2">
-                      <h2 className="text-4xl sm:text-5xl font-black tracking-tight uppercase">
-                        WORK
-                      </h2>
-                      <span className="text-4xl sm:text-5xl font-serif-italic">
-                        experience
-                      </span>
-                    </div>
-                    <span className="text-[10px] font-mono tracking-widest text-black/40 uppercase mt-2">
-                      RELEVANCE [05-1]
-                    </span>
-                  </motion.div>
-
-                  {/* Experience Details Right */}
-                  <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-50px" }}
-                    variants={staggerContainer}
-                    className="lg:col-span-8 flex flex-col gap-8"
-                  >
-                    {/* Role Header */}
-                    <motion.div
-                      variants={fadeInUp}
-                      className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-black/10 gap-2"
-                    >
-                      <div>
-                        <h3 className="text-base sm:text-lg font-black tracking-wider uppercase">
-                          LEAD PRODUCT DESIGNER & TEAM MANAGER
-                        </h3>
-                        <span className="text-xs font-bold tracking-widest uppercase text-black/50">
-                          FLYING BISONS
-                        </span>
-                      </div>
-                      <span className="text-xs font-mono font-bold tracking-widest text-black/70">
-                        JUL 2022 - PRESENT
-                      </span>
-                    </motion.div>
-
-                    {/* Sub-Section 1: Project Estimation */}
-                    <motion.div
-                      variants={fadeInUp}
-                      className="flex flex-col gap-3"
-                    >
-                      <h4 className="text-xs font-bold tracking-widest uppercase text-black/90">
-                        PROJECT ESTIMATION AND PROCESS FACILITATION:
-                      </h4>
-                      <ul className="list-disc list-inside flex flex-col gap-1.5 text-xs sm:text-sm text-black/75 leading-relaxed pl-1">
-                        <li>
-                          Participated in initial project estimations and
-                          contributed to the definition of designed processes.
-                        </li>
-                        <li>
-                          Collaborated with stakeholders and team members to
-                          establish project scope and requirements.
-                        </li>
-                        <li>
-                          Assisted in creating project timelines and resource
-                          allocation plans.
-                        </li>
-                        <li>
-                          Facilitated workshops to gather requirements and align
-                          project goals.
-                        </li>
-                      </ul>
-                    </motion.div>
-
-                    {/* Sub-Section 2: Design and Product Development */}
-                    <motion.div
-                      variants={fadeInUp}
-                      className="flex flex-col gap-3"
-                    >
-                      <h4 className="text-xs font-bold tracking-widest uppercase text-black/90">
-                        DESIGN AND PRODUCT DEVELOPMENT OVERSIGHT:
-                      </h4>
-                      <ul className="list-disc list-inside flex flex-col gap-1.5 text-xs sm:text-sm text-black/75 leading-relaxed pl-1">
-                        <li>
-                          Oversaw the end-to-end product development process,
-                          ensuring alignment with business goals and user needs.
-                        </li>
-                        <li>
-                          Assisted in user research, usability testing, and
-                          feedback gathering to inform design decisions.
-                        </li>
-                        <li>
-                          Delivered polished designs for various products
-                          including websites, SaaS, and mobile apps.
-                        </li>
-                        <li>
-                          Ensured designs met quality standards and addressed
-                          stakeholder expectations.
-                        </li>
-                        <li>
-                          Assisted in product optimization efforts post-launch
-                          to enhance user experience and drive continued product
-                          success.
-                        </li>
-                      </ul>
-                    </motion.div>
-
-                    {/* Sub-Section 3: Cross-Functional Collaboration */}
-                    <motion.div
-                      variants={fadeInUp}
-                      className="flex flex-col gap-3"
-                    >
-                      <h4 className="text-xs font-bold tracking-widest uppercase text-black/90">
-                        CROSS-FUNCTIONAL COLLABORATION:
-                      </h4>
-                      <ul className="list-disc list-inside flex flex-col gap-1.5 text-xs sm:text-sm text-black/75 leading-relaxed pl-1">
-                        <li>
-                          Worked with cross-functional teams comprising project
-                          managers, business analysts, developers, QA analysts,
-                          content writers, and product owners.
-                        </li>
-                      </ul>
-                    </motion.div>
-                  </motion.div>
-                </div>
-              </section>
-            </>
-          )
-        ) : (
-          <>LoadingPage</>
-        )}
+      <div className="min-h-screen bg-[#0d0d0d] text-white flex flex-col items-center justify-center p-6">
+        <div className="w-12 h-12 border-4 border-[#d1b797] border-t-transparent rounded-full animate-spin mb-4" />
+        <p className="text-sm uppercase tracking-widest text-zinc-400">
+          Loading Profile...
+        </p>
       </div>
     );
+  }
+
+  // Error State
+  if (isError || !member) {
+    return (
+      <div className="min-h-screen bg-[#0d0d0d] text-white flex flex-col items-center justify-center p-6 text-center">
+        <h2 className="text-3xl font-bold text-red-400 mb-2">
+          Member Not Found
+        </h2>
+        <p className="text-zinc-400 mb-6 max-w-md">
+          We couldn't find a team member matching ID{" "}
+          <code className="text-[#d1b797]">{memberId}</code>.
+        </p>
+        <Link
+          to="/teams"
+          className="px-6 py-3 bg-[#d1b797] text-black font-semibold rounded-full hover:bg-white transition-colors duration-300"
+        >
+          Return to Team Page
+        </Link>
+      </div>
+    );
+  }
+
+  const profileImage =
+    member.imageRight ||
+    member.imageLeft ||
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80";
+  const skillsList = member.skills;
+
+  return (
+    <div className=" bg-[#0d0d0d] text-zinc-100 selection:bg-[#d1b797] selection:text-black pt-24! md:px-12! px-6!">
+      {/* Main Content Area */}
+      <motion.main
+        className=" mx-auto flex flex-col gap-18!"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Profile Hero Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-20">
+          {/* Left Column: Portrait Card */}
+          <motion.div className="lg:col-span-5" variants={scaleIn}>
+            <div className="relative rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-2xl group">
+              <img
+                src={profileImage}
+                alt={member.title}
+                className="w-full h-120! object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
+
+              <div className="absolute bottom-2 left-4 right-4">
+                <span className="inline-block px-3! py-1! bg-[#d1b797]/20 border mb-4! border-[#d1b797]/40 text-[#d1b797] text-xs font-semibold tracking-wider uppercase rounded-full backdrop-blur-md">
+                  {member.tags}
+                </span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right Column: Biography & Details */}
+          <motion.div
+            className="lg:col-span-7 flex flex-col justify-center"
+            variants={fadeInUp}
+          >
+            <div className="mb-8">
+              <span className="text-xs uppercase tracking-widest mb-4! text-[#d1b797] font-semibold block ">
+                Team Member Profile
+              </span>
+              <h1 className="text-3xl! md:text-5xl font-extrabold! tracking-tight text-white mb-4!">
+                {member.title}
+              </h1>
+              <p className="text-xl text-zinc-400 mb-4! font-light leading-relaxed">
+                {member.summary ||
+                  `Passionate ${member.tags} dedicated to crafting impactful digital products, elevating user experiences, and driving team excellence.`}
+              </p>
+            </div>
+
+            <div className="p-6 rounded-xl px-4! py-4! bg-zinc-900/60 border border-zinc-800/80 backdrop-blur-sm grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6!">
+              <div>
+                <span className="text-xs text-zinc-500 uppercase tracking-wider block mb-1">
+                  Role & Focus
+                </span>
+                <span className="text-sm font-medium text-zinc-200">
+                  {member.tags}
+                </span>
+              </div>
+              <div>
+                <span className="text-xs text-zinc-500 uppercase tracking-wider block mb-1">
+                  Direct Email
+                </span>
+                <a
+                  href={`mailto:${member.email || "contact@aaran.com"}`}
+                  className="text-sm font-medium text-[#d1b797] hover:underline"
+                >
+                  {member.email ||
+                    `${member.title.toLowerCase().replace(/[^a-z]/g, "")}@aaran.com`}
+                </a>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-xl px-4! py-4! bg-zinc-900/60 border border-zinc-800/80 backdrop-blur-sm grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+              <div>
+                <span className="text-xs text-zinc-500 uppercase tracking-wider block mb-1">
+                  Education
+                </span>
+                <span className="text-sm font-medium text-zinc-200">
+                  {member.education}
+                </span>
+              </div>
+              <div>
+                <span className="text-xs text-zinc-500 uppercase tracking-wider block mb-1">
+                  Languages
+                </span>
+                {member.languages &&
+                  member.languages?.map((lan, index) => {
+                    return (
+                      <span className="text-sm font-medium text-zinc-200">
+                        {index == 0 ? "" : ", "}
+                        {lan}
+                      </span>
+                    );
+                  })}
+              </div>
+            </div>
+            {/* Actions */}
+          </motion.div>
+        </div>
+
+        {/* Section 2: Key Skills & Expertise */}
+        <motion.section className="h-fit!" variants={fadeInLeft}>
+          <div className="flex items-center gap-4 mb-8">
+            <h3 className="text-xl! font-bold! uppercase tracking-wider! text-white mb-4!">
+              Technical Skills
+            </h3>
+            <div className="h-px bg-zinc-800 flex-1" />
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            {skillsList.map((skill, idx) => (
+              <motion.span
+                key={idx}
+                variants={fadeInUp}
+                className="px-4! py-2! bg-zinc-900 border border-zinc-800 hover:border-[#d1b797]/50 text-zinc-300 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors"
+              >
+                {skill}
+              </motion.span>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* Section 3: Experience & Contributions */}
+        <motion.section className="h-fit! pb-18!" variants={fadeInUp}>
+          <div className="flex items-center gap-4 mb-8">
+            <h3 className="text-xl! font-bold! uppercase tracking-wider! text-white mb-4!">
+              Experience & Background
+            </h3>
+            <div className="h-px bg-zinc-800 flex-1" />
+          </div>
+
+          <div className="flex flex-col gap-6!">
+            {member.experience &&
+              member.experience.map((item, index) => (
+                <div
+                  key={index}
+                  className="p-6!  rounded-xl bg-zinc-900/40 border border-zinc-800/80 hover:border-zinc-700 transition-colors"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2! mb-2!">
+                    <h4 className="text-lg font-bold text-white">
+                      {item.role}
+                    </h4>
+                    <span className="text-xs px-4! font-mono text-[#d1b797] bg-[#d1b797]/10 py-1! rounded-full border border-[#d1b797]/20">
+                      {item.period}
+                    </span>
+                  </div>
+                  <div className="text-sm font-medium text-zinc-400 mb-3">
+                    {item.company}
+                  </div>
+                  <p className="text-sm text-zinc-400 leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+          </div>
+        </motion.section>
+      </motion.main>
+    </div>
+  );
 }

@@ -7,10 +7,22 @@ import baseURL from "../../../public/baseURL";
 export interface MemberData {
   id: number;
   title: string;
-  tags: string;
-  link: string;
+  address?: string;
+  email?: string;
+  phoneNumberS?: string[];
+  summary: string;
   imageLeft?: string;
   imageRight?: string;
+  tags?: string;
+  skills: string[];
+  experience?: Array<{
+    role: string;
+    company: string;
+    period: string;
+    description: string;
+  }>;
+  education: string[];
+  languages?: string[];
 }
 
 interface SlideObject {
@@ -128,8 +140,8 @@ export default function Team() {
       }`;
 
       const tagsEl = document.createElement("div");
-      tagsEl.className = `text-xs mb-4! sm:text-sm font-medium uppercase tracking-[0.2em] ${index % 2 == 0 ? "text-[#d1b797]" : "text-white"}  mb-3`;
-      tagsEl.textContent = data.tags;
+      tagsEl.className = `text-xs text-center mb-4! sm:text-sm font-medium uppercase tracking-[0.2em] ${index % 2 == 0 ? "text-[#d1b797]" : "text-white"}  mb-3`;
+      tagsEl.textContent = data.tags || "";
 
       const titleEl = document.createElement("h1");
       titleEl.className = `text-xl! mb-2! sm:text-2xl! md:text-6xl! ${index % 2 == 0 ? "text-white" : "text-[#d1b797]"} font-extrabold uppercase tracking-tight text-center leading-tight`;

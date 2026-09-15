@@ -102,9 +102,17 @@ export default function Team() {
   const [members, setMembers] = useState<MemberData[]>([]);
   useEffect(() => {
     // Note the leading slash: /teams.json points to the public folder root
-    fetch("../../../public/team.json")
-      .then((res) => res.json())
-      .then((data) => setMembers(data));
+    fetch("/team.json")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load team data");
+        return res.json();
+      })
+      .then((data: MemberData[]) => {
+        setMembers(data);
+      })
+      .catch((err) => {
+        console.error("Error loading profile:", err);
+      });
   }, []);
 
   useEffect(() => {

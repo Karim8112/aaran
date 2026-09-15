@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, type Variants } from "framer-motion";
 import { type MemberData } from "./Team";
+import LoadingScreen from "../Loading";
+import NotFound from "../NotFound";
 // ==========================================
 // 1. TYPES & INTERFACES
 // ==========================================
@@ -106,33 +108,18 @@ export default function Profile() {
   // Loading Skeleton State
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#0d0d0d] text-white flex flex-col gap-6! items-center justify-center p-6!">
-        <div className="w-12 h-12 border-4 border-[#d1b797] border-t-transparent rounded-full animate-spin mb-4!" />
-        <p className="text-sm uppercase tracking-widest text-zinc-400">
-          Loading Profile...
-        </p>
-      </div>
+      <>
+        <LoadingScreen />;
+      </>
     );
   }
 
   // Error State
   if (isError || !member) {
     return (
-      <div className="min-h-screen  bg-[#0d0d0d] text-white flex flex-col  gap-6! items-center justify-center p-6 text-center">
-        <h2 className="text-3xl font-bold text-red-400 mb-2">
-          Member Not Found
-        </h2>
-        <p className="text-zinc-400 mb-6 max-w-md">
-          We couldn't find a team member matching ID{" "}
-          <code className="text-[#d1b797]">{memberId}</code>.
-        </p>
-        <Link
-          to="/teams"
-          className="px-6! py-3!  text-white font-semibold rounded-full hover:bg-white hover:text-black transition-colors duration-300"
-        >
-          Return to Team Page
-        </Link>
-      </div>
+      <>
+        <NotFound />
+      </>
     );
   }
 

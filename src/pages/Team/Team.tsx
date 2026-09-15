@@ -108,6 +108,7 @@ export default function Team() {
   }, []);
 
   useEffect(() => {
+    const columnsSnapshot = columns.current;
     columns.current.left.element = leftColRef.current;
     columns.current.right.element = rightColRef.current;
 
@@ -273,7 +274,7 @@ export default function Team() {
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
 
-      Object.values(columns.current).forEach((col) => {
+      Object.values(columnsSnapshot).forEach((col) => {
         col.visibleSlides.forEach((obj) => obj.slideEl.remove());
         col.visibleSlides.clear();
       });

@@ -6,10 +6,11 @@ export default function Navbar() {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
-  const activeClass = "text-[#D1B797] font-normal border-b border-[#D1B797]";
+  const activeClass =
+    "text-[#D1B797] bg-black/10 px-4! py-1! rounded-full font-normal ";
 
   const getClass = (path: string) =>
-    location.pathname === path ? activeClass : " hover:text-white";
+    location.pathname === path ? activeClass : " hover:text-white px-4!";
 
   // Automatically close mobile menu on route change
 
@@ -37,7 +38,7 @@ export default function Navbar() {
       {/* 1. DESKTOP NAVIGATION (>= 768px)          */}
       {/* ========================================== */}
       <nav className="hidden md:flex nav-links justify-center w-full items-center pt-4! gap-16 font-light text-white fixed top-0 left-0 z-50 ">
-        <div className="glass-container-of-dev flex bg-gray-500/50  rounded-full justify-center items-center gap-16 text-white font-light px-6! py-2!">
+        <div className="glass-container-of-dev  backdrop-blur-md border border-white/20 shadow-lg   flex bg-gray-900/20  rounded-full justify-center items-center gap-8 text-white font-light px-2! py-2!">
           <Link to="/home" className={`${getClass("/home")} ${getClass("/")}`}>
             Home
           </Link>

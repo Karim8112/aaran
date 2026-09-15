@@ -106,8 +106,8 @@ export default function Profile() {
   // Loading Skeleton State
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#0d0d0d] text-white flex flex-col items-center justify-center p-6">
-        <div className="w-12 h-12 border-4 border-[#d1b797] border-t-transparent rounded-full animate-spin mb-4" />
+      <div className="min-h-screen bg-[#0d0d0d] text-white flex flex-col gap-6! items-center justify-center p-6!">
+        <div className="w-12 h-12 border-4 border-[#d1b797] border-t-transparent rounded-full animate-spin mb-4!" />
         <p className="text-sm uppercase tracking-widest text-zinc-400">
           Loading Profile...
         </p>
@@ -118,7 +118,7 @@ export default function Profile() {
   // Error State
   if (isError || !member) {
     return (
-      <div className="min-h-screen bg-[#0d0d0d] text-white flex flex-col items-center justify-center p-6 text-center">
+      <div className="min-h-screen  bg-[#0d0d0d] text-white flex flex-col  gap-6! items-center justify-center p-6 text-center">
         <h2 className="text-3xl font-bold text-red-400 mb-2">
           Member Not Found
         </h2>
@@ -128,7 +128,7 @@ export default function Profile() {
         </p>
         <Link
           to="/teams"
-          className="px-6 py-3 bg-[#d1b797] text-black font-semibold rounded-full hover:bg-white transition-colors duration-300"
+          className="px-6! py-3!  text-white font-semibold rounded-full hover:bg-white hover:text-black transition-colors duration-300"
         >
           Return to Team Page
         </Link>

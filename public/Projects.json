@@ -1,0 +1,407 @@
+[
+  {
+    "id": 1,
+    "name": "Hygiene Items LTA",
+    "Donor": "UNICEF",
+    "value": null,
+    "startDate": "2023-01-01T00:00:00.000Z",
+    "endDate": "2023-12-31T00:00:00.000Z",
+    "projectType": "Supplement"
+  },
+  {
+    "id": 2,
+    "name": "al Zerbia Furniture",
+    "Donor": "UNHCR",
+    "value": "3345 Euro",
+    "startDate": "2023-12-20T00:00:00.000Z",
+    "endDate": "2024-01-15T00:00:00.000Z",
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 3,
+    "name": "Dar Hamaad Restoration",
+    "Donor": "French-Arabic Inst.",
+    "value": "12801 Euro",
+    "startDate": "2023-01-01T00:00:00.000Z",
+    "endDate": "2024-12-31T00:00:00.000Z",
+    "projectType": "Arch. Restoration"
+  },
+  {
+    "id": 4,
+    "name": "Al-Fadl Canal",
+    "Donor": "ICRC",
+    "value": "80000 Euro",
+    "startDate": "2023-01-01T00:00:00.000Z",
+    "endDate": "2023-12-31T00:00:00.000Z",
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 5,
+    "name": "Water Authority Bldg",
+    "Donor": "ICRC",
+    "value": "27325 Euro",
+    "startDate": "2023-01-01T00:00:00.000Z",
+    "endDate": "2023-12-31T00:00:00.000Z",
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 6,
+    "name": "al Razi Hospital",
+    "Donor": "UNHCR",
+    "value": "5400 Euro",
+    "startDate": "2023-09-07T00:00:00.000Z",
+    "endDate": "2023-10-25T00:00:00.000Z",
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 7,
+    "name": "al Razi Hospital",
+    "Donor": "ICRC",
+    "value": "10754 Euro",
+    "startDate": "2023-07-22T00:00:00.000Z",
+    "endDate": "2023-11-08T00:00:00.000Z",
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 8,
+    "name": "Abdullah Kousa School",
+    "Donor": "ICRC",
+    "value": "55217 Euro",
+    "startDate": "2021-12-04T00:00:00.000Z",
+    "endDate": "2022-03-01T00:00:00.000Z",
+    "projectType": "Arch. Restoration"
+  },
+  {
+    "id": 9,
+    "name": "Salah Al-Din Sewage",
+    "Donor": "ICRC",
+    "value": "108466 Euro",
+    "startDate": "2022-02-06T00:00:00.000Z",
+    "endDate": "2022-03-30T00:00:00.000Z",
+    "projectType": "Sewage Replacement"
+  },
+  {
+    "id": 10,
+    "name": "7 Schools Restoration",
+    "Donor": "UNICEF",
+    "value": "711422 Euro",
+    "startDate": "2022-02-21T00:00:00.000Z",
+    "endDate": "2022-07-30T00:00:00.000Z",
+    "projectType": "Schools Rehab"
+  },
+  {
+    "id": 11,
+    "name": "Furniture Supply",
+    "Donor": "ICRC",
+    "value": "8642 Euro",
+    "startDate": "2022-07-18T00:00:00.000Z",
+    "endDate": "2022-08-08T00:00:00.000Z",
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 12,
+    "name": "Sewage Cover Supply",
+    "Donor": "ICRC",
+    "value": "68464 Euro",
+    "startDate": "2022-08-22T00:00:00.000Z",
+    "endDate": "2022-09-29T00:00:00.000Z",
+    "projectType": "Sewage Replacement"
+  },
+  {
+    "id": 13,
+    "name": "Youth Housing Courtyard",
+    "Donor": "ICRC",
+    "value": "53789 Euro",
+    "startDate": "2022-11-22T00:00:00.000Z",
+    "endDate": "2023-03-20T00:00:00.000Z",
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 14,
+    "name": "School Desks Supply",
+    "Donor": "UNHCR",
+    "value": "30000 Euro",
+    "startDate": "2022-08-21T00:00:00.000Z",
+    "endDate": null,
+    "projectType": "Schools Rehab"
+  },
+  {
+    "id": 15,
+    "name": "12 Schools Restoration",
+    "Donor": "UNICEF",
+    "value": "1,000,002 USD",
+    "startDate": "2022-08-03T00:00:00.000Z",
+    "endDate": "2023-02-02T00:00:00.000Z",
+    "projectType": "Schools Rehab"
+  },
+  {
+    "id": 16,
+    "name": "Rainwater Drain 2022",
+    "Donor": "ICRC",
+    "value": "40800 Euro",
+    "startDate": "2022-10-26T00:00:00.000Z",
+    "endDate": "2022-12-15T00:00:00.000Z",
+    "projectType": "Sewage Replacement"
+  },
+  {
+    "id": 17,
+    "name": "Furniture Supply",
+    "Donor": "ICRC",
+    "value": "22789 Euro",
+    "startDate": "2022-11-15T00:00:00.000Z",
+    "endDate": "2022-12-01T00:00:00.000Z",
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 18,
+    "name": "3 Schools Restoration",
+    "Donor": "UNDP",
+    "value": "246448 USD",
+    "startDate": "2022-12-10T00:00:00.000Z",
+    "endDate": "2023-04-23T00:00:00.000Z",
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 19,
+    "name": "Rescue Equipment",
+    "Donor": "ICRC",
+    "value": "37642 Euro",
+    "startDate": "2023-03-13T00:00:00.000Z",
+    "endDate": "2023-07-20T00:00:00.000Z",
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 20,
+    "name": "Rainwater Drain 2023",
+    "Donor": "ICRC",
+    "value": "91000 Euro",
+    "startDate": "2023-11-07T00:00:00.000Z",
+    "endDate": "2023-08-20T00:00:00.000Z",
+    "projectType": "Sewage Replacement"
+  },
+  {
+    "id": 21,
+    "name": "Qadi Askar Bakery",
+    "Donor": "UNDP",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 22,
+    "name": "Al-Wahda Bakery",
+    "Donor": "UNDP",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 23,
+    "name": "Hussein Al-Ghouri School",
+    "Donor": "UN",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Schools Rehab"
+  },
+  {
+    "id": 24,
+    "name": "Abdul Karim Najjar School",
+    "Donor": "UN",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Schools Rehab"
+  },
+  {
+    "id": 25,
+    "name": "Hussein Ibrahim School",
+    "Donor": "UN",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Schools Rehab"
+  },
+  {
+    "id": 26,
+    "name": "Ramzi Al-Lulu School",
+    "Donor": "UN",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Schools Rehab"
+  },
+  {
+    "id": 27,
+    "name": "Thermal Station School",
+    "Donor": "UN",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Schools Rehab"
+  },
+  {
+    "id": 28,
+    "name": "Umm Al-Amd School",
+    "Donor": "UN",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Schools Rehab"
+  },
+  {
+    "id": 29,
+    "name": "Marwan Bin Al-Hakam School",
+    "Donor": "UNDP",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Schools Rehab"
+  },
+  {
+    "id": 30,
+    "name": "Asmaa Bint Abi Bakr School",
+    "Donor": "UNDP",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Schools Rehab"
+  },
+  {
+    "id": 31,
+    "name": "Ibn Khaldun Mental Health Hospital",
+    "Donor": "Red Cross/Crescent",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 32,
+    "name": "Sheikh Maqsood Sewage Project",
+    "Donor": null,
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Sewage Replacement"
+  },
+  {
+    "id": 33,
+    "name": "Sewage Contract",
+    "Donor": "UNDP",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Sewage Replacement"
+  },
+  {
+    "id": 34,
+    "name": "Water Contract",
+    "Donor": "UNDP",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Water Supply"
+  },
+  {
+    "id": 35,
+    "name": "Idlib Schools Contract",
+    "Donor": "UN",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Schools Rehab"
+  },
+  {
+    "id": 36,
+    "name": "Salah Al-Din Sewage Contract",
+    "Donor": "UN-Habitat",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Sewage Replacement"
+  },
+  {
+    "id": 37,
+    "name": "Municipal Palace Office Renovation",
+    "Donor": null,
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 38,
+    "name": "City Waste Container Supply",
+    "Donor": "UN-Habitat",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Supply"
+  },
+  {
+    "id": 39,
+    "name": "Akhtarin Camp Rehab & Solar Power",
+    "Donor": "UN",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Rehab/Solar"
+  },
+  {
+    "id": 40,
+    "name": "Al-Razi Bakery",
+    "Donor": "Red Cross/Crescent",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 41,
+    "name": "Al-Razi Hospital",
+    "Donor": "Red Cross/Crescent",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Rehabilitation"
+  },
+  {
+    "id": 42,
+    "name": "Arbin & Douma Furniture Supply",
+    "Donor": "UN-Habitat",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Supply"
+  },
+  {
+    "id": 43,
+    "name": "UNRWA Furniture Supply",
+    "Donor": "UNRWA",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Supply"
+  },
+  {
+    "id": 44,
+    "name": "Water Culverts",
+    "Donor": "Red Cross/Crescent",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Infrastructure"
+  },
+  {
+    "id": 45,
+    "name": "Italian Water Network Contract",
+    "Donor": "Red Cross/Crescent",
+    "value": null,
+    "startDate": null,
+    "endDate": null,
+    "projectType": "Water Supply"
+  }
+]

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { motion, type Variants } from "framer-motion";
 import { type MemberData } from "./Team";
 import LoadingScreen from "../Loading";

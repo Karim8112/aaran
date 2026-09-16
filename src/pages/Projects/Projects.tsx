@@ -36,7 +36,7 @@ export default function Projects() {
       {isLoading ? (
         <LoadingScreen />
       ) : !isError ? (
-        <div className="w-screen min-h-screen bg-gray-400 px-6! md:px-12! py-12! md:py-18!">
+        <div className="w-screen min-h-screen bg-[#0B0B0B] px-6! md:px-12! py-12! md:py-18!">
           <h1 className="Projects mb-12! text-xl! md:text-3xl!">
             All Projects
           </h1>

@@ -1,16 +1,17 @@
 import {
   MaterialReactTable,
   useMaterialReactTable,
-  type MRT_ColumnDef, // <--- import MRT_ColumnDef
+  type MRT_ColumnDef,
+  type MRT_PaginationState, // <--- import MRT_ColumnDef
 } from "material-react-table";
 
 import { type ProjectData } from "./types";
 import { useState } from "react";
 
 const ProjectTable = function ({ data }: { data: ProjectData[] }) {
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
-    pageSize: 5, //customize the default page size
+    pageSize: 10, //customize the default page size
   });
 
   const columns: Array<MRT_ColumnDef<ProjectData>> = [
@@ -49,13 +50,34 @@ const ProjectTable = function ({ data }: { data: ProjectData[] }) {
   const table = useMaterialReactTable({
     columns,
     data,
-    enableGlobalFilter: true, //override default options
-    initialState: {
-      showColumnFilters: false, //override default initial state for just this table
+    enableGlobalFilter: true,
+
+    onPaginationChange: setPagination,
+    state: { pagination },
+    muiPaginationProps: {
+      rowsPerPageOptions: [10, 20],
     },
-    onPaginationChange: setPagination, //hoist pagination state to your state when it changes internally
-    state: { pagination }, //pass the pagination state to the table
-    //...
+
+    // Styling
+    muiTablePaperProps: { sx: { borderRadius: "12px", overflow: "hidden" } },
+    muiTableHeadCellProps: {
+      sx: { backgroundColor: "#0a0a0a", color: "#ffb74d" },
+    },
+
+    muiTableBodyRowProps: {
+      sx: {
+        backgroundColor: "#262626",
+        "&:hover": { backgroundColor: "#333333" },
+      },
+    },
+
+    muiTableBodyCellProps: { sx: { color: "#ffffff" } },
+
+    muiBottomToolbarProps: { sx: { backgroundColor: "#0a0a0a" } }, // Dark black color: '#ffffff',
+    initialState: {
+      showColumnFilters: false,
+      density: "compact",
+    },
   });
 
   return <MaterialReactTable table={table} />;

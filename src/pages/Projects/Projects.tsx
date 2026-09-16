@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { type ProjectData } from "./types";
 import LoadingScreen from "../Loading";
 import NotFound from "../NotFound";
-import ProjectTable from "./table";
+import ProjectTable from "./Table";
 
 // ==========================================
 // 1. TYPES & CONFIGURATION

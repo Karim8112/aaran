@@ -1,82 +1,127 @@
+"use client";
+
+import { useMemo } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
-  type MRT_PaginationState, // <--- import MRT_ColumnDef
 } from "material-react-table";
-
 import { type ProjectData } from "./types";
-import { useState } from "react";
 
 const ProjectTable = function ({ data }: { data: ProjectData[] }) {
-  const [pagination, setPagination] = useState<MRT_PaginationState>({
-    pageIndex: 0,
-    pageSize: 10, //customize the default page size
-  });
-
-  const columns: Array<MRT_ColumnDef<ProjectData>> = [
-    {
-      header: "Project Name",
-      accessorKey: "name",
-      enableSorting: true,
-    },
-    {
-      header: "Donor",
-      accessorKey: "Donor",
-      enableSorting: true,
-    },
-    {
-      header: "Value",
-      accessorFn: (originalRow) => Number(originalRow.value),
-      enableSorting: true,
-    },
-    {
-      header: "Start Date",
-      accessorKey: "startDate",
-      enableSorting: true,
-    },
-    {
-      header: "End Date",
-      accessorKey: "endDate",
-      enableSorting: true,
-    },
-    {
-      header: "Project Type",
-      accessorKey: "projectType",
-      enableSorting: true,
-    },
-  ];
+  // 1. MUST memoize columns to prevent infinite re-renders and state resets!
+  const columns = useMemo<MRT_ColumnDef<ProjectData>[]>(
+    () => [
+      {
+        header: "Project Name",
+        accessorKey: "name",
+        enableSorting: true,
+      },
+      {
+        header: "Donor",
+        accessorKey: "Donor",
+        enableSorting: true,
+      },
+      {
+        header: "Value",
+        accessorFn: (originalRow) => originalRow.value ?? "N/A",
+        enableSorting: true,
+      },
+      {
+        header: "Start Date",
+        accessorKey: "startDate",
+        enableSorting: true,
+      },
+      {
+        header: "End Date",
+        accessorKey: "endDate",
+        enableSorting: true,
+      },
+      {
+        header: "Project Type",
+        accessorKey: "projectType",
+        enableSorting: true,
+      },
+    ],
+    [],
+  );
 
   const table = useMaterialReactTable({
     columns,
     data,
     enableGlobalFilter: true,
 
-    onPaginationChange: setPagination,
-    state: { pagination },
+    // Initial table state
+    initialState: {
+      showColumnFilters: false,
+      density: "compact",
+      pagination: { pageIndex: 0, pageSize: 10 },
+    },
+
     muiPaginationProps: {
       rowsPerPageOptions: [10, 20],
     },
 
-    // Styling
-    muiTablePaperProps: { sx: { borderRadius: "12px", overflow: "hidden" } },
-    muiTableHeadCellProps: {
-      sx: { backgroundColor: "#0a0a0a", color: "#ffb74d" },
+    // 2. Base background color for the table and toolbars[cite: 1]
+    mrtTheme: {
+      baseBackgroundColor: "#262626",
     },
 
-    muiTableBodyRowProps: {
+    // 3. Customize the Paper wrapping the table[cite: 1]
+    muiTablePaperProps: {
+      elevation: 0,
       sx: {
-        backgroundColor: "#262626",
-        "&:hover": { backgroundColor: "#333333" },
+        borderRadius: "12px",
+        overflow: "hidden",
+        backgroundColor: "#0a0a0a",
       },
     },
 
-    muiTableBodyCellProps: { sx: { color: "#ffffff" } },
+    // Header Styling
+    muiTableHeadRowProps: {
+      sx: { backgroundColor: "#0a0a0a" },
+    },
+    muiTableHeadCellProps: {
+      sx: {
+        backgroundColor: "#0a0a0a",
+        color: "#ffb74d",
+        fontWeight: "bold",
+      },
+    },
 
-    muiBottomToolbarProps: { sx: { backgroundColor: "#0a0a0a" } }, // Dark black color: '#ffffff',
-    initialState: {
-      showColumnFilters: false,
-      density: "compact",
+    // 4. Consolidating Body Row styling as recommended by MRT Docs[cite: 1]
+    muiTableBodyProps: {
+      sx: {
+        "& tr > td": {
+          backgroundColor: "#262626",
+          color: "#ffffff",
+        },
+        "& tr:hover > td": {
+          backgroundColor: "#333333",
+        },
+      },
+    },
+
+    // Top Toolbar
+    muiTopToolbarProps: {
+      sx: {
+        backgroundColor: "#0a0a0a",
+        "& .MuiSvgIcon-root, & .MuiInputBase-input": {
+          color: "#ffffff",
+        },
+      },
+    },
+
+    // Bottom Toolbar (Pagination)
+    muiBottomToolbarProps: {
+      sx: {
+        backgroundColor: "#0a0a0a",
+        color: "#ffffff",
+        "& .MuiTypography-root, & .MuiSvgIcon-root, & .MuiTablePagination-select, & .MuiInputBase-root":
+          {
+            color: "#ffffff",
+          },
+      },
     },
   });
 

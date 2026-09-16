@@ -30,7 +30,7 @@ export default function Projects() {
         setIsError(true);
       });
   }, []);
-  console.log(projects);
+
   return (
     <>
       {isLoading ? (

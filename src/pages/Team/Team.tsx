@@ -1,29 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import baseURL from "../../../public/baseURL";
+
+import { useTeam } from "./useTeam";
 // ==========================================
 // 1. TYPES & CONFIGURATION
 // ==========================================
-export interface MemberData {
-  id: number;
-  title: string;
-  address?: string;
-  email?: string;
-  phoneNumberS?: string[];
-  summary: string;
-  imageLeft?: string;
-  imageRight?: string;
-  tags?: string;
-  skills: string[];
-  experience?: Array<{
-    role: string;
-    company: string;
-    period: string;
-    description: string;
-  }>;
-  education: string[];
-  languages?: string[];
-}
 
 interface SlideObject {
   slideEl: HTMLDivElement;
@@ -87,6 +69,7 @@ function getTitlePosition(progress: number): number {
 export default function Team() {
   const leftColRef = useRef<HTMLDivElement | null>(null);
   const rightColRef = useRef<HTMLDivElement | null>(null);
+  const Team = useTeam();
 
   // useRef persists animation targets across React re-renders
   const scrollPosition = useRef<number>(1);
@@ -99,22 +82,6 @@ export default function Team() {
     right: { element: null, visibleSlides: new Map() },
   });
 
-  const [members, setMembers] = useState<MemberData[]>([]);
-  useEffect(() => {
-    // Note the leading slash: /teams.json points to the public folder root
-    fetch("/team.json")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to load team data");
-        return res.json();
-      })
-      .then((data: MemberData[]) => {
-        setMembers(data);
-      })
-      .catch((err) => {
-        console.error("Error loading profile:", err);
-      });
-  }, []);
-
   useEffect(() => {
     const columnsSnapshot = columns.current;
     columns.current.left.element = leftColRef.current;
@@ -122,7 +89,7 @@ export default function Team() {
 
     const createSlideNode = (index: number, columnKey: "left" | "right") => {
       // Bounded direct array lookup (1-based index)
-      const data = members[index - 1];
+      const data = Team.data?.data[index - 1];
       if (!data) return;
       const isLeft = columnKey === "left";
       const columnData = columns.current[columnKey];
@@ -137,7 +104,7 @@ export default function Team() {
       imgEl.className =
         "absolute inset-0 w-full h-full object-cover [will-change:transform]";
       imgEl.src = isLeft ? data.imageLeft || "" : data.imageRight || "";
-      imgEl.alt = data.title;
+      imgEl.alt = data.title ?? "";
 
       const overlayEl = document.createElement("div");
       overlayEl.className =
@@ -150,16 +117,19 @@ export default function Team() {
 
       const tagsEl = document.createElement("div");
       tagsEl.className = `text-xs text-center mb-4! sm:text-sm font-medium uppercase tracking-[0.2em] ${index % 2 == 0 ? "text-[#d1b797]" : "text-white"}  mb-3`;
-      tagsEl.textContent = data.tags || "";
+      const tagText = Array.isArray(data.tags)
+        ? data.tags.join(" • ")
+        : (data.tags ?? "");
+      tagsEl.textContent = tagText;
 
       const titleEl = document.createElement("h1");
       titleEl.className = `text-xl! mb-2! sm:text-2xl! md:text-6xl! ${index % 2 == 0 ? "text-white" : "text-[#d1b797]"} font-extrabold uppercase tracking-tight text-center leading-tight`;
-      titleEl.textContent = data.title;
+      titleEl.textContent = data.title ?? "";
 
       const linkEl = document.createElement("a");
       linkEl.className =
         "text-xs sm:text-sm tracking-widest! font-semibold mt-4 text-white border-b border-white/60 hover:border-white pointer-events-auto transition-opacity duration-300 hover:opacity-80";
-      linkEl.href = `${baseURL.concat("team/").concat(String(data.id))}`;
+      linkEl.href = `${baseURL.concat("team/").concat(String(data._id))}`;
       linkEl.textContent = "View Profile";
 
       copyBlock.appendChild(tagsEl);
@@ -174,6 +144,8 @@ export default function Team() {
       columnData.visibleSlides.set(index, { slideEl, imgEl, copyBlock });
     };
 
+    const totalSlides = Team.data?.data.length ?? 1;
+
     const updateSlider = () => {
       // Bounded first and last indices (Bounded between 1 and TEAM_SLIDES.length)
       const firstIndex = Math.max(
@@ -181,7 +153,7 @@ export default function Team() {
         Math.floor(scrollPosition.current) - SETTINGS.buffer,
       );
       const lastIndex = Math.min(
-        members.length,
+        totalSlides,
         Math.ceil(scrollPosition.current) + SETTINGS.buffer,
       );
 
@@ -244,10 +216,11 @@ export default function Team() {
     const handleWheel = (e: WheelEvent) => {
       const clampedDelta = Math.max(-80, Math.min(80, e.deltaY));
       const step = clampedDelta / SETTINGS.scrollSensitivity;
+      const maxSlide = totalSlides;
 
       scrollTarget.current = Math.max(
         1,
-        Math.min(members.length, scrollTarget.current + step),
+        Math.min(maxSlide, scrollTarget.current + step),
       );
     };
 
@@ -263,10 +236,11 @@ export default function Team() {
 
       const clampedDelta = Math.max(-60, Math.min(60, deltaY));
       const step = (clampedDelta * 1.5) / SETTINGS.scrollSensitivity;
+      const maxSlide = totalSlides;
 
       scrollTarget.current = Math.max(
         1,
-        Math.min(members.length, scrollTarget.current + step),
+        Math.min(maxSlide, scrollTarget.current + step),
       );
     };
 
@@ -287,7 +261,7 @@ export default function Team() {
         col.visibleSlides.clear();
       });
     };
-  }, [members]);
+  }, [Team.data]);
 
   return (
     <section className="fixed inset-0 w-screen h-screen flex flex-row overflow-hidden bg-[#0d0d0d] select-none">

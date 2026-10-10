@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import {
   Box,
   Paper,
@@ -12,38 +12,38 @@ import {
   TableSortLabel,
   TextField,
 } from "@mui/material";
-import { type ProjectData } from "./types";
+import { type IProject } from "../../Model/IProject";
 
 type Order = "asc" | "desc";
 
 interface ColumnDef {
-  id: keyof ProjectData;
+  id: keyof IProject;
   label: string;
 }
 
 const columns: ColumnDef[] = [
   { id: "name", label: "Project Name" },
-  { id: "Donor", label: "Donor" },
+  { id: "donor", label: "Donor" },
   { id: "value", label: "Value" },
   { id: "startDate", label: "Start Date" },
   { id: "endDate", label: "End Date" },
   { id: "projectType", label: "Project Type" },
 ];
 
-export default function ProjectTable({ data = [] }: { data?: ProjectData[] }) {
+export default function ProjectTable({ data = [] }: { data?: IProject[] }) {
   // 1. Pagination State
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
 
   // 2. Sorting State
-  const [orderBy, setOrderBy] = useState<keyof ProjectData | "">("name");
+  const [orderBy, setOrderBy] = useState<keyof IProject | "">("name");
   const [order, setOrder] = useState<Order>("asc");
 
   // 3. Search Filter State
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Handle Sort Toggle
-  const handleRequestSort = (property: keyof ProjectData) => {
+  const handleRequestSort = (property: keyof IProject) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
@@ -83,17 +83,13 @@ export default function ProjectTable({ data = [] }: { data?: ProjectData[] }) {
     Math.ceil(filteredAndSortedData.length / rowsPerPage) - 1,
   );
 
-  useEffect(() => {
-    if (page > maxPage) {
-      setPage(0);
-    }
-  }, [page, maxPage]);
+  const currentPage = Math.min(page, maxPage);
 
   // Slice Current Page Data
   const paginatedData = useMemo(() => {
-    const start = page * rowsPerPage;
+    const start = currentPage * rowsPerPage;
     return filteredAndSortedData.slice(start, start + rowsPerPage);
-  }, [filteredAndSortedData, page, rowsPerPage]);
+  }, [filteredAndSortedData, currentPage, rowsPerPage]);
 
   return (
     <div className="flex flex-col gap-6!">
@@ -175,7 +171,7 @@ export default function ProjectTable({ data = [] }: { data?: ProjectData[] }) {
               {paginatedData.length > 0 ? (
                 paginatedData.map((row) => (
                   <TableRow
-                    key={row.id}
+                    key={row._id}
                     sx={{
                       backgroundColor: "#262626",
                       "&:hover": { backgroundColor: "#333333" },
@@ -189,7 +185,7 @@ export default function ProjectTable({ data = [] }: { data?: ProjectData[] }) {
                     <TableCell
                       sx={{ color: "#ffffff", borderColor: "#333333" }}
                     >
-                      {row.Donor ?? "N/A"}
+                      {row.donor ?? "N/A"}
                     </TableCell>
                     <TableCell
                       sx={{ color: "#ffffff", borderColor: "#333333" }}
@@ -236,7 +232,7 @@ export default function ProjectTable({ data = [] }: { data?: ProjectData[] }) {
           component="div"
           count={filteredAndSortedData.length}
           rowsPerPage={rowsPerPage}
-          page={page}
+          page={currentPage}
           onPageChange={(_event, newPage) => setPage(newPage)}
           onRowsPerPageChange={(event) => {
             setRowsPerPage(parseInt(event.target.value, 20));

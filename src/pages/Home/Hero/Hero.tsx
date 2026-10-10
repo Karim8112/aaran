@@ -3,8 +3,9 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import spotlight2 from "../../../assets/image-7.png";
 import InversionLens from "./InversionLens";
+const spotlight2 =
+  "https://res.cloudinary.com/dwa0wqrln/image/upload/v1791602548/image-7.png";
 
 // import Col from "./Col";
 

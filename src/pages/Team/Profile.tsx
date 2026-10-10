@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { motion, type Variants } from "framer-motion";
-import { type MemberData } from "./Team";
 import LoadingScreen from "../Loading";
-import NotFound from "../NotFound";
+import { useOneTeam } from "./useOne";
 // ==========================================
 // 1. TYPES & INTERFACES
 // ==========================================
@@ -67,67 +65,21 @@ const scaleIn: Variants = {
 // ==========================================
 export default function Profile() {
   const { memberId } = useParams<{ memberId: string }>();
-
-  const [member, setMember] = useState<MemberData | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isError, setIsError] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!memberId) {
-      setIsError(true);
-      setIsLoading(false);
-      return;
-    }
-
-    setIsLoading(true);
-    setIsError(false);
-
-    // Fetch team dataset from public directory
-    fetch("/team.json")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to load team data");
-        return res.json();
-      })
-      .then((data: MemberData[]) => {
-        const foundMember = data.find((m) => String(m.id) === String(memberId));
-        if (foundMember) {
-          setMember(foundMember);
-        } else {
-          setIsError(true);
-        }
-      })
-      .catch((err) => {
-        console.error("Error loading profile:", err);
-        setIsError(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [memberId]);
+  const team_member = useOneTeam(memberId as string);
 
   // Loading Skeleton State
-  if (isLoading) {
+  if (team_member.loading) {
     return (
       <>
-        <LoadingScreen />;
-      </>
-    );
-  }
-
-  // Error State
-  if (isError || !member) {
-    return (
-      <>
-        <NotFound />
+        <LoadingScreen what="Profile" />;
       </>
     );
   }
 
   const profileImage =
-    member.imageRight ||
-    member.imageLeft ||
+    team_member.data?.imageLeft ||
     "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80";
-  const skillsList = member.skills;
+  const skillsList = team_member?.data?.skills;
 
   return (
     <div className=" bg-[#0d0d0d] text-zinc-100 selection:bg-[#d1b797] selection:text-black pt-24! md:px-12! px-6!">
@@ -145,14 +97,14 @@ export default function Profile() {
             <div className="relative rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shadow-2xl group">
               <img
                 src={profileImage}
-                alt={member.title}
+                alt={team_member.data?.title}
                 className="w-full h-120! object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
               />
               <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
 
               <div className="absolute bottom-2 left-4 right-4">
                 <span className="inline-block px-3! py-1! bg-[#d1b797]/20 border mb-4! border-[#d1b797]/40 text-[#d1b797] text-xs font-semibold tracking-wider uppercase rounded-full backdrop-blur-md">
-                  {member.tags}
+                  {team_member.data?.tags}
                 </span>
               </div>
             </div>
@@ -168,11 +120,11 @@ export default function Profile() {
                 Team Member Profile
               </span>
               <h1 className="text-3xl! md:text-5xl font-extrabold! tracking-tight text-white mb-4!">
-                {member.title}
+                {team_member.data?.title}
               </h1>
               <p className="text-xl text-zinc-400 mb-4! font-light leading-relaxed">
-                {member.summary ||
-                  `Passionate ${member.tags} dedicated to crafting impactful digital products, elevating user experiences, and driving team excellence.`}
+                {team_member.data?.summary ||
+                  `Passionate ${team_member.data?.tags} dedicated to crafting impactful digital products, elevating user experiences, and driving team excellence.`}
               </p>
             </div>
 
@@ -182,7 +134,7 @@ export default function Profile() {
                   Role & Focus
                 </span>
                 <span className="text-sm font-medium text-zinc-200">
-                  {member.tags}
+                  {team_member.data?.tags}
                 </span>
               </div>
               <div>
@@ -190,11 +142,11 @@ export default function Profile() {
                   Direct Email
                 </span>
                 <a
-                  href={`mailto:${member.email || "contact@aaran.com"}`}
+                  href={`mailto:${team_member.data?.email || "contact@aaran.com"}`}
                   className="text-sm font-medium text-[#d1b797] hover:underline"
                 >
-                  {member.email ||
-                    `${member.title.toLowerCase().replace(/[^a-z]/g, "")}@aaran.com`}
+                  {team_member.data?.email ||
+                    `${(team_member.data?.title || "").toLowerCase().replace(/[^a-z]/g, "")}@aaran.com`}
                 </a>
               </div>
             </div>
@@ -205,15 +157,15 @@ export default function Profile() {
                   Education
                 </span>
                 <span className="text-sm font-medium text-zinc-200">
-                  {member.education}
+                  {team_member.data?.education}
                 </span>
               </div>
               <div>
                 <span className="text-xs text-zinc-500 uppercase tracking-wider block mb-1">
                   Languages
                 </span>
-                {member.languages &&
-                  member.languages?.map((lan, index) => {
+                {team_member.data?.languages &&
+                  team_member.data?.languages?.map((lan, index) => {
                     return (
                       <span className="text-sm font-medium text-zinc-200">
                         {index == 0 ? "" : ", "}
@@ -237,15 +189,16 @@ export default function Profile() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            {skillsList.map((skill, idx) => (
-              <motion.span
-                key={idx}
-                variants={fadeInUp}
-                className="px-4! py-2! bg-zinc-900 border border-zinc-800 hover:border-[#d1b797]/50 text-zinc-300 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors"
-              >
-                {skill}
-              </motion.span>
-            ))}
+            {skillsList &&
+              skillsList.map((skill, idx) => (
+                <motion.span
+                  key={idx}
+                  variants={fadeInUp}
+                  className="px-4! py-2! bg-zinc-900 border border-zinc-800 hover:border-[#d1b797]/50 text-zinc-300 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors"
+                >
+                  {skill}
+                </motion.span>
+              ))}
           </div>
         </motion.section>
 
@@ -259,8 +212,8 @@ export default function Profile() {
           </div>
 
           <div className="flex flex-col gap-6!">
-            {member.experience &&
-              member.experience.map((item, index) => (
+            {team_member?.data?.experience &&
+              team_member.data.experience.map((item, index) => (
                 <div
                   key={index}
                   className="p-6!  rounded-xl bg-zinc-900/40 border border-zinc-800/80 hover:border-zinc-700 transition-colors"

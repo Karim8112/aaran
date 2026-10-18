@@ -6,11 +6,11 @@ export default function Navbar() {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
-  const activeClass =
-    "text-[#D1B797] bg-black/10 px-4! py-1! rounded-full font-normal ";
+  // const activeClass =
+  //   "text-[#D1B797] bg-black/10 px-4! py-1! rounded-full font-normal ";
 
-  const getClass = (path: string) =>
-    location.pathname === path ? activeClass : " hover:text-white px-4!";
+  // const getClass = (path: string) =>
+  //   location.pathname === path ? activeClass : " hover:text-white px-4!";
 
   // Automatically close mobile menu on route change
 
@@ -30,6 +30,8 @@ export default function Navbar() {
     { path: "/home", label: "Home" },
     { path: "/projects", label: "Projects" },
     { path: "/team", label: "Team" },
+    { path: "/videos", label: "Videos" },
+    { path: "/estates", label: "Real Estates" },
   ];
 
   return (
@@ -37,7 +39,7 @@ export default function Navbar() {
       {/* ========================================== */}
       {/* 1. DESKTOP NAVIGATION (>= 768px)          */}
       {/* ========================================== */}
-      <nav className="hidden md:flex nav-links justify-center w-full items-center pt-4! gap-16 font-light text-white fixed top-0 left-0 z-50 ">
+      {/* <nav className="hidden md:flex nav-links justify-center w-full items-center pt-4! gap-16 font-light text-white fixed top-0 left-0 z-50 ">
         <div className="glass-container-of-dev  backdrop-blur-md border border-white/20 shadow-lg   flex bg-gray-900/20  rounded-full justify-center items-center gap-8 text-white font-light px-2! py-2!">
           <Link to="/home" className={`${getClass("/home")} ${getClass("/")}`}>
             Home
@@ -48,15 +50,21 @@ export default function Navbar() {
           <Link to="/team" className={getClass("/team")}>
             Team
           </Link>
+          <Link to="/videos" className={getClass("/videos")}>
+            Videos
+          </Link>
+          <Link to="/estates" className={getClass("/videos")}>
+            Estates
+          </Link>
         </div>
-      </nav>
+      </nav> */}
 
       {/* ========================================== */}
       {/* 2. MOBILE NAVIGATION (< 768px)           */}
       {/* ========================================== */}
       <nav
         style={{ padding: "10px", justifyContent: "end" }}
-        className=" md:hidden fixed w-full flex top-0 left-0   z-50  "
+        className="  fixed w-full flex top-0 left-0   z-50  "
       >
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -98,9 +106,9 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "-100%" }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 bg-[#0d0d0d] z-40 flex flex-col justify-center items-center px-8 md:hidden"
+            className="fixed inset-0 bg-[#0d0d0d] z-40 flex flex-col justify-center items-center px-8 "
           >
-            <div className="flex flex-col items-center gap-10">
+            <div className="flex flex-col items-start gap-10">
               {navLinks.map((link, idx) => (
                 <motion.div
                   key={link.path}

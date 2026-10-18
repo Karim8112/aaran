@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home.tsx";
 // import UnderConstruction from "./pages/underConstruction.tsx";
 import Team from "./pages/Team/Team.tsx";
+import Youtube from "../src/pages/Videos/index2.tsx";
 import MemberDetailPage from "./pages/Team/Profile.tsx";
 import TransitionProvider from "./providers/TransitionProvider.tsx";
 import Projects from "./pages/Projects/Projects.tsx";
@@ -20,6 +21,7 @@ function RoutesNav() {
           <Route path="/home" element={<Home />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/team" element={<Team />} />
+          <Route path="/videos" element={<Youtube />} />
           <Route path={`/team/:memberId`} element={<MemberDetailPage />} />
         </Routes>
       </TransitionProvider>

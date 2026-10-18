@@ -27,6 +27,7 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.3",
+    "react-youtube": "^10.1.0",
     "tabler": "^1.0.0",
     "tailwindcss": "^4.3.3",
     "three": "^0.185.1"
@@ -37,6 +38,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@types/three": "^0.185.4",
+    "@types/youtube-player": "^5.5.11",
     "@vitejs/plugin-react": "^6.1.0",
     "eslint": "^10.9.0",
     "eslint-plugin-react-hooks": "^7.1.1",

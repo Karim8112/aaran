@@ -15,6 +15,7 @@
     "@mui/icons-material": "^9.4.0",
     "@mui/material": "^9.4.0",
     "@mui/x-date-pickers": "^9.13.0",
+    "@radix-ui/react-select": "^2.4.1",
     "@studio-freight/lenis": "^1.0.42",
     "@tabler/icons-react": "^3.46.0",
     "@tailwindcss/vite": "^4.3.3",
@@ -29,6 +30,7 @@
     "react-router-dom": "^7.18.3",
     "react-youtube": "^10.1.0",
     "tabler": "^1.0.0",
+    "tailwind-merge": "^3.7.0",
     "tailwindcss": "^4.3.3",
     "three": "^0.185.1"
   },

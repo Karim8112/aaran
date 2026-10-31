@@ -8,6 +8,7 @@ import Youtube from "../src/pages/Videos/index2.tsx";
 import MemberDetailPage from "./pages/Team/Profile.tsx";
 import TransitionProvider from "./providers/TransitionProvider.tsx";
 import Projects from "./pages/Projects/Projects.tsx";
+import ShowProject from "./pages/Projects/showProject.tsx";
 
 function RoutesNav() {
   return (
@@ -20,6 +21,7 @@ function RoutesNav() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:projectId" element={<ShowProject />} />
           <Route path="/team" element={<Team />} />
           <Route path="/videos" element={<Youtube />} />
           <Route path={`/team/:memberId`} element={<MemberDetailPage />} />

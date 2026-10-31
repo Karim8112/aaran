@@ -41,7 +41,7 @@ export function useProject() {
     GetAxios<IAPIforProject>({
       filter: props.filter ? [{ ...props.filter }] : [],
       page: props.page,
-      path: `${BaseURL}`,
+      path: `${BaseURL}/project`,
       setLoading,
       onSuccess: (projects: IApi<IProject>) => setData(projects),
       setSnackbarmsg,

@@ -40,7 +40,6 @@ img {
 
   overflow: hidden;
   position: relative;
-  filter: grayscale(70%); /* 👈 FIXED: Active black & white filter */
   transition: filter 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 

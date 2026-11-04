@@ -4,8 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import InversionLens from "./InversionLens";
-const spotlight2 =
-  "https://res.cloudinary.com/dwa0wqrln/image/upload/v1791602548/image-7.png";
+import { type IHero } from "../../../Model/Landing";
 
 // import Col from "./Col";
 
@@ -27,11 +26,16 @@ const mapRange = (
 
 const HeroSection: React.FC<{
   containerRef: React.RefObject<HTMLDivElement | null>;
+  data: IHero | null;
 }> = ({
   containerRef,
+  data,
 }: {
   containerRef: React.RefObject<HTMLDivElement | null>;
+  data: IHero | null;
 }) => {
+  console.log("thgis is the data", data);
+
   const galleryRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
@@ -43,8 +47,8 @@ const HeroSection: React.FC<{
   const wordsRef = useRef<(HTMLSpanElement | null)[]>([]);
 
   // 1. Text splitting logic restored
-  const headlineText = "General. Contracting. Solutions & Engineering.";
-  const wordsArray = headlineText.split(".");
+  const headlineText = data?.mainTitle.split(" ").join(". ");
+  const wordsArray = headlineText ? headlineText.split(".") : [""];
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -175,7 +179,7 @@ const HeroSection: React.FC<{
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [data]);
 
   // for logo animation
   useEffect(() => {
@@ -258,12 +262,14 @@ const HeroSection: React.FC<{
       <section className="hero">
         <div ref={heroInnerRef} className="hero-inner">
           <div ref={galleryRef} className="hero-spotlight-gallery">
-            <InversionLens
-              ref={(el) => {
-                imagesRef.current[0] = el;
-              }}
-              source={spotlight2}
-            />
+            {data && (
+              <InversionLens
+                ref={(el) => {
+                  imagesRef.current[0] = el;
+                }}
+                source={data.heroImage}
+              />
+            )}
           </div>
 
           <div className="hero-header">

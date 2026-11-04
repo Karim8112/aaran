@@ -6,58 +6,12 @@ import "./steps.css";
 // 1. Register GSAP ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 import { IconSparkle2 } from "@tabler/icons-react";
+import type { IList } from "../../../Model/Landing";
 
 // 2. Define the TypeScript Interface for your data
-interface ServiceData {
-  id: number;
-  title: string;
-  description: string[];
-  imageSrc: string;
-}
 
-// 3. Store your repeating data in an array
-const servicesData: ServiceData[] = [
-  {
-    id: 1,
-    title: "Site Preparation",
-    description: [
-      "Site equipping & locating offices.",
-      "Storage, water supply & electricity.",
-      "Access, exit & emergency provisions.",
-    ],
-    imageSrc:
-      "https://images.unsplash.com/photo-1503708928676-1cb796a0891e?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 2,
-    title: "Time plan organization",
-    description: [
-      "Logical scheduling compatible with task chronology.",
-      "Schedule matching specified quantities.",
-    ],
-    imageSrc:
-      "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 3,
-    title: "Necessary experience",
-    description: [
-      "Securing highly skilled specialized technical expertise.",
-      "Previous experience in similar heritage projects.",
-    ],
-    imageSrc:
-      "https://images.unsplash.com/photo-1694521787193-9293daeddbaa?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 4,
-    title: "Tools & equipment",
-    description: ["Determination of number, use, timing & maintenance."],
-    imageSrc:
-      "https://images.unsplash.com/photo-1512207736890-6ffed8a84e8d?q=80&w=1179&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-];
-
-const Services: React.FC = () => {
+const Services = function ({ data }: { data: IList[] | [] }) {
+  const servicesData = data;
   const ContainerRef = useRef<HTMLDivElement | null>(null);
   // 4. Initialize Lenis and GSAP Ticker in useEffect
   useEffect(() => {
@@ -170,13 +124,13 @@ const Services: React.FC = () => {
       {/* Services List mapped dynamically */}
       <div className="services-list flex flex-col md:px-25! px-12!">
         {servicesData.map((service) => (
-          <div className="service  md:py-10!" key={service.id}>
+          <div className="service  md:py-10!" key={service._id}>
             {/* the title */}
             <div className=" flex flex-col w-full md:w-[40%] gap-5 md:h-full justify-center">
               <h1 className="text-[#d1b797]  tracking-wider! font-bold! text-2xl! md:text-4xl!">
                 {service.title}
               </h1>
-              {service.description.map((desc) => {
+              {service.desc.map((desc) => {
                 return (
                   <div className=" flex gap-4">
                     <IconSparkle2 stroke={2} color="#FFFFFF60" />
@@ -191,7 +145,7 @@ const Services: React.FC = () => {
             {/* the image */}
             <div className="image-container md:block! hidden rounded-sm">
               <div className="image">
-                <img src={service.imageSrc} alt={service.title} />
+                <img src={service.image} alt={service.title} />
               </div>
             </div>
           </div>

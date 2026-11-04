@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+import type { IWhatWeDo } from "../../../Model/Landing";
 
 // Register ScrollTrigger globally
 if (typeof window !== "undefined") {
@@ -9,44 +10,15 @@ if (typeof window !== "undefined") {
 }
 
 // Slide Interface
-interface SlideData {
-  title: string;
-  image: string;
-}
 
-// Dynamic Dataset
-const slides: SlideData[] = [
-  {
-    title: "Hospitals\nAnd \nClinics",
-    image:
-      "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    title: "Archaeological\nMarkets,\nAnd Areas",
-    image:
-      "https://images.unsplash.com/photo-1608068980905-32ee2b7b7e3d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    title: "Vocational Training\nCenters, \nAnd Schools",
-    image:
-      "https://images.unsplash.com/photo-1554428122-c2ca1f2cb88c?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    title: "Restoration Of\nAleppo Castle, \nAnd Old City",
-    image:
-      "https://images.unsplash.com/photo-1700387501742-af20ad30aa8c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    title: "Infrastructure,\nAnd Government\nInstitutions",
-    image:
-      "https://images.unsplash.com/photo-1582540730843-f4418d96ccbe?q=80&w=2146&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-];
-
-export default function SmoothScrollSlider() {
+export default function SmoothScrollSlider({
+  data,
+}: {
+  data: IWhatWeDo[] | [];
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const imagesContainerRef = useRef<HTMLDivElement>(null);
-  const titleContainerRef = useRef<HTMLDivElement>(null);
+  const textContainerRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
 
   const [activeSlide, setActiveSlide] = useState(0);
@@ -54,7 +26,7 @@ export default function SmoothScrollSlider() {
 
   // Custom text splitter matching GSAP's Premium SplitText for free [16]
   const splitTextAndAnimate = (text: string) => {
-    const container = titleContainerRef.current;
+    const container = textContainerRef.current;
     if (!container) return;
 
     container.innerHTML = "";
@@ -93,7 +65,7 @@ export default function SmoothScrollSlider() {
     if (!container) return;
 
     const nextImg = document.createElement("img");
-    nextImg.src = slides[index].image;
+    nextImg.src = data[index].image;
     nextImg.alt = `Spotlight Slide ${index + 1}`;
     nextImg.style.position = "absolute";
     nextImg.style.top = "0";
@@ -119,8 +91,8 @@ export default function SmoothScrollSlider() {
       currentImgs[0].remove();
     }
 
-    // Trigger Title split
-    splitTextAndAnimate(slides[index].title);
+    // Trigger text split
+    if (data[index]) splitTextAndAnimate(data[index].text);
   };
 
   useEffect(() => {
@@ -146,7 +118,7 @@ export default function SmoothScrollSlider() {
       ScrollTrigger.create({
         trigger: ".slider-section",
         start: "top top",
-        end: () => `+=${window.innerHeight * slides.length}`,
+        end: () => `+=${window.innerHeight * data.length}`,
         pin: true,
         pinSpacing: true,
         scrub: true,
@@ -163,8 +135,8 @@ export default function SmoothScrollSlider() {
 
           // Fetch discrete active page step
           const targetIndex = Math.min(
-            Math.floor(progress * slides.length),
-            slides.length - 1,
+            Math.floor(progress * data.length),
+            data.length - 1,
           );
 
           if (targetIndex !== activeSlideRef.current) {
@@ -199,12 +171,12 @@ export default function SmoothScrollSlider() {
           <div ref={imagesContainerRef} className="absolute inset-0 z-1" />
 
           {/* Low brightness contrast grid overlay */}
-          <div className="absolute inset-0 bg-radial-vignette z-2 pointer-events-none" />
+          <div className="absolute inset-0! bg-[radial-gradient(circle,transparent_20%,rgba(0,0,0,0.85)_100%)]! z-10 pointer-events-none" />
 
-          {/* Text Title Content */}
-          <div className="absolute top-[50%] left-[10%] -translate-y-[50%] w-[85%] md:w-[80%] z-10 pointer-events-none">
+          {/* Text text Content */}
+          <div className="absolute top-[50%] left-[10%] -translate-y-[50%] w-[85%] md:w-[60%] z-10 pointer-events-none">
             <h1
-              ref={titleContainerRef}
+              ref={textContainerRef}
               className="text-2xl md:text-[3.5rem] font-medium leading-[1.1] tracking-tighter "
             />
           </div>
@@ -212,7 +184,7 @@ export default function SmoothScrollSlider() {
           {/* Right Floating HUD Indices */}
           <div className="absolute top-[50%] right-[6%] -translate-y-[50%] flex items-center gap-10 z-10 max-md:right-auto max-md:left-[5%] max-md:bottom-[10%] max-md:top-auto max-md:translate-y-0 max-md:flex-row-reverse max-md:justify-end max-md:w-[90%]">
             <div className="flex flex-col gap-6 max-md:flex-row max-md:gap-4">
-              {slides.map((_, index) => {
+              {data.map((_, index) => {
                 const formattedNum = String(index + 1).padStart(2, "0");
                 const isActive = index === activeSlide;
                 return (

@@ -5,6 +5,13 @@ export default interface IApi<Type> {
   total?: number;
 }
 
+export interface IApi2<Type> {
+  status: string;
+  results: number;
+  total?: number;
+  data: Type;
+}
+
 export const filterOperations = {
   equal: "=",
   not_equal: "!=",

@@ -9,26 +9,9 @@ import {
   useMotionValue,
 } from "framer-motion";
 import type { MotionValue } from "framer-motion";
+import type { IAboutUs } from "../../../Model/Landing";
 
 // مصفوفة من 10 صور معمارية فاخرة وفائقة الجودة لتزيين شريط الماركي اللانهائي
-const MARQUEE_IMAGES = [
-  "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1649366765229-8bc9d1010377?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1737275851502-a30ff4804eba?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1752396787222-30f814c02eeb?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1697199950830-e3857d752678?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1616855202318-07ea40522c6c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1649366765229-8bc9d1010377?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-];
-
-const PARAGRAPHS = [
-  "Led by Eng. Basel Al-Zahir, Aaran Contracting & Trading combines 20+ years of civil and MEP expertise with specialized heritage restoration. Blending traditional craftsmanship with modern technology, the firm revitalizes iconic landmarks, most notably the Citadel of Aleppo.",
-  "A trusted partner for UN agencies, Aaran executes complex international projects in sensitive environments under strict HSE protocols. The firm maintains transparency and efficiency while humanizing urban spaces—from schools to citadels—for future generations.",
-  "Guided by ISO 603, Aaran prioritizes workforce safety over productivity. Preventing injuries and accidents remains a fundamental responsibility. Continuous risk-avoidance training ensures an uncompromising safety culture for all personnel.",
-];
 
 // مكون فرعي لعزل تحريك كل كلمة على حدة برياضيات Framer Motion
 interface WordProps {
@@ -111,8 +94,9 @@ const AnimatedParagraph: React.FC<ParagraphProps> = ({
   );
 };
 
-export default function AboutUs() {
+export default function AboutUs({ data }: { data: IAboutUs | null }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const MARQUEE_IMAGES = data?.images;
 
   // 1. التقاط نسبة تقدم التمرير للقسم بالكامل (تم تمديد مسافة التمرير لـ 350vh لزيادة وقت القراءة)
   const { scrollYProgress } = useScroll({
@@ -187,8 +171,8 @@ export default function AboutUs() {
           {/* العمود الأول (أقصى اليسار) */}
           <AnimatedParagraph
             index="01"
-            title="About AARAN"
-            text={PARAGRAPHS[0]}
+            title={data?.title1 ?? ""}
+            text={data?.description ?? ""}
             progress={scrollYProgress}
             range={[0.05, 0.3]} // يكتمل تحريك كلماته في أول 30% من التمرير
             activeOpacity={opacityColumn1}
@@ -197,8 +181,8 @@ export default function AboutUs() {
           {/* العمود الثاني (في المنتصف تماماً) */}
           <AnimatedParagraph
             index="02"
-            title="Global Vision"
-            text={PARAGRAPHS[1]}
+            title={data?.title1 ?? ""}
+            text={data?.description2 ?? ""}
             progress={scrollYProgress}
             range={[0.38, 0.68]} // يكتمل تحريك كلماته بين 38% و 68% (مساحة كافية ومريحة جداً للقراءة!)
             activeOpacity={opacityColumn2}
@@ -207,8 +191,8 @@ export default function AboutUs() {
           {/* العمود الثالث (أقصى اليمين) */}
           <AnimatedParagraph
             index="03"
-            title="Our Culture"
-            text={PARAGRAPHS[2]}
+            title={data?.title1 ?? ""}
+            text={data?.description3 ?? ""}
             progress={scrollYProgress}
             range={[0.75, 0.95]} // يكتمل تحريك كلماته في آخر التمرير
             activeOpacity={opacityColumn3}
@@ -225,28 +209,34 @@ export default function AboutUs() {
             className="inline-flex gap-[1.5vw] will-change-transform"
           >
             {/* الدورة الأولى للـ 10 صور */}
-            {MARQUEE_IMAGES.map((src, i) => (
-              <div
-                key={`orig-${i}`}
-                className="w-[170px] h-[110px] rounded-sm overflow-hidden shrink-0 border border-white/5 bg-neutral-900"
-              >
-                <img src={src} className="w-full h-full " alt={`Slider ${i}`} />
-              </div>
-            ))}
+            {MARQUEE_IMAGES &&
+              MARQUEE_IMAGES.map((src, i) => (
+                <div
+                  key={`orig-${i}`}
+                  className="w-[170px] h-[110px] rounded-sm overflow-hidden shrink-0 border border-white/5 bg-neutral-900"
+                >
+                  <img
+                    src={src}
+                    className="w-full h-full "
+                    alt={`Slider ${i}`}
+                  />
+                </div>
+              ))}
 
             {/* الدورة الثانية المكررة للضمان السلس وعدم حدوث قطع بصري */}
-            {MARQUEE_IMAGES.map((src, i) => (
-              <div
-                key={`clone-${i}`}
-                className="w-[170px] h-[110px] rounded-sm overflow-hidden shrink-0 border border-white/5 bg-neutral-900"
-              >
-                <img
-                  src={src}
-                  className="w-full h-full "
-                  alt={`Slider-Clone ${i}`}
-                />
-              </div>
-            ))}
+            {MARQUEE_IMAGES &&
+              MARQUEE_IMAGES.map((src, i) => (
+                <div
+                  key={`clone-${i}`}
+                  className="w-[170px] h-[110px] rounded-sm overflow-hidden shrink-0 border border-white/5 bg-neutral-900"
+                >
+                  <img
+                    src={src}
+                    className="w-full h-full "
+                    alt={`Slider-Clone ${i}`}
+                  />
+                </div>
+              ))}
           </motion.div>
         </motion.div>
       </div>

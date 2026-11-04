@@ -1,8 +1,10 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { motion, type Variants } from "framer-motion";
+import type { IContactInfo } from "../../../Model/Landing";
+import { Mail, MapPin, Phone } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -29,7 +31,7 @@ const itemVariants: Variants = {
   },
 };
 
-const SignatureSection: React.FC = () => {
+const SignatureSection = function ({ data }: { data: IContactInfo | null }) {
   const sectionRef = useRef<HTMLElement>(null);
 
   return (
@@ -51,7 +53,7 @@ const SignatureSection: React.FC = () => {
     >
       <div className="flex flex-col gap-4 items-start">
         <div className="flex gap-4 w-full items-center justify-start">
-          <span className="font-sans ps-[24px]! font-semibold md:w-48 w-72 text-[16px] uppercase tracking-[0.25em] text-white/9003 ">
+          <span className="font-sans ps-[24px]! font-semibold md:w-60! w-72! text-[16px] uppercase tracking-[0.25em] text-white/9003 ">
             Contact US
           </span>
           <hr className="h-[0.5] w-full bg-transparent! border-white/35 " />
@@ -59,7 +61,7 @@ const SignatureSection: React.FC = () => {
 
         <motion.div
           variants={containerVariants}
-          className="flex flex-col gap-[12px]! md:flex-row px-[20px]! py-[30px]! md:px-[60px]! md:py-[50px]! bg-transparent! md:bg-white/[0.07] md:border md:border-white/[0.1]!"
+          className="flex! flex-col! gap-[12px]! bg-transparent! px-[20px]! py-[10px]! md:flex-row! md:border! md:border-white/[0.1]! md:bg-white/[0.07]! md:px-[60px]! md:py-[20px]!"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.4 }}
@@ -152,13 +154,7 @@ const SignatureSection: React.FC = () => {
               flexShrink: 0,
               height: "250px",
             }}
-          >
-            <img
-              src="https://aaran-co.com/email_assets/divider2.svg"
-              alt="Divider"
-              height="1000"
-            />
-          </motion.div>
+          ></motion.div>
 
           <div
             style={{
@@ -168,119 +164,106 @@ const SignatureSection: React.FC = () => {
               flexDirection: "column",
             }}
           >
-            <motion.div
-              variants={itemVariants}
-              className="md:text-[46px] text-[32px]"
-              style={{
-                fontFamily: "'Inter', Arial, Helvetica, sans-serif",
+            {/* ----------------------addresses--------------------------- */}
 
-                color: "#D4B273",
-                background:
-                  "linear-gradient(to left, #fff2e1 0%, #d8a976 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                fontWeight: 600,
-                paddingBottom: "4px",
-                lineHeight: 1.1,
-                textShadow: "0px 2.85px 13.39px rgba(0, 0, 0, 0.30)",
-              }}
-            >
-              Eng. Bassel Al-Zaher
-            </motion.div>
-
-            <motion.div
-              variants={itemVariants}
-              style={{
-                fontFamily: "'Inter', Arial, Helvetica, sans-serif",
-                fontSize: "20px",
-                color: "#b3b3b3",
-                paddingBottom: "24px",
-                lineHeight: 1.4,
-                textShadow: "0px 2.85px 13.39px rgba(0, 0, 0, 0.60)",
-              }}
-            >
-              Civil Engineer, +963 933454030
-            </motion.div>
-
-            <motion.div
-              variants={itemVariants}
-              style={{
-                fontFamily: "'Inter', Arial, Helvetica, sans-serif",
-                fontSize: "16px",
-                color: "#f5f5f5",
-                paddingBottom: "12px",
-                lineHeight: 1.5,
-                textShadow: "0px 2.85px 13.39px rgba(0, 0, 0, 0.60)",
-              }}
-            >
-              <span
-                style={{
-                  color: "#D4B273",
-                  background:
-                    "linear-gradient(to left, #fff2e1 0%, #d8a976 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
+            <div className="flex! flex-col! gap-6! py-2! font-sans! tracking-wide!">
+              {/* ---------------------- ADDRESSES --------------------------- */}
+              <motion.div
+                variants={itemVariants}
+                className="group! flex! flex-col! gap-2.5!"
               >
-                Address 1 :
-              </span>{" "}
-              Syria, Aleppo, Al-Mogambo nighborhood, +963 933454030
-            </motion.div>
+                <div className="flex! items-center! gap-2.5!">
+                  <div className="flex! h-8! w-8! items-center! justify-center! rounded-lg! border! border-[#D4B273]/30! bg-[#D4B273]/10! text-[#D4B273]! shadow-sm! backdrop-blur-md! transition-colors! group-hover:border-[#D4B273]/60! group-hover:bg-[#D4B273]/20!">
+                    <MapPin className="h-4! w-4!" />
+                  </div>
+                  <span className="bg-gradient-to-r! from-[#FFF2E1]! to-[#D8A976]! bg-clip-text! text-xs! font-bold! uppercase! tracking-widest! text-transparent! drop-shadow-sm!">
+                    Addresses
+                  </span>
+                </div>
 
-            <motion.div
-              variants={itemVariants}
-              style={{
-                fontFamily: "'Inter', Arial, Helvetica, sans-serif",
-                fontSize: "16px",
-                color: "#f5f5f5",
-                paddingBottom: "12px",
-                lineHeight: 1.5,
-                textShadow: "0px 2.85px 13.39px rgba(0, 0, 0, 0.60)",
-              }}
-            >
-              <span
-                style={{
-                  color: "#D4B273",
-                  background:
-                    "linear-gradient(to left, #fff2e1 0%, #d8a976 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                Address 2 :
-              </span>{" "}
-              Egypt, Cairo, Al-Obbur city, 00201200020582
-            </motion.div>
+                <div className="flex! flex-col! gap-1.5! ps-10! text-sm! font-normal! leading-relaxed! text-zinc-200!">
+                  {data?.address && data?.address.length > 0 ? (
+                    data?.address.map((addr: string, idx: number) => (
+                      <p
+                        key={idx}
+                        className="transition-colors! hover:text-white!"
+                      >
+                        {addr}
+                      </p>
+                    ))
+                  ) : (
+                    <p className="italic! text-zinc-500!">
+                      No address provided
+                    </p>
+                  )}
+                </div>
+              </motion.div>
 
-            <motion.div
-              variants={itemVariants}
-              style={{
-                fontFamily: "'Inter', Arial, Helvetica, sans-serif",
-                fontSize: "16px",
-                color: "#b3b3b3",
-                textShadow: "0px 2.85px 13.39px rgba(0, 0, 0, 0.60)",
-              }}
-            >
-              <span
-                style={{
-                  color: "#D4B273",
-                  background:
-                    "linear-gradient(to left, #fff2e1 0%, #d8a976 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
+              {/* ---------------------- EMAILS --------------------------- */}
+              <motion.div
+                variants={itemVariants}
+                className="group! flex! flex-col! gap-2.5!"
               >
-                website:
-              </span>{" "}
-              <a
-                href="http://aaran-co.com"
-                target="_blank"
-                rel="noreferrer"
-                style={{ color: "#b3b3b3", textDecoration: "none" }}
+                <div className="flex! items-center! gap-2.5!">
+                  <div className="flex! h-8! w-8! items-center! justify-center! rounded-lg! border! border-[#D4B273]/30! bg-[#D4B273]/10! text-[#D4B273]! shadow-sm! backdrop-blur-md! transition-colors! group-hover:border-[#D4B273]/60! group-hover:bg-[#D4B273]/20!">
+                    <Mail className="h-4! w-4!" />
+                  </div>
+                  <span className="bg-gradient-to-r! from-[#FFF2E1]! to-[#D8A976]! bg-clip-text! text-xs! font-bold! uppercase! tracking-widest! text-transparent! drop-shadow-sm!">
+                    Emails
+                  </span>
+                </div>
+
+                <div className="flex! flex-col! gap-1.5! ps-10! text-sm! font-normal! leading-relaxed! text-zinc-200!">
+                  {data?.emails && data?.emails.length > 0 ? (
+                    data?.emails.map((email: string, idx: number) => (
+                      <a
+                        key={idx}
+                        href={`mailto:${email}`}
+                        className="w-fit! transition-colors! hover:text-[#D8A976]! hover:underline!"
+                      >
+                        {email}
+                      </a>
+                    ))
+                  ) : (
+                    <p className="italic! text-zinc-500!">No email provided</p>
+                  )}
+                </div>
+              </motion.div>
+
+              {/* ---------------------- NUMBERS --------------------------- */}
+              <motion.div
+                variants={itemVariants}
+                className="group! flex! flex-col! gap-2.5!"
               >
-                aaran-co.com
-              </a>
-            </motion.div>
+                <div className="flex! items-center! gap-2.5!">
+                  <div className="flex! h-8! w-8! items-center! justify-center! rounded-lg! border! border-[#D4B273]/30! bg-[#D4B273]/10! text-[#D4B273]! shadow-sm! backdrop-blur-md! transition-colors! group-hover:border-[#D4B273]/60! group-hover:bg-[#D4B273]/20!">
+                    <Phone className="h-4! w-4!" />
+                  </div>
+                  <span className="bg-gradient-to-r! from-[#FFF2E1]! to-[#D8A976]! bg-clip-text! text-xs! font-bold! uppercase! tracking-widest! text-transparent! drop-shadow-sm!">
+                    Phone Numbers
+                  </span>
+                </div>
+
+                <div className="dir-ltr! flex! flex-col! gap-1.5! ps-10! text-sm! font-normal! leading-relaxed! text-zinc-200!">
+                  {data?.numbers && data?.numbers.length > 0 ? (
+                    data?.numbers.map((num: string, idx: number) => (
+                      <a
+                        key={idx}
+                        href={`tel:${num}`}
+                        className="w-fit! font-mono! text-sm! tracking-wider! transition-colors! hover:text-[#D8A976]! hover:underline!"
+                      >
+                        {num}
+                      </a>
+                    ))
+                  ) : (
+                    <p className="italic! text-zinc-500!">
+                      No numbers provided
+                    </p>
+                  )}
+                </div>
+              </motion.div>
+            </div>
+            {/* ------------------------------------------------- */}
           </div>
         </motion.div>
       </div>

@@ -10,6 +10,7 @@ import Steps from "./Steps/Steps";
 import Contact from "./Contact/Contact";
 import { useLanding } from "./useLanding";
 import LoadingScreen from "../Loading";
+import AdditionalSection from "./AdditionalSection";
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -36,10 +37,22 @@ export default function Home() {
           </div>
           <GSAPScrollSequence />
           <WhatWeDo data={Landing?.data?.data.whatWeDo ?? []} />
+          {Landing?.data?.data?.additionalSection &&
+          Landing?.data?.data?.additionalSection.length > 0 ? (
+            Landing.data?.data.additionalSection.map((el, index) => (
+              <AdditionalSection
+                data={el}
+                index={index}
+                length={Landing.data?.data.additionalSection.length as number}
+              />
+            ))
+          ) : (
+            <></>
+          )}
           <AboutUs data={Landing?.data?.data.aboutUs[0] ?? null} />
           <Chief />
           <Steps data={Landing?.data?.data.list ?? []} />
-          <Contact />
+          <Contact data={Landing?.data?.data.contactInfo[0] ?? null} />
         </>
       )}
     </>

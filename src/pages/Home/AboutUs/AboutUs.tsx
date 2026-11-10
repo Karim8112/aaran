@@ -181,7 +181,7 @@ export default function AboutUs({ data }: { data: IAboutUs | null }) {
           {/* العمود الثاني (في المنتصف تماماً) */}
           <AnimatedParagraph
             index="02"
-            title={data?.title1 ?? ""}
+            title={data?.title2 ?? ""}
             text={data?.description2 ?? ""}
             progress={scrollYProgress}
             range={[0.38, 0.68]} // يكتمل تحريك كلماته بين 38% و 68% (مساحة كافية ومريحة جداً للقراءة!)
@@ -191,7 +191,7 @@ export default function AboutUs({ data }: { data: IAboutUs | null }) {
           {/* العمود الثالث (أقصى اليمين) */}
           <AnimatedParagraph
             index="03"
-            title={data?.title1 ?? ""}
+            title={data?.title3 ?? ""}
             text={data?.description3 ?? ""}
             progress={scrollYProgress}
             range={[0.75, 0.95]} // يكتمل تحريك كلماته في آخر التمرير

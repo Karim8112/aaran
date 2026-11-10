@@ -13,7 +13,7 @@ export function useContactInfo() {
   );
   const GetData = function () {
     GetAxios<IApi<IContactInfo>>({
-      path: BaseURL,
+      path: BaseURL.concat("/contact-info"),
       setLoading,
       onSuccess: (data) => setData(data),
       setSnackbarmsg,

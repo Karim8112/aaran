@@ -1,2 +1,2 @@
-const baseURL = `http://localhost:5173/`;
+const baseURL = `https://www.aaran-co.com/`;
 export default baseURL;

@@ -60,7 +60,7 @@ const ContactInfo = function () {
         ) : (
           <motion.div
             variants={containerVariants}
-            className="flex! flex-col! gap-[12px]! rounded-xl! bg-transparent! px-[10px]! py-[4px]! md:flex-row! md:border! md:border-white/[0.1]! md:bg-transparent! md:px-[10px]! md:py-[4px]!"
+            className="flex! flex-col! gap-[12px]! rounded-xl! bg-transparent! px-[10px]! py-[4px]! md:flex-row! md:border! md:border-white/[0.1]! md:bg-transparent! "
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, amount: 0.4 }}
@@ -236,7 +236,7 @@ export default function ShowHouse() {
 
   return !houseHook.loading ? (
     <>
-      <div className="bg-white! px-4! py-4! text-black! selection:bg-[#d1b797]! selection:text-black! dark:bg-[#0d0d0d]! dark:text-zinc-100! md:px-12!">
+      <div className="bg-white! px-4! py-24! text-black! selection:bg-[#d1b797]! selection:text-black! dark:bg-[#0d0d0d]! dark:text-zinc-100! md:px-12!">
         {/* Main Content Area */}
         <motion.main
           className="mx-auto! mb-20! flex! max-w-7xl! flex-col! gap-16!"
